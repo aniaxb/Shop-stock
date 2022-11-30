@@ -77,3 +77,5 @@ dist
 .tern-port
 
 .idea
+vscode
+.vscode
