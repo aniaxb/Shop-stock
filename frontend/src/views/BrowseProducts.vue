@@ -1,121 +1,144 @@
 <template>
-    <div>
-       <!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-light " id="mainNavbar">
-  <!-- Container wrapper -->
-  <div class="container">
-    <!-- Navbar brand -->
-    <a class="navbar-brand" href="#"><img id="MDB-logo"
-        src="http://cdn.onlinewebfonts.com/svg/img_473618.png" alt="MDB Logo"
-        draggable="false" height="30" /></a>
-
-    <!-- Toggle button -->
-    <button class="navbar-toggler" type="button" data-mdb-toggle="collapse"
-      data-mdb-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-      aria-label="Toggle navigation">
-      <i class="fas fa-bars"></i>
-    </button>
-
-    <!-- Collapsible wrapper -->
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <!-- Left links -->
-      <ul class="navbar-nav me-3">
-        <li class="nav-item">
-          <a class="nav-link active d-flex align-items-center" aria-current="page" href="#">
+  <nav id="mainNavbar" class="navbar navbar-dark navbar-expand-lg px-2" >
+  <a class="navbar-brand" href="#">
+    <img src="http://cdn.onlinewebfonts.com/svg/img_473618.png" alt="">
+    ShoeStock</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNavDropdown">
+    <ul class="navbar-nav">
+      <li class="nav-item active">
+        <!-- <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a> -->
+        <a class="nav-link active d-flex align-items-center" aria-current="page" href="#">
             <RouterLink to="/" class="link">Home</RouterLink></a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link active d-flex align-items-center" aria-current="page" href="#">
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active d-flex align-items-center" aria-current="page" href="#">
             <RouterLink to="/browse" class="link">Browse</RouterLink></a>
-        </li>
-      </ul>
-      <!-- Left links -->
-
-      <form class="d-flex align-items-center w-100 form-search">
-        <div class="input-group">
-          <button class="btn btn-light dropdown-toggle shadow-0" type="button" data-mdb-toggle="dropdown"
-            aria-expanded="false" style="padding-bottom: 0.4rem;">
-            All
-          </button>
-          <ul class="dropdown-menu dropdown dropdown-menu-dark fa-ul">
-            <li>
-              <a class="dropdown-item" href="#"><span class="fa-li pe-2"><i class="fas fa-search"></i></span>All</a>
-            </li>
-            <li>
-              <a class="dropdown-item" href="#"><span class="fa-li pe-2"><i
-                    class="fas fa-film"></i></span>Titles</a>
-            </li>
-            <li>
-              <a class="dropdown-item" href="#"><span class="fa-li pe-2"><i class="fas fa-tv"></i></span>TV
-                Episodes</a>
-            </li>
-            <li>
-              <a class="dropdown-item" href="#"><span class="fa-li pe-2"><i
-                    class="fas fa-user-friends"></i></span>Celebs</a>
-            </li>
-            <li>
-              <a class="dropdown-item" href="#"><span class="fa-li pe-2"><i
-                    class="fas fa-building"></i></span>Companies</a>
-            </li>
-            <li>
-              <a class="dropdown-item" href="#"><span class="fa-li pe-2"><i
-                    class="fas fa-key"></i></span>Keywords</a>
-            </li>
-            <li>
-              <hr class="dropdown-divider" />
-            </li>
-            <li>
-              <a class="dropdown-item" href="#"><span class="fa-li pe-2"><i
-                    class="fas fa-search-plus"></i></span>Advanced
-                search<i class="fas fa-chevron-right ps-2"></i></a>
-            </li>
-          </ul>
-          <input type="search" class="form-control" placeholder="Search" aria-label="Search" />
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active d-flex align-items-center" aria-current="page" href="#">
+            <RouterLink to="/login" class="link">Login</RouterLink></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active d-flex align-items-center"><i class="bi bi-cart-fill" href="#"></i></a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Dropdown link
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <a class="dropdown-item" href="#">Action</a>
+          <a class="dropdown-item" href="#">Another action</a>
+          <a class="dropdown-item" href="#">Something else here</a>
         </div>
-        <a href="#!" class="text-white"><i class="fas fa-search ps-3"></i></a>
-      </form>
-
-      <ul class="navbar-nav ms-3">
-        <li class="nav-item me-3">
-          <a class="nav-link d-flex align-items-center" href="#!">ShoeStockPro</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link d-flex align-items-center me-3" href="#!">
-            <i class="fas fa-bookmark pe-2"></i> Watchlist
-          </a>
-        </li>
-        <li class="nav-item" style="width: 65px;">
-          <a class="nav-link d-flex align-items-center" href="#!"><RouterLink to="/login" class="link">Login</RouterLink></a>
-        </li>
-      </ul>
-    </div>
-    <!-- Collapsible wrapper -->
+      </li>
+    </ul>
   </div>
-  <!-- Container wrapper -->
 </nav>
-<!-- Navbar -->
+    <!-- <h1>Hello BrowsePage</h1> -->
+
+    <div class="container justify-content-around mt-5 products text-center">
+      <div v-for="(shoe, index) in productData" :key="index" class="col-lg-3 ">
+        <div class="p-2 rounded item">
+          <div>{{shoe.fullname}}</div>
+          <div id="picture"></div>
+          <div><img :src="shoe.imgurl" class="img-fluid"></div>
+          <div>{{shoe.brand}}</div>
+          <div>{{shoe.price}}$</div>
+          <div><button v-on:click="addToCart()" class="btn">Add to cart</button></div>
+        </div>
+      </div>
     </div>
-    <div>
-        <h1>Hello BrowsePage</h1>
-        
-        
+
+    <div id="divTable">
+      <table class="table table-light table-striped mt-5">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Brand</th>
+            <th>Price</th>
+            <th>Year</th>
+          </tr>
+        </thead>
+        <tbody >
+          <tr v-for="shoe in productData" :key="shoe" >
+            <td>{{shoe.id}}</td>
+            <td>{{shoe.fullname}}</td>
+            <td>{{shoe.brand}}</td>
+            <td>{{shoe.price}}$</td>
+            <td>{{shoe.year}}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
 </template>
 
 <script>
+import json from '../assets/products.json'
+
+export default {
+name: 'BrowseProducts',
+
+data() {
+  return {
+    productData: json
+  }
+},
+created() {
+  // #CCDDE2
+    document.body.style.backgroundColor = "#e9f1f7";
+  },
+}
 </script>
 
 <style scoped>
-#mainNavbar {
-    background-color: #757bc8;
+
+.item {
+  border: 2px solid #48ACF0;
+}
+button {
+  background: #48ACF0;
 }
 
-body {
-    background-color: #e0c3fc;
+#mainNavbar {
+    background-color: #594236;
 }
 
 .link {
     text-decoration: none;
-    color: black;
+    color: #f5f5f5;
 }
+.products img {
+  object-fit: contain;
+  max-width: 100%;
+  max-height: 100%;
+  mix-blend-mode: multiply;
+  /* mix-blend-mode: color-burn; */
+}
+
+#mainNavbar img {
+  max-width: 50px;
+  max-height: 50px;
+}
+
+table {
+  display: inline-block;
+}
+.container {
+  display: flex;
+  flex-direction: row;
+}
+
+@media (max-width: 600px) {
+  .container {
+    flex-direction: column;
+  }
+}
+
+
+
+
 </style>
