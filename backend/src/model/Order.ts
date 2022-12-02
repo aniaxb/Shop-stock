@@ -1,5 +1,6 @@
 import {Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable} from "typeorm"
 import {Product} from "./Product";
+import {Status} from "./Status";
 
 @Entity()
 export class Order {

@@ -1,9 +1,9 @@
 import * as express from "express"
 import {Request, Response} from "express"
 import {getDataSource} from "./utils/data-source"
-import {User} from "./entity/User";
-import {Category} from "./entity/Category";
-import {Product} from "./entity/Product";
+import {User} from "./model/User";
+import {Category} from "./model/Category";
+import {Product} from "./model/Product";
 require('dotenv').config()
 const app = express();
 app.use(express.json());
