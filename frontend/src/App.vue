@@ -1,6 +1,7 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
+import { RouterLink, RouterView } from "vue-router";
+import NavbarCom from "./components/NavbarCom.vue";
+import axios from "axios";
 </script>
 
 <template>
@@ -16,7 +17,7 @@ import HelloWorld from './components/HelloWorld.vue'
       </nav>
     </div>
   </header> -->
-
+  <NavbarCom />
   <RouterView />
 </template>
 
