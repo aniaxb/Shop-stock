@@ -1,14 +1,16 @@
 <template>
-  <div class="container justify-content-around mt-5 products text-center">
-    <div v-for="(shoe, index) in productData" :key="index" class="col-lg-3">
-      <div class="p-2 rounded item">
-        <div>{{ shoe.fullname }}</div>
-        <div id="picture"></div>
-        <div><img :src="shoe.imgurl" class="img-fluid" /></div>
-        <div>{{ shoe.brand }}</div>
-        <div>{{ shoe.price }}$</div>
-        <div>
-          <button v-on:click="addToCart()" class="btn">Add to cart</button>
+  <div class="container justify-content-around">
+    <div class="row mt-5 products text-center">
+      <div v-for="(shoe, index) in productData" :key="index" class="col-lg-4">
+        <div class="p-2 mt-5 rounded item">
+          <div>{{ shoe.fullname }}</div>
+          <div id="picture"></div>
+          <div><img :src="shoe.imgurl" class="img-fluid" /></div>
+          <div>{{ shoe.brand }}</div>
+          <div>{{ shoe.price }}$</div>
+          <div>
+            <button v-on:click="addToCart()" class="btn">Add to cart</button>
+          </div>
         </div>
       </div>
     </div>
