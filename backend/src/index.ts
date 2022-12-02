@@ -36,7 +36,7 @@ app.get("/testt", async function (req: Request, res: Response) {
         const categ = new Category("Example")
         xd.push(result)
         console.log(xd)
-        const prod = new Product("xd", "httpxd", 5.0, "xd")
+        const prod = new Product("xd", "httpxd", 5.0, "xd", 6.3)
         prod.categories = result
         console.log(prod)
         const seasonRepo2 = AppDataSource.getRepository(Product);

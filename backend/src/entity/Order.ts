@@ -7,6 +7,9 @@ export class Order {
     @PrimaryGeneratedColumn()
     id: number;
 
+    @Column()
+    status: Status;
+
     @ManyToMany((type) => Product, {
         cascade: true,
     })
@@ -16,6 +19,10 @@ export class Order {
         inverseJoinColumn: { name: "productId" }
     })
     products: Product[];
+
+    constructor(status: Status) {
+        this.status = status;
+    }
 
     addProduct(product: Product): void {
         this.products.push(product)
