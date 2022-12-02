@@ -4,14 +4,15 @@ import {User} from "../model/User";
 import {Product} from "../model/Product";
 import {Category} from "../model/Category";
 import {Order} from "../model/Order";
+require('dotenv').config()
 
 const AppDataSource = new DataSource({
     type: "postgres",
     host: "localhost",
     port: 5432,
-    username: "postgres",
-    password: "admin",
-    database: "aji",
+    username: process.env.DBUSERNAME,
+    password: process.env.DBPASSWORD,
+    database: process.env.DB,
     synchronize: true,
     logging: false,
     entities: [User, Product, Category, Order],
