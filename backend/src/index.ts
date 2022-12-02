@@ -4,10 +4,9 @@ import {getDataSource} from "./utils/data-source"
 import {User} from "./entity/User";
 import {Category} from "./entity/Category";
 import {Product} from "./entity/Product";
-
+require('dotenv').config()
 const app = express();
 app.use(express.json());
-const port = 3000;
 
 
 app.get("/user", async function (req: Request, res: Response) {
@@ -60,4 +59,4 @@ app.get("/testtt", async function (req: Request, res: Response) {
 });
 
 
-app.listen(port, () => console.log(`Server running on port ${port}`));
+app.listen(process.env.PORT, () => console.log(`Server running on port ${process.env.PORT}`));
