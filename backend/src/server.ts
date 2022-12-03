@@ -1,6 +1,6 @@
-import * as express from "express"
-import {Request, Response} from "express"
-import {getDataSource} from "./utils/data-source"
+import * as express from "express";
+import {Request, Response} from "express";
+import {getDataSource} from "./utils/data-source";
 import {User} from "./model/user";
 import {Category} from "./model/category";
 import {Product} from "./model/product";
@@ -9,7 +9,7 @@ import {corsOptions} from "../config/corsOptions";
 import {logger} from "../middleware/logger";
 import {verifyJWT} from "../middleware/verifyJWT";
 
-require('dotenv').config()
+require('dotenv').config();
 const app = express();
 const cors = require('cors');
 
