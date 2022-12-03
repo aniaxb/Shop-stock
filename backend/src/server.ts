@@ -7,7 +7,8 @@ import {Product} from "./model/product";
 import {errorHandler} from "../middleware/errorHandler";
 import {corsOptions} from "../config/corsOptions";
 import {logger} from "../middleware/logger";
-import path from "path";
+import {verifyJWT} from "../middleware/verifyJWT";
+
 require('dotenv').config()
 const app = express();
 const cors = require('cors');
@@ -64,6 +65,9 @@ app.get("/testtt", async function (req: Request, res: Response) {
         }
     )
 });
+
+app.use(verifyJWT);
+
 
 app.all('*', (req, res) => {
     res.status(404);
