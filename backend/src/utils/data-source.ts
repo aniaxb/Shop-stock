@@ -1,9 +1,9 @@
 import "reflect-metadata"
 import { DataSource } from "typeorm"
-import {User} from "../model/User";
-import {Product} from "../model/Product";
-import {Category} from "../model/Category";
-import {Order} from "../model/Order";
+import {User} from "../model/user";
+import {Product} from "../model/product";
+import {Category} from "../model/category";
+import {Order} from "../model/order";
 require('dotenv').config()
 
 const AppDataSource = new DataSource({

@@ -1,13 +1,17 @@
 import * as express from "express"
 import {Request, Response} from "express"
 import {getDataSource} from "./utils/data-source"
-import {User} from "./model/User";
-import {Category} from "./model/Category";
-import {Product} from "./model/Product";
+import {User} from "./model/user";
+import {Category} from "./model/category";
+import {Product} from "./model/product";
+import {errorHandler} from "../middleware/errorHandler";
+import {corsOptions} from "../config/corsOptions";
 require('dotenv').config()
 const app = express();
-app.use(express.json());
+const cors = require('cors');
 
+app.use(express.json());
+app.use(cors(corsOptions))
 
 app.get("/user", async function (req: Request, res: Response) {
     const AppDataSource = await getDataSource();
@@ -58,5 +62,6 @@ app.get("/testtt", async function (req: Request, res: Response) {
     )
 });
 
+app.use(errorHandler)
 
 app.listen(process.env.PORT, () => console.log(`Server running on port ${process.env.PORT}`));

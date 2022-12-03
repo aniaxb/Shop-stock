@@ -1,7 +1,7 @@
 import {Entity, PrimaryGeneratedColumn, Column, ManyToMany} from "typeorm"
-import {Category} from "./Category";
+import {Category} from "./category";
 import {JoinTable} from 'typeorm';
-import {Order} from "./Order";
+import {Order} from "./order";
 
 @Entity()
 export class Product {
