@@ -1,17 +1,18 @@
 import "reflect-metadata"
 import { DataSource } from "typeorm"
-import {User} from "../entity/User";
-import {Product} from "../entity/Product";
-import {Category} from "../entity/Category";
-import {Order} from "../entity/Order";
+import {User} from "../model/user";
+import {Product} from "../model/product";
+import {Category} from "../model/category";
+import {Order} from "../model/order";
+require('dotenv').config()
 
 const AppDataSource = new DataSource({
     type: "postgres",
     host: "localhost",
     port: 5432,
-    username: "postgres",
-    password: "admin",
-    database: "aji",
+    username: process.env.DBUSERNAME,
+    password: process.env.DBPASSWORD,
+    database: process.env.DB,
     synchronize: true,
     logging: false,
     entities: [User, Product, Category, Order],

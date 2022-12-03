@@ -1,14 +1,21 @@
-import * as express from "express"
-import {Request, Response} from "express"
-import {getDataSource} from "./utils/data-source"
-import {User} from "./entity/User";
-import {Category} from "./entity/Category";
-import {Product} from "./entity/Product";
+import * as express from "express";
+import {Request, Response} from "express";
+import {getDataSource} from "./utils/data-source";
+import {User} from "./model/user";
+import {Category} from "./model/category";
+import {Product} from "./model/product";
+import {errorHandler} from "../middleware/errorHandler";
+import {corsOptions} from "../config/corsOptions";
+import {logger} from "../middleware/logger";
+import {verifyJWT} from "../middleware/verifyJWT";
 
+require('dotenv').config();
 const app = express();
-app.use(express.json());
-const port = 3000;
+const cors = require('cors');
 
+app.use(logger);
+app.use(express.json());
+app.use(cors(corsOptions))
 
 app.get("/user", async function (req: Request, res: Response) {
     const AppDataSource = await getDataSource();
@@ -37,7 +44,7 @@ app.get("/testt", async function (req: Request, res: Response) {
         const categ = new Category("Example")
         xd.push(result)
         console.log(xd)
-        const prod = new Product("xd", "httpxd", 5.0, "xd")
+        const prod = new Product("xd", "httpxd", 5.0, "xd", 6.3)
         prod.categories = result
         console.log(prod)
         const seasonRepo2 = AppDataSource.getRepository(Product);
@@ -59,5 +66,18 @@ app.get("/testtt", async function (req: Request, res: Response) {
     )
 });
 
+app.use(verifyJWT);
 
-app.listen(port, () => console.log(`Server running on port ${port}`));
+
+app.all('*', (req, res) => {
+    res.status(404);
+    if (req.accepts('json')) {
+        res.json({
+            "error": "404 Not Found"
+        });
+    }
+});
+
+app.use(errorHandler)
+
+app.listen(process.env.PORT, () => console.log(`Server running on port ${process.env.PORT}`));
