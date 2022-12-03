@@ -6,10 +6,13 @@ import {Category} from "./model/category";
 import {Product} from "./model/product";
 import {errorHandler} from "../middleware/errorHandler";
 import {corsOptions} from "../config/corsOptions";
+import {logger} from "../middleware/logger";
+import path from "path";
 require('dotenv').config()
 const app = express();
 const cors = require('cors');
 
+app.use(logger);
 app.use(express.json());
 app.use(cors(corsOptions))
 
@@ -60,6 +63,15 @@ app.get("/testtt", async function (req: Request, res: Response) {
         console.log(xd)
         }
     )
+});
+
+app.all('*', (req, res) => {
+    res.status(404);
+    if (req.accepts('json')) {
+        res.json({
+            "error": "404 Not Found"
+        });
+    }
 });
 
 app.use(errorHandler)
