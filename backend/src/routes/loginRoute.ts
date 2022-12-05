@@ -1,6 +1,23 @@
-import {handleLogin} from "../controller/loginController";
-import * as express from "express";
+import {UserController} from "../controller/userController";
 
-const router = express.Router();
-
-router.post('/', handleLogin);
+export const Routes = [{
+    method: "get",
+    route: "/login",
+    controller: UserController,
+    action: "all"
+}, {
+    method: "get",
+    route: "/users/:id",
+    controller: UserController,
+    action: "one"
+}, {
+    method: "post",
+    route: "/users",
+    controller: UserController,
+    action: "save"
+}, {
+    method: "delete",
+    route: "/users/:id",
+    controller: UserController,
+    action: "remove"
+}]

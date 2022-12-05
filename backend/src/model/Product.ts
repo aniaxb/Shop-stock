@@ -15,13 +15,13 @@ export class Product {
     @Column()
     imgUrl: string;
 
-    @Column()
+    @Column({ type: "numeric" })
     price: number;
 
     @Column()
     date: string;
 
-    @Column()
+    @Column({ type: "numeric" })
     weight: number;
 
     @ManyToMany((type) => Category, {
