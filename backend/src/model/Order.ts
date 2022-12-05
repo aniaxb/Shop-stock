@@ -25,11 +25,11 @@ export class Order {
         this.status = status;
     }
 
-    addProduct(product: Product): void {
+    public addProduct(product: Product): void {
         this.products.push(product)
     }
 
-    removeProduct(product: Product): void {
+    public removeProduct(product: Product): void {
         this.products.forEach( (item, index) => {
             if(item === product) this.products.splice(index,1);
         });
