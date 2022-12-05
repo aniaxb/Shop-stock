@@ -1,9 +1,10 @@
 import jwt from 'jsonwebtoken';
+import {allowedEndpoints} from "../config/origins";
 require('dotenv').config()
 
 export const verifyJWT = (req, res, next) => {
     const authHeader = req.headers.authorization || req.headers.Authorization;
-    if(req.path.match('login') || req.path.match('register')) {
+    if(allowedEndpoints.some(path => path.match(req.path))) {
         next();
     } else {
         if (!authHeader?.startsWith('Bearer ')){
