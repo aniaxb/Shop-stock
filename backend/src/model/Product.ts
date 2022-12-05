@@ -7,7 +7,7 @@ import {Order} from "./order";
 export class Product {
 
     @PrimaryGeneratedColumn()
-    id: number;
+    private id: number;
 
     @Column()
     name: string;
@@ -15,13 +15,13 @@ export class Product {
     @Column()
     imgUrl: string;
 
-    @Column()
+    @Column({ type: "numeric" })
     price: number;
 
     @Column()
     date: string;
 
-    @Column()
+    @Column({ type: "numeric" })
     weight: number;
 
     @ManyToMany((type) => Category, {
@@ -45,11 +45,11 @@ export class Product {
         this.weight = weight;
     }
 
-    addCategory(category: Category): void {
+    public addCategory(category: Category): void {
         this.categories.push(category);
     }
 
-    removeCategory(category: Category): void {
+    public removeCategory(category: Category): void {
         this.categories.forEach( (item, index) => {
             if(item === category) this.categories.splice(index,1);
         });

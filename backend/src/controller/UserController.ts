@@ -1,26 +1,43 @@
-import { getRepository } from "typeorm"
 import { NextFunction, Request, Response } from "express"
-import { User } from "../model/user"
+import {getDataSource} from "../utils/data-source";
+import {User} from "../model/user";
+import {Controller} from "./controller";
 
-export class UserController {
+export class UserController extends Controller {
 
-    private userRepository = getRepository(User)
-
-    async all(request: Request, response: Response, next: NextFunction) {
-        return this.userRepository.find()
+    async getAllUsers(request: Request, response: Response, next: NextFunction) {
+        this.init(User).then(() => {
+            this.repository.find().then(y => {
+                response.status(201).json(y);
+            })
+        });
     }
 
-    async one(request: Request, response: Response, next: NextFunction) {
-        return this.userRepository.findOne(request.params.id)
+    async getUser(request: Request, response: Response, next: NextFunction) {
+        this.init(User).then(() => {
+            this.repository.findOneBy({ id: request.params.id }).then(y => {
+                response.status(200).json(y);
+            })
+        });
     }
 
-    async save(request: Request, response: Response, next: NextFunction) {
-        return this.userRepository.save(request.body)
+    async addUser(request: Request, response: Response, next: NextFunction) {
+        this.init(User).then(() => {
+            this.repository.save(request.body).then(y => {
+                response.status(200).json(y);
+            })
+        });
     }
 
-    async remove(request: Request, response: Response, next: NextFunction) {
-        let userToRemove = await this.userRepository.findOneBy({ id: request.params.id })
-        await this.userRepository.remove(userToRemove)
+    async removeUser(request: Request, response: Response, next: NextFunction) {
+        this.init(User).then(() => {
+            this.repository.findOneBy({ id: request.params.id }).then(async y => {
+                await this.repository.remove(y)
+                response.status(200).json(y);
+            })
+        });
+        // let userToRemove = await this.userRepository.findOneBy({ id: request.params.id })
+        // await this.userRepository.remove(userToRemove)
     }
 
 }
