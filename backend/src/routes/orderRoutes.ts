@@ -4,30 +4,30 @@ export const OrderRoutes = [{
     method: "get",
     route: "/orders",
     controller: OrderController,
-    action: "getAllProducts"
+    action: "getAllOrders"
 }, {
     method: "post",
     route: "/orders",
     controller: OrderController,
-    action: "getProduct"
+    action: "addOrder"
 }, {
     method: "put",
     route: "/orders/:id",
     controller: OrderController,
-    action: "addProduct"
+    action: "editOrder"
 }, {
     method: "get",
     route: "/orders/status/:id",
     controller: OrderController,
-    action: "editProduct"
+    action: "getAllOrdersByStatus"
 }, {
     method: "delete",
     route: "/orders/:id",
     controller: OrderController,
-    action: "removeProduct"
+    action: "removeOrder"
 }, {
     method: "get",
     route: "/status",
     controller: OrderController,
-    action: "removeProduct"
+    action: "getAllStatuses"
 }]
