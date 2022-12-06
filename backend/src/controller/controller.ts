@@ -1,4 +1,4 @@
-import {getDataSource} from "../utils/data-source";
+import {getDataSource} from "../utils/dataSource";
 
 export abstract class Controller {
     protected repository;

@@ -1,5 +1,4 @@
 import { NextFunction, Request, Response } from "express"
-import {getDataSource} from "../utils/data-source";
 import {User} from "../model/user";
 import {Controller} from "./controller";
 

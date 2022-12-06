@@ -8,14 +8,14 @@ export const verifyJWT = (req, res, next) => {
         next();
     } else {
         if (!authHeader?.startsWith('Bearer ')){
-            return res.sendStatus(401);
+            return res.status(401).json({ "status": "Unauthorized"});
         }
         const token = authHeader.split(' ')[1];
         jwt.verify(
             token,
             process.env.ACCESS_TOKEN_SECRET,
             (err, decoded) => {
-                if (err) return res.sendStatus(403);
+                if (err) return res.status(403).json({ "status": "Token validation problem"})
                 req.user = decoded.UserInfo.username;
                 next();
             });
