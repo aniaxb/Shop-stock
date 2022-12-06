@@ -4,7 +4,7 @@ import {errorHandler} from "./middleware/errorHandler";
 import {corsOptions} from "./config/corsOptions";
 import {logger} from "./middleware/logger";
 import {verifyJWT} from "./middleware/verifyJWT";
-import {Routes} from "./routes/route";
+import {Routes} from "./routes/routes";
 
 require('dotenv').config();
 const app = express();
