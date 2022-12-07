@@ -1,4 +1,6 @@
-# Awesome Project Build with TypeORM
+# Shop Stock Backend
+
+
 
 Steps to run this project:
 

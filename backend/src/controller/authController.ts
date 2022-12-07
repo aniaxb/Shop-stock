@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express"
 import * as jwt from "jsonwebtoken";
 import {User} from "../model/user"
 import {Controller} from "./controller";
+import {validateUser} from "../middleware/validate";
 
 const bcrypt = require('bcrypt');
 
@@ -12,7 +13,6 @@ export class AuthController extends Controller {
         if (!email || !password) {
             return response.status(400).json({ 'message': 'Username and password are required.' });
         }
-
         this.init(User).then(() => {
             this.repository.findOne({
                 where: {
@@ -43,18 +43,21 @@ export class AuthController extends Controller {
     }
 
     async register(request: Request, response: Response, next: NextFunction) {
-        const { email, password } = request.body;
-        if (!email || !password){
-            return request.status(400).json({ 'message': 'Username and password are required.' });
-        }
         this.init(User).then(() => {
+            const { email, password } = request.body;
+            if (!email || !password){
+                return response.status(400).json({ 'message': 'Username and password are required.' });
+            }
+            if (!validateUser(email, password)){
+                return response.status(400).json({ 'message': 'incorrect password or email format' });
+            }
             this.repository.findOne({
                 where: {
                     email: email,
                 }
             }).then(result => {
                 if (result){
-                    return response.sendStatus(409);
+                    return response.status(409).json({ 'message': 'there is already a registered account on the e-mail address provided' });
                 }
                 bcrypt.hash(password, 10).then(hashed => {
                     const user = new User(email, hashed)

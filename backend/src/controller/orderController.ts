@@ -24,6 +24,11 @@ export class OrderController extends Controller {
                 relations: {
                     products: true,
                     status: true
+                },
+                where: {
+                    status: {
+                        id: request.params.id
+                    }
                 }
             }).then(y => {
                 response.status(201).json(y);
@@ -87,6 +92,11 @@ export class OrderController extends Controller {
     }
 
     async getAllStatuses(request: Request, response: Response, next: NextFunction) {
-        response.status(201).json(Object.values(Status));
+        this.init(Status).then(() => {
+            this.repository.find().then(y => {
+                response.status(201).json(y);
+            })
+        });
     }
+
 }

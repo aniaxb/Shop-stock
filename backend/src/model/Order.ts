@@ -12,6 +12,12 @@ export class Order {
     @Column()
     date: string;
 
+    @Column()
+    userName: string;
+
+    @Column()
+    phoneNumber: string;
+
     @ManyToOne(() => Status)
     status: Status;
 
@@ -21,8 +27,10 @@ export class Order {
     @JoinTable()
     products: Product[];
 
-    constructor(status: Status) {
+    constructor(status: Status, userName: string, phoneNumber: string) {
         this.status = status;
+        this.userName = userName;
+        this.phoneNumber = phoneNumber;
     }
 
     public addProduct(product: Product): void {
