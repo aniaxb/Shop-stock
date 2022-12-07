@@ -18,7 +18,12 @@ export class ProductController extends Controller {
 
     async getProduct(request: Request, response: Response, next: NextFunction) {
         this.init(Product).then(() => {
-            this.repository.findOneBy({ id: request.params.id }).then(y => {
+            this.repository.findOneBy({
+                id: request.params.id,
+                relations: {
+                    categories: true,
+                }
+            }).then(y => {
                 response.status(200).json(y);
             })
         });

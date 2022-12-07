@@ -7,7 +7,11 @@ export class OrderController extends Controller {
 
     async getAllOrders(request: Request, response: Response, next: NextFunction) {
         this.init(Order).then(() => {
-            this.repository.find().then(y => {
+            this.repository.find({
+                relations: {
+                    products: true,
+                }
+            }).then(y => {
                 response.status(201).json(y);
             })
         });
@@ -15,7 +19,11 @@ export class OrderController extends Controller {
 
     async getAllOrdersByStatus(request: Request, response: Response, next: NextFunction) {
         this.init(Order).then(() => {
-            this.repository.find().then(y => {
+            this.repository.find({
+                relations: {
+                    products: true,
+                }
+            }).then(y => {
                 response.status(201).json(y);
             })
         });
@@ -23,7 +31,12 @@ export class OrderController extends Controller {
 
     async getOrder(request: Request, response: Response, next: NextFunction) {
         this.init(Order).then(() => {
-            this.repository.findOneBy({ id: request.params.id }).then(y => {
+            this.repository.findOneBy({
+                id: request.params.id,
+                relations: {
+                    products: true,
+                }
+            }).then(y => {
                 response.status(200).json(y);
             })
         });
