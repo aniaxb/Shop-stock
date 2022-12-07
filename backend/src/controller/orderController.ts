@@ -55,7 +55,7 @@ export class OrderController extends Controller {
 
     async editOrder(request: Request, response: Response, next: NextFunction) {
         this.init(Order).then(() => { //TODO: by ID!
-            this.repository.save(request.body).then(y => {
+            this.repository.save(request.body).then(y => { //TODO: change only order state!
                 response.status(200).json(y);
             })
         });
