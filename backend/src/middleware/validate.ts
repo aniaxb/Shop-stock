@@ -1,4 +1,3 @@
-import {User} from "../model/user";
 import {Product} from "../model/product";
 import {Order} from "../model/order";
 import {Category} from "../model/category";
@@ -12,9 +11,10 @@ export function validateProduct(product: Product) {
 }
 
 export function validateOrder(order: Order) {
-
+    return !(order.userName.length < 5 || order.phoneNumber.length < 9 ||
+        !order.phoneNumber.match(/^[0-9]+$/) || order.products.length <= 0);
 }
 
 export function validateCategory(category: Category) {
-
+    return !(category.name.length < 1);
 }
