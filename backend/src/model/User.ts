@@ -7,13 +7,13 @@ export class User {
     private id: number
 
     @Column()
-    userName: string
+    email: string
 
     @Column()
     password: string
 
-    constructor(userName: string, password: string) {
-        this.userName = userName;
+    constructor(email: string, password: string) {
+        this.email = email;
         this.password = password;
     }
     
