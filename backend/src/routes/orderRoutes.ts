@@ -19,12 +19,12 @@ export const OrderRoutes = [{
     method: "put",
     route: "/ordersAddProduct/:id",
     controller: OrderController,
-    action: "addProductToOrder"//TODO: implement
+    action: "addProductToOrder"
 }, {
     method: "delete",
     route: "/ordersRemoveProduct/:id",
     controller: OrderController,
-    action: "removeProductFromOrder"//TODO: implement
+    action: "removeProductFromOrder"
 }, {
     method: "get",
     route: "/orders/status/:id",
