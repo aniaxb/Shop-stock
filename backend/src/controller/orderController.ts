@@ -24,6 +24,11 @@ export class OrderController extends Controller {
                 relations: {
                     products: true,
                     status: true
+                },
+                where: {
+                    status: {
+                        id: request.params.id
+                    }
                 }
             }).then(y => {
                 response.status(201).json(y);
