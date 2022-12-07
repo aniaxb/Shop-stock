@@ -17,9 +17,19 @@ export const ProductRoutes = [{
     action: "addProduct"
 }, {
     method: "put",
-    route: "/products",
+    route: "/products/:id",
     controller: ProductController,
     action: "editProduct"
+}, {
+    method: "put",
+    route: "/productsAddCategory/:id",
+    controller: ProductController,
+    action: "addCategoryToProduct"//TODO: implement
+}, {
+    method: "delete",
+    route: "/productsRemoveCategory/:id",
+    controller: ProductController,
+    action: "removeCategoryFromProduct"//TODO: implement
 }, {
     method: "delete",
     route: "/products/:id",

@@ -16,6 +16,16 @@ export const OrderRoutes = [{
     controller: OrderController,
     action: "editOrder"
 }, {
+    method: "put",
+    route: "/ordersAddProduct/:id",
+    controller: OrderController,
+    action: "addProductToOrder"//TODO: implement
+}, {
+    method: "delete",
+    route: "/ordersRemoveProduct/:id",
+    controller: OrderController,
+    action: "removeProductFromOrder"//TODO: implement
+}, {
     method: "get",
     route: "/orders/status/:id",
     controller: OrderController,

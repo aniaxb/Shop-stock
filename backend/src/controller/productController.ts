@@ -38,7 +38,23 @@ export class ProductController extends Controller {
     }
 
     async editProduct(request: Request, response: Response, next: NextFunction) {
-        this.init(Product).then(() => {
+        this.init(Product).then(() => { //TODO: by ID!
+            this.repository.save(request.body).then(y => {
+                response.status(200).json(y);
+            })
+        });
+    }
+
+    async addCategoryToProduct(request: Request, response: Response, next: NextFunction) {
+        this.init(Product).then(() => { //TODO: by ID!
+            this.repository.save(request.body).then(y => {
+                response.status(200).json(y);
+            })
+        });
+    }
+
+    async removeCategoryFromProduct(request: Request, response: Response, next: NextFunction) {
+        this.init(Product).then(() => { //TODO: by ID!
             this.repository.save(request.body).then(y => {
                 response.status(200).json(y);
             })

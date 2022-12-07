@@ -51,7 +51,23 @@ export class OrderController extends Controller {
     }
 
     async editOrder(request: Request, response: Response, next: NextFunction) {
-        this.init(Order).then(() => {
+        this.init(Order).then(() => { //TODO: by ID!
+            this.repository.save(request.body).then(y => {
+                response.status(200).json(y);
+            })
+        });
+    }
+
+    async addProductToOrder(request: Request, response: Response, next: NextFunction) {
+        this.init(Order).then(() => { //TODO: by ID!
+            this.repository.save(request.body).then(y => {
+                response.status(200).json(y);
+            })
+        });
+    }
+
+    async removeProductFromOrder(request: Request, response: Response, next: NextFunction) {
+        this.init(Order).then(() => { //TODO: by ID!
             this.repository.save(request.body).then(y => {
                 response.status(200).json(y);
             })
