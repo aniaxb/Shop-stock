@@ -35,8 +35,6 @@ export class UserController extends Controller {
                 response.status(200).json(y);
             })
         });
-        // let userToRemove = await this.userRepository.findOneBy({ id: request.params.id })
-        // await this.userRepository.remove(userToRemove)
     }
 
 }

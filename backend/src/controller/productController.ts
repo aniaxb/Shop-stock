@@ -6,10 +6,14 @@ export class ProductController extends Controller {
 
     async getAllProducts(request: Request, response: Response, next: NextFunction) {
         this.init(Product).then(() => {
-            this.repository.find().then(y => {
-                response.status(201).json(y);
+            this.repository.find({
+                relations: {
+                    categories: true,
+                }
+            }).then(result => {
+                response.status(201).json(result);
             })
-        });
+        })
     }
 
     async getProduct(request: Request, response: Response, next: NextFunction) {
@@ -43,8 +47,6 @@ export class ProductController extends Controller {
                 response.status(200).json(y);
             })
         });
-        // let userToRemove = await this.userRepository.findOneBy({ id: request.params.id })
-        // await this.userRepository.remove(userToRemove)
     }
 
 }

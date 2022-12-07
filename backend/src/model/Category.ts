@@ -10,9 +10,6 @@ export class Category {
     @Column()
     name: string
 
-    @ManyToMany((type) => Product, (product) => product.categories)
-    products: Product[];
-
     constructor(name: string) {
         this.name = name;
     }
