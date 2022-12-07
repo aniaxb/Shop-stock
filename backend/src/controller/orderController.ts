@@ -10,6 +10,7 @@ export class OrderController extends Controller {
             this.repository.find({
                 relations: {
                     products: true,
+                    status: true
                 }
             }).then(y => {
                 response.status(201).json(y);
@@ -22,6 +23,7 @@ export class OrderController extends Controller {
             this.repository.find({
                 relations: {
                     products: true,
+                    status: true
                 }
             }).then(y => {
                 response.status(201).json(y);
@@ -35,6 +37,7 @@ export class OrderController extends Controller {
                 id: request.params.id,
                 relations: {
                     products: true,
+                    status: true
                 }
             }).then(y => {
                 response.status(200).json(y);

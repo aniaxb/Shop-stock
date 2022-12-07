@@ -12,13 +12,13 @@ export class Product {
     name: string;
 
     @Column()
+    description: string;
+
+    @Column()
     imgUrl: string;
 
     @Column({ type: "numeric" })
     price: number;
-
-    @Column()
-    date: string;
 
     @Column({ type: "numeric" })
     weight: number;
@@ -29,11 +29,11 @@ export class Product {
     @JoinTable()
     categories: Category[];
 
-    constructor(name: string, imgUrl: string, price: number, date: string, weight: number) {
+    constructor(name: string, imgUrl: string, price: number, description: string, weight: number) {
         this.name = name;
         this.imgUrl = imgUrl;
         this.price = price;
-        this.date = date;
+        this.description = description;
         this.weight = weight;
     }
 
