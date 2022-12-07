@@ -1,4 +1,4 @@
-import {Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable} from "typeorm"
+import {Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable, OneToMany, ManyToOne} from "typeorm"
 import {Product} from "./product";
 import {Status} from "./status";
 import {Category} from "./category";
@@ -10,6 +10,9 @@ export class Order {
     id: number;
 
     @Column()
+    date: string;
+
+    @ManyToOne(() => Status)
     status: Status;
 
     @ManyToMany(() => Product, {
