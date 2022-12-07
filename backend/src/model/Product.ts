@@ -1,7 +1,6 @@
 import {Entity, PrimaryGeneratedColumn, Column, ManyToMany} from "typeorm"
 import {Category} from "./category";
 import {JoinTable} from 'typeorm';
-import {Order} from "./order";
 
 @Entity()
 export class Product {
@@ -24,18 +23,11 @@ export class Product {
     @Column({ type: "numeric" })
     weight: number;
 
-    @ManyToMany((type) => Category, {
+    @ManyToMany(() => Category, {
         cascade: true,
     })
-    @JoinTable({
-        name: "product_category",
-        joinColumn: { name: "productId", referencedColumnName: "id" },
-        inverseJoinColumn: { name: "categoryId" }
-    })
+    @JoinTable()
     categories: Category[];
-
-    @ManyToMany((type) => Order, (order) => order.products)
-    orders: Order[];
 
     constructor(name: string, imgUrl: string, price: number, date: string, weight: number) {
         this.name = name;

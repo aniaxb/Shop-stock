@@ -1,5 +1,3 @@
-import {UserController} from "../controller/userController";
-import {ProductController} from "../controller/productController";
 import {AuthRoutes} from "./authRoutes";
 import {UserRoutes} from "./userRoutes";
 import {ProductRoutes} from "./productRoutes";

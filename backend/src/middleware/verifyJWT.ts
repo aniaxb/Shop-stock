@@ -1,5 +1,6 @@
-import jwt from 'jsonwebtoken';
+import * as jwt from "jsonwebtoken";
 import {allowedEndpoints} from "../config/origins";
+
 require('dotenv').config()
 
 export const verifyJWT = (req, res, next) => {
