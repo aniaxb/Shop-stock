@@ -8,7 +8,7 @@ export class Status {
     private id: number;
 
     @MinLength(3, {
-        message: 'name is too short',
+        message: 'status name is too short',
     })
     @Column()
     name: string;
