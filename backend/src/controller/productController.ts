@@ -15,7 +15,7 @@ export class ProductController extends Controller {
                 categories: true,
             }
         }).then(result => {
-            return response.status(201).json(result);
+            return response.status(200).json(result);
         })
     }
 

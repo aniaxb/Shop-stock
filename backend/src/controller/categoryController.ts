@@ -11,7 +11,7 @@ export class CategoryController extends Controller {
 
     async getAllCategories(request: Request, response: Response, next: NextFunction) {
         this.repository.find().then(y => {
-            response.status(201).json(y);
+            response.status(200).json(y);
         })
     }
 

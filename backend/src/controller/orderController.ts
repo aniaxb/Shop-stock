@@ -17,7 +17,7 @@ export class OrderController extends Controller {
                 status: true
             }
         }).then(result => {
-            response.status(201).json(result);
+            response.status(200).json(result);
         })
     }
 
@@ -33,7 +33,7 @@ export class OrderController extends Controller {
                 }
             }
         }).then(result => {
-            response.status(201).json(result);
+            response.status(200).json(result);
         })
     }
 

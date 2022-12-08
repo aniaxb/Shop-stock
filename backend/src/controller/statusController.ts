@@ -1,5 +1,4 @@
 import { NextFunction, Request, Response } from "express"
-import {Category} from "../model/category";
 import {Controller} from "./controller";
 import {Status} from "../model/status";
 
@@ -11,7 +10,7 @@ export class StatusController extends Controller {
 
     async getAllStatuses(request: Request, response: Response, next: NextFunction) {
         this.repository.find().then(y => {
-            response.status(201).json(y);
+            response.status(200).json(y);
         })
     }
 
