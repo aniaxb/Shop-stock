@@ -3,6 +3,8 @@ import * as jwt from "jsonwebtoken";
 import {User} from "../model/user"
 import {Controller} from "./controller";
 import {validateUser} from "../middleware/validate";
+import {validate} from "class-validator";
+import {Product} from "../model/product";
 
 const bcrypt = require('bcrypt');
 
@@ -46,29 +48,27 @@ export class AuthController extends Controller {
     }
 
     async register(request: Request, response: Response, next: NextFunction) {
-        const { email, password } = request.body;
-        this.repository.findOne({
-            where: {
-                email: email,
-            }
-        }).then(result => {
-            if (result){
-                throw new Error('there is already a registered account on the e-mail address provided');
-            }
-            if (!email || !password){
-                throw new Error('Username and password are required.');
-            }
-            if (!validateUser(email, password)){
-                throw new Error('incorrect password or email format');
-            }
-            bcrypt.hash(password, 10).then(hashed => {
-                const user = new User(email, hashed)
-                this.repository.save(user).then(() => {
-                    return response.sendStatus(201);
+        validate(Object.assign(new User() , request.body)).then(error => {
+            if (error.length > 0) {
+                throw new Error(JSON.stringify(error.pop().constraints))
+            } else {
+                this.repository.findOne({
+                    where: {
+                        email: request.body.email,
+                    }
+                }).then(() => {
+                    bcrypt.hash(request.body.password, 10).then(hashed => {
+                        const user = new User()
+                        user.email = request.body.email;
+                        user.password = hashed;
+                        this.repository.save(user).then(() => {
+                            return response.sendStatus(201);
+                        })
+                    })
                 })
-            })
+            }
         }).catch(e => {
-            return response.status(400).json({ 'message': e.message });
+            return response.status(422).json({'message': e.message});
         })
     }
 

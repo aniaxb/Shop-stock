@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express"
 import {Product} from "../model/product";
 import {Controller} from "./controller";
 import {validateProduct} from "../middleware/validate";
+import {validate} from "class-validator";
 
 export class ProductController extends Controller {
 
@@ -31,10 +32,16 @@ export class ProductController extends Controller {
     }
 
     async addProduct(request: Request, response: Response, next: NextFunction) {
-        await this.repository.save(request.body).then(product => {
-            return response.status(200).json(product);
+        validate(Object.assign(new Product() , request.body)).then(async error => {
+            if (error.length > 0) {
+                throw new Error(JSON.stringify(error.pop().constraints))
+            } else {
+                await this.repository.save(request.body).then(product => {
+                    return response.status(200).json(product);
+                })
+            }
         }).catch(e => {
-            return response.status(422).json({ 'message': e.message });
+            return response.status(422).json({'message': e.message});
         })
     }
 

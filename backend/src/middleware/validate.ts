@@ -7,7 +7,11 @@ export function validateUser(email: string, password: string) {
 }
 
 export function validateProduct(product: Product) {
-    return !(!product.name || !product.description || product.price < 0 || product.weight < 0);
+    if (!product.name || !product.description || product.price < 0 || product.weight < 0) {
+        throw new Error('xdd'); //TODO: nie dziala
+    } else {
+        return product;
+    }
 }
 
 export function validateOrder(order: Order) {

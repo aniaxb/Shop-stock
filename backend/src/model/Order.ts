@@ -2,6 +2,7 @@ import {Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable, OneToMany
 import {Product} from "./product";
 import {Status} from "./status";
 import {Category} from "./category";
+import {IsPhoneNumber, Matches, MinLength} from "class-validator";
 
 @Entity()
 export class Order {
@@ -9,29 +10,37 @@ export class Order {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
+    @Column({
+        nullable: true
+    })
     date: string;
 
+    @MinLength(3, {
+        message: 'userName is too short',
+    })
     @Column()
     userName: string;
 
+    @Matches(/^[0-9]+$/, {
+        message: 'phone number is not correct',
+    })
+    @MinLength(9, {
+        message: 'phone number is too short',
+    })
     @Column()
     phoneNumber: string;
 
     @ManyToOne(() => Status)
     status: Status;
 
+    @MinLength(1, {
+        message: 'order must have at least one product',
+    })
     @ManyToMany(() => Product, {
         cascade: true,
     })
     @JoinTable()
     products: Product[];
-
-    constructor(status: Status, userName: string, phoneNumber: string) {
-        this.status = status;
-        this.userName = userName;
-        this.phoneNumber = phoneNumber;
-    }
 
     public addProduct(product: Product): void {
         this.products.push(product)
