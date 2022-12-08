@@ -26,14 +26,3 @@ AppDataSource.initialize()
         console.log("Database connection successful!");
     })
     .catch((error) => console.log(error));
-
-export const getDataSource = (delay = 3000): Promise<DataSource> => {
-    if (AppDataSource.isInitialized) return Promise.resolve(AppDataSource);
-
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            if (AppDataSource.isInitialized) resolve(AppDataSource);
-            else reject("Failed to create connection with database");
-        }, delay);
-    });
-};

@@ -1,5 +1,5 @@
 import {Entity, PrimaryGeneratedColumn, Column, ManyToMany} from "typeorm"
-import {Product} from "./product";
+import {MinLength} from "class-validator";
 
 @Entity()
 export class Category {
@@ -7,10 +7,10 @@ export class Category {
     @PrimaryGeneratedColumn()
     private id: number;
 
+    @MinLength(3, {
+        message: 'name is too short',
+    })
     @Column()
     name: string;
 
-    constructor(name: string) {
-        this.name = name;
-    }
 }
