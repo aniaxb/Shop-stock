@@ -3,9 +3,9 @@
     <div class="container">
       <div class="row">
         <div class="col-12 justify-content-center d-flex flex-row">
-          <div id="signin" class="flext-item rounded p-5">
+          <div id="loginUser" class="flext-item rounded p-5">
             <h2 class="text-center fw-bold">Sign-In</h2>
-            <form @submit="signin" class="form-group pt-4 pl-4 pr-4">
+            <form @submit="loginUser" class="form-group pt-4 pl-4 pr-4">
               <div class="form-group my-2">
                 <label>Username</label>
                 <input
@@ -43,27 +43,46 @@ export default {
     return {
       username: null,
       password: null,
+      // login: {
+      //   email: "",
+      //   password: "",
+      // },
     };
   },
   methods: {
-    async signin(e) {
+    async loginUser(e) {
       e.preventDefault();
       const body = {
         email: this.email,
         password: this.password,
       };
       await axios
-        .post(`${this.baseURL}user/signIn`, body)
+        .post(`${this.baseURL}/login`, body)
         .then((res) => {
-          this.$router.replace("/");
+          this.$router.replace("/products");
           localStorage.setItem("token", res.data.token);
-          swal({
-            text: "Login successful",
-            icon: "success",
-          });
+          console.log("Login successful");
+          // swal({
+          //   text: "Login successful",
+          //   icon: "success",
+          // });
         })
         .catch((err) => console.log("err", err));
     },
+    // async loginUser() {
+    //   try {
+    //     let response = await this.$http.post(
+    //       `${this.baseURL}user/login`,
+    //       this.login
+    //     );
+    //     let token = response.data.data.token;
+    //     localStorage.setItem("user", token);
+    //     // navigate to a protected resource
+    //     this.$router.push("/products");
+    //   } catch (err) {
+    //     console.log(err.response);
+    //   }
+    // },
   },
   created() {
     // #CCDDE2
@@ -76,7 +95,7 @@ export default {
 button {
   background: #48acf0;
 }
-#signin {
+#loginUser {
   border: 2px solid #48acf0;
 }
 </style>

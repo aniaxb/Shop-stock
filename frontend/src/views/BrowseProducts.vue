@@ -16,9 +16,9 @@
     </div>
   </div>
 
-  <div id="divTable">
-    <table class="table table-light table-striped mt-5">
-      <thead class="text-center">
+  <div class="" id="divTable">
+    <table class="table table-light table-striped mt-5 text-center">
+      <thead class="">
         <tr>
           <th>#</th>
           <th>Name</th>
@@ -44,9 +44,9 @@
       </tbody>
     </table>
   </div>
-  <div>
+  <!-- <div>
     <i class="fa-solid fa-cart-shopping"></i>
-  </div>
+  </div> -->
 </template>
 
 <script>
@@ -120,21 +120,26 @@ button {
   /* mix-blend-mode: color-burn; */
 }
 
+#divTable {
+  margin-left: 10%;
+  margin-right: 10%;
+}
+
 #mainNavbar img {
   max-width: 50px;
   max-height: 50px;
 }
 
-table {
+/* table {
   display: inline-block;
-}
-.container {
+} */
+.container .products {
   display: flex;
   flex-direction: row;
 }
 
 @media (max-width: 600px) {
-  .container {
+  .container .products {
     flex-direction: column;
   }
 }
