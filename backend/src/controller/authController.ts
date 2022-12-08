@@ -14,14 +14,14 @@ export class AuthController extends Controller {
 
     async login(request: Request, response: Response, next: NextFunction) {
         const { email, password } = request.body;
-        if (!email || !password) {
-            return response.status(400).json({ 'message': 'Username and password are required.' });
-        }
         this.repository.findOne({
             where: {
                 email: email,
             }
         }).then(user => {
+            if (!email || !password) {
+                return response.status(400).json({ 'message': 'Username and password are required.' });
+            }
             if (!user){
                 return response.sendStatus(401);
             } else {
@@ -45,12 +45,6 @@ export class AuthController extends Controller {
 
     async register(request: Request, response: Response, next: NextFunction) {
         const { email, password } = request.body;
-        if (!email || !password){
-            return response.status(400).json({ 'message': 'Username and password are required.' });
-        }
-        if (!validateUser(email, password)){
-            return response.status(400).json({ 'message': 'incorrect password or email format' });
-        }
         this.repository.findOne({
             where: {
                 email: email,
@@ -58,6 +52,12 @@ export class AuthController extends Controller {
         }).then(result => {
             if (result){
                 return response.status(409).json({ 'message': 'there is already a registered account on the e-mail address provided' });
+            }
+            if (!email || !password){
+                return response.status(400).json({ 'message': 'Username and password are required.' });
+            }
+            if (!validateUser(email, password)){
+                return response.status(400).json({ 'message': 'incorrect password or email format' });
             }
             bcrypt.hash(password, 10).then(hashed => {
                 const user = new User(email, hashed)

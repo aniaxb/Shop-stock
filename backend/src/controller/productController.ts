@@ -32,9 +32,9 @@ export class ProductController extends Controller {
 
     async addProduct(request: Request, response: Response, next: NextFunction) {
         if (!validateProduct(request.body)) {
-            return response.status(422).json({ 'reason': 'incorrect product format' });
+            next()
         } else {
-            this.repository.save(request.body).then(product => {
+            await this.repository.save(request.body).then(product => {
                 return response.status(200).json(product);
             })
         }
