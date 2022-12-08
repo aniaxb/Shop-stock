@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from "express"
 import {Controller} from "./controller";
 import {Order} from "../model/order";
-import {Status} from "../model/status";
 
 export class OrderController extends Controller {
 

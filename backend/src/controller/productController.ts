@@ -31,13 +31,11 @@ export class ProductController extends Controller {
     }
 
     async addProduct(request: Request, response: Response, next: NextFunction) {
-        if (!validateProduct(request.body)) {
-            next()
-        } else {
-            await this.repository.save(request.body).then(product => {
-                return response.status(200).json(product);
-            })
-        }
+        await this.repository.save(request.body).then(product => {
+            return response.status(200).json(product);
+        }).catch(e => {
+            return response.status(422).json({ 'message': e.message });
+        })
     }
 
     async editProduct(request: Request, response: Response, next: NextFunction) {//TODO: by ID!

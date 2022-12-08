@@ -20,7 +20,7 @@ export class AuthController extends Controller {
             }
         }).then(user => {
             if (!email || !password) {
-                return response.status(400).json({ 'message': 'Username and password are required.' });
+                throw new Error('Username and password are required.');
             }
             if (!user){
                 return response.sendStatus(401);
@@ -40,6 +40,8 @@ export class AuthController extends Controller {
                     }
                 })
             }
+        }).catch(e => {
+            return response.status(400).json({ 'message': e.message });
         })
     }
 
@@ -51,13 +53,13 @@ export class AuthController extends Controller {
             }
         }).then(result => {
             if (result){
-                return response.status(409).json({ 'message': 'there is already a registered account on the e-mail address provided' });
+                throw new Error('there is already a registered account on the e-mail address provided');
             }
             if (!email || !password){
-                return response.status(400).json({ 'message': 'Username and password are required.' });
+                throw new Error('Username and password are required.');
             }
             if (!validateUser(email, password)){
-                return response.status(400).json({ 'message': 'incorrect password or email format' });
+                throw new Error('incorrect password or email format');
             }
             bcrypt.hash(password, 10).then(hashed => {
                 const user = new User(email, hashed)
@@ -65,6 +67,8 @@ export class AuthController extends Controller {
                     return response.sendStatus(201);
                 })
             })
+        }).catch(e => {
+            return response.status(400).json({ 'message': e.message });
         })
     }
 
