@@ -35,9 +35,4 @@ export const OrderRoutes = [{
     route: "/orders/:id",
     controller: OrderController,
     action: "removeOrder"
-}, {
-    method: "get",
-    route: "/status",
-    controller: OrderController,
-    action: "getAllStatuses"
 }]

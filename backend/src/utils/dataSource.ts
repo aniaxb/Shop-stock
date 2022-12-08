@@ -7,7 +7,7 @@ import {Order} from "../model/order";
 import {Status} from "../model/status";
 require('dotenv').config()
 
-const AppDataSource = new DataSource({
+export const AppDataSource = new DataSource({
     type: "postgres",
     host: "localhost",
     port: 5432,

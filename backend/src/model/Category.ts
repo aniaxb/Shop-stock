@@ -5,10 +5,10 @@ import {Product} from "./product";
 export class Category {
 
     @PrimaryGeneratedColumn()
-    private id: number
+    private id: number;
 
     @Column()
-    name: string
+    name: string;
 
     constructor(name: string) {
         this.name = name;

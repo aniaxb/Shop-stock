@@ -1,9 +1,9 @@
-import {getDataSource} from "../utils/dataSource";
+import {AppDataSource} from "../utils/dataSource";
 
 export abstract class Controller {
     protected repository;
 
-    public init = async (type) => {
-        this.repository = (await getDataSource()).getRepository(type);
-    };
+    protected constructor(type) {
+        this.repository = AppDataSource.getRepository(type)
+    }
 }
