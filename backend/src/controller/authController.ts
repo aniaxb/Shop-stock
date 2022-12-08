@@ -2,9 +2,7 @@ import { NextFunction, Request, Response } from "express"
 import * as jwt from "jsonwebtoken";
 import {User} from "../model/user"
 import {Controller} from "./controller";
-import {validateUser} from "../middleware/validate";
 import {validate} from "class-validator";
-import {Product} from "../model/product";
 
 const bcrypt = require('bcrypt');
 

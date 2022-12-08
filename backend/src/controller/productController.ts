@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from "express"
 import {Product} from "../model/product";
 import {Controller} from "./controller";
-import {validateProduct} from "../middleware/validate";
 import {validate} from "class-validator";
 
 export class ProductController extends Controller {

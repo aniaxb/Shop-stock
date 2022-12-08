@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express"
 import {Category} from "../model/category";
 import {Controller} from "./controller";
+import {validate} from "class-validator";
 
 export class CategoryController extends Controller {
 
@@ -21,8 +22,16 @@ export class CategoryController extends Controller {
     }
 
     async addCategory(request: Request, response: Response, next: NextFunction) {
-        this.repository.save(request.body).then(y => {
-            response.status(200).json(y);
+        validate(Object.assign(new Category() , request.body)).then(async error => {
+            if (error.length > 0) {
+                throw new Error(JSON.stringify(error.pop().constraints))
+            } else {
+                await this.repository.save(request.body).then(y => {
+                    response.status(200).json(y);
+                })
+            }
+        }).catch(e => {
+            return response.status(422).json({'message': e.message});
         })
     }
 

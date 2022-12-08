@@ -1,7 +1,7 @@
 import {Entity, PrimaryGeneratedColumn, Column, ManyToMany} from "typeorm"
 import {Category} from "./category";
 import {JoinTable} from 'typeorm';
-import {Min, MinLength} from "class-validator";
+import {ArrayMinSize, Min, MinLength} from "class-validator";
 
 @Entity()
 export class Product {
@@ -38,7 +38,7 @@ export class Product {
     @Column({ type: "numeric" })
     weight: number;
 
-    @MinLength(1, {
+    @ArrayMinSize(1, {
         message: 'product must have at least one category',
     })
     @ManyToMany(() => Category, {

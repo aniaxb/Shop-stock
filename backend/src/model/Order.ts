@@ -1,8 +1,7 @@
 import {Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable, OneToMany, ManyToOne} from "typeorm"
 import {Product} from "./product";
 import {Status} from "./status";
-import {Category} from "./category";
-import {IsPhoneNumber, Matches, MinLength} from "class-validator";
+import {ArrayMinSize, Matches, MinLength} from "class-validator";
 
 @Entity()
 export class Order {
@@ -33,7 +32,7 @@ export class Order {
     @ManyToOne(() => Status)
     status: Status;
 
-    @MinLength(1, {
+    @ArrayMinSize(1, {
         message: 'order must have at least one product',
     })
     @ManyToMany(() => Product, {
