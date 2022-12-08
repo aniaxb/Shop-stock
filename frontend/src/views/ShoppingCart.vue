@@ -57,7 +57,8 @@ export default {
   methods: {
     listCartItems() {
       axios
-        .get(`${this.baseURL}cart/?token=${this.token}`)
+        // .get(`${this.baseURL}cart/?token=${this.token}`)
+        .get("http://localhost:3000/cart")
         .then((res) => {
           const result = res.data;
           this.cartItems = result.cartItems;

@@ -56,7 +56,7 @@
       <RouterLink v-if="!token" class="nav-item link mx-3" to="/login"
         >Sign in
       </RouterLink>
-      <a class="nav-item link mx-3" v-if="token" href="#" @click="signout"
+      <a class="nav-item link mx-3" v-if="token" @click.prevent="signOut"
         >Sign out
       </a>
       <!-- <ul class="navbar-nav mr-auto">
@@ -111,6 +111,16 @@ export default {
     return {
       token: null,
     };
+  },
+  methods: {
+    signOut() {
+      console.log("signed out");
+      localStorage.removeItem("token");
+      this.token = null;
+    },
+  },
+  mounted() {
+    this.token = localStorage.getItem("token");
   },
 };
 </script>

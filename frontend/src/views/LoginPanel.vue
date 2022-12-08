@@ -9,10 +9,10 @@
               <div class="form-group my-2">
                 <label>Username</label>
                 <input
-                  v-model="username"
+                  v-model="email"
                   type="text"
                   class="form-control"
-                  placeholder="username"
+                  placeholder="email"
                 />
               </div>
               <div class="form-group">
@@ -41,12 +41,8 @@ import axios from "axios";
 export default {
   data() {
     return {
-      username: null,
+      email: null,
       password: null,
-      // login: {
-      //   email: "",
-      //   password: "",
-      // },
     };
   },
   methods: {
@@ -57,8 +53,10 @@ export default {
         password: this.password,
       };
       await axios
-        .post(`${this.baseURL}/login`, body)
+        // .post(`${this.baseURL}/login`, body)
+        .post("http://localhost:3000/login", body)
         .then((res) => {
+          console.log(res);
           this.$router.replace("/products");
           localStorage.setItem("token", res.data.token);
           console.log("Login successful");
@@ -69,20 +67,6 @@ export default {
         })
         .catch((err) => console.log("err", err));
     },
-    // async loginUser() {
-    //   try {
-    //     let response = await this.$http.post(
-    //       `${this.baseURL}user/login`,
-    //       this.login
-    //     );
-    //     let token = response.data.data.token;
-    //     localStorage.setItem("user", token);
-    //     // navigate to a protected resource
-    //     this.$router.push("/products");
-    //   } catch (err) {
-    //     console.log(err.response);
-    //   }
-    // },
   },
   created() {
     // #CCDDE2

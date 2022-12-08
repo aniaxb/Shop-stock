@@ -76,13 +76,40 @@ export default {
       }
       // add to cart
       axios
-        .post(`${this.baseURL}/cart/add?token=${this.token}`, {
-          productId: this.id,
-          name: this.name,
-          weight: this.weight,
-        })
+        // .post(`${this.baseURL}/cart/add?token=${this.token}`, {
+        .post(
+          "http://localhost:3000/orders",
+          {
+            userName: "magik",
+            phoneNumber: "123123123",
+            status: {
+              id: 1,
+              name: "ACCEPTED",
+            },
+            products: [
+              {
+                name: "But5",
+                description: "wygodny",
+                imgUrl: "http//xd.pl",
+                price: 5.5,
+                weight: 6.6,
+                categories: [
+                  {
+                    id: 1,
+                    name: "skateboardowe",
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            headers: {
+              Authorization: "Bearer " + this.token,
+            },
+          }
+        )
         .then((res) => {
-          if (res.status == 201) {
+          if (res.status == 200) {
             console.log("Product added in cart");
           }
         })
