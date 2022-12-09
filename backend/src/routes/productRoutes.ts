@@ -24,12 +24,12 @@ export const ProductRoutes = [{
     method: "put",
     route: "/productsAddCategory/:id",
     controller: ProductController,
-    action: "addCategoryToProduct"//TODO: implement
+    action: "addCategoryToProduct"
 }, {
     method: "delete",
     route: "/productsRemoveCategory/:id",
     controller: ProductController,
-    action: "removeCategoryFromProduct"//TODO: implement
+    action: "removeCategoryFromProduct"
 }, {
     method: "delete",
     route: "/products/:id",

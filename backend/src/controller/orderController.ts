@@ -49,7 +49,7 @@ export class OrderController extends Controller {
         })
     }
 
-    async addOrder(request: Request, response: Response, next: NextFunction) {//TODO: validate
+    async addOrder(request: Request, response: Response, next: NextFunction) {
         validate(Object.assign(new Category() , request.body)).then(async error => {
             if (error.length > 0) {
                 throw new Error(JSON.stringify(error.pop().constraints))
@@ -63,9 +63,11 @@ export class OrderController extends Controller {
         })
     }
 
-    async editOrder(request: Request, response: Response, next: NextFunction) {//TODO: by ID!
-        this.repository.save(request.body).then(y => { //TODO: change only order state!
-            response.status(200).json(y);
+    async editOrder(request: Request, response: Response, next: NextFunction) {
+        this.repository.findOneBy({ id: request.params.id }).then(async result => {
+            result.status = request.body.status;
+            await this.repository.save(result);
+            response.status(200).json(result);
         })
     }
 
