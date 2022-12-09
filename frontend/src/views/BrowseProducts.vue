@@ -1,12 +1,14 @@
 <template>
   <div class="container justify-content-around">
     <div class="row mt-5 products text-center">
-      <div v-for="(shoe, index) in productData" :key="index" class="col-lg-4">
+      <div v-for="(shoe, index) in products" :key="index" class="col-lg-4">
         <div class="p-2 mt-5 rounded item">
           <div>{{ shoe.fullname }}</div>
           <div id="picture"></div>
-          <div><img :src="shoe.imgurl" class="img-fluid" /></div>
-          <div>{{ shoe.brand }}</div>
+          <div>
+            <img :src="shoe.imgUrl" class="img-fluid" />
+          </div>
+          <div>{{ shoe.description }}</div>
           <div>{{ shoe.price }}$</div>
           <div>
             <button v-on:click="addToCart()" class="btn">Add to cart</button>
@@ -15,38 +17,6 @@
       </div>
     </div>
   </div>
-
-  <div class="" id="divTable">
-    <table class="table table-light table-striped mt-5 text-center">
-      <thead class="">
-        <tr>
-          <th>#</th>
-          <th>Name</th>
-          <th>Brand</th>
-          <th>Price</th>
-          <th>Year</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="shoe in productData" :key="shoe">
-          <td>{{ shoe.id }}</td>
-          <td>{{ shoe.fullname }}</td>
-          <td>{{ shoe.brand }}</td>
-          <td>{{ shoe.price }}$</td>
-          <td>{{ shoe.year }}</td>
-          <td>
-            <button v-on:click="addToCart()" class="btn btn-sm text-black">
-              Add to cart
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <!-- <div>
-    <i class="fa-solid fa-cart-shopping"></i>
-  </div> -->
 </template>
 
 <script>
@@ -59,6 +29,7 @@ export default {
   data() {
     return {
       productData: json,
+      products: Object,
     };
   },
   created() {
@@ -67,16 +38,30 @@ export default {
   },
 
   methods: {
+    fetchProducts() {
+      axios
+        .get("http://localhost:3000/products", {
+          headers: {
+            Authorization: "Bearer " + this.token,
+          },
+        })
+        .then((res) => {
+          if (res.status == 200) {
+            this.products = res.data;
+            console.log(this.products);
+          }
+        })
+        .catch((err) => console.log("err", err));
+    },
     addToCart() {
       if (!this.token) {
         // user is not logged in
-        // show some error
+        // show error
         console.log("please login to add item to cart");
         return;
       }
       // add to cart
       axios
-        // .post(`${this.baseURL}/cart/add?token=${this.token}`, {
         .post(
           "http://localhost:3000/orders",
           {
@@ -118,6 +103,7 @@ export default {
   },
   mounted() {
     this.token = localStorage.getItem("token");
+    this.fetchProducts();
   },
 };
 </script>
@@ -129,10 +115,6 @@ export default {
 
 button {
   background: #48acf0;
-}
-
-#mainNavbar {
-  background-color: #594236;
 }
 
 .link {
@@ -147,19 +129,6 @@ button {
   /* mix-blend-mode: color-burn; */
 }
 
-#divTable {
-  margin-left: 10%;
-  margin-right: 10%;
-}
-
-#mainNavbar img {
-  max-width: 50px;
-  max-height: 50px;
-}
-
-/* table {
-  display: inline-block;
-} */
 .container .products {
   display: flex;
   flex-direction: row;

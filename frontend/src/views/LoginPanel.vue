@@ -57,7 +57,7 @@ export default {
         .post("http://localhost:3000/login", body)
         .then((res) => {
           console.log(res);
-          this.$router.replace("/products");
+          this.$router.replace("/browse");
           localStorage.setItem("token", res.data.token);
           console.log("Login successful");
           // swal({
