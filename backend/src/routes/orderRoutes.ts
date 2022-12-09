@@ -6,6 +6,11 @@ export const OrderRoutes = [{
     controller: OrderController,
     action: "getAllOrders"
 }, {
+    method: "get",
+    route: "/orders/:id",
+    controller: OrderController,
+    action: "getOrder"
+}, {
     method: "post",
     route: "/orders",
     controller: OrderController,
