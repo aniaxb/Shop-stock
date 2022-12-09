@@ -17,7 +17,7 @@ export const CategoryRoutes = [{
     action: "addCategory"
 }, {
     method: "put",
-    route: "/categories",
+    route: "/categories/:id",
     controller: CategoryController,
     action: "editCategory"
 }, {

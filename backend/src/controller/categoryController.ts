@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express"
 import {Category} from "../model/category";
 import {Controller} from "./controller";
 import {validate} from "class-validator";
+import {Product} from "../model/product";
 
 export class CategoryController extends Controller {
 
@@ -36,8 +37,24 @@ export class CategoryController extends Controller {
     }
 
     async editCategory(request: Request, response: Response, next: NextFunction) {
-        this.repository.save(request.body).then(y => {
-            response.status(200).json(y);
+        this.repository.find({
+            where: {
+                id: request.params.id,
+            },
+            take: 1
+        }).then(async result => {
+            const merge = {...result.pop(), ...request.body};
+            validate(Object.assign(new Category() , merge)).then(async error => {
+                if (error.length > 0) {
+                    throw new Error(JSON.stringify(error.pop().constraints))
+                } else {
+                    await this.repository.save(merge).then(() => {
+                        return response.status(200).json(merge);
+                    })
+                }
+            }).catch(e => {
+                return response.status(422).json({'message': e.message});
+            })
         })
     }
 
