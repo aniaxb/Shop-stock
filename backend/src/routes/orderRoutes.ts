@@ -32,7 +32,7 @@ export const OrderRoutes = [{
     action: "removeProductFromOrder"
 }, {
     method: "get",
-    route: "/orders/status/:id",
+    route: "/orders/status",
     controller: OrderController,
     action: "getAllOrdersByStatus"
 }, {

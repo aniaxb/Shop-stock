@@ -2,7 +2,6 @@ import { NextFunction, Request, Response } from "express"
 import {Controller} from "./controller";
 import {Order} from "../model/order";
 import {validate} from "class-validator";
-import {Category} from "../model/category";
 import {AppDataSource} from "../utils/dataSource";
 import {Status} from "../model/status";
 import {Product} from "../model/product";
@@ -59,7 +58,7 @@ export class OrderController extends Controller {
     }
 
     async addOrder(request: Request, response: Response, next: NextFunction) {
-        validate(Object.assign(new Category() , request.body)).then(async error => {
+        validate(Object.assign(new Order() , request.body)).then(async error => {
             if (error.length > 0) {
                 throw new Error(JSON.stringify(error.pop().constraints))
             } else {
@@ -113,10 +112,20 @@ export class OrderController extends Controller {
             },
             take: 1
         }).then(async result => {
-            const merge = result.pop();
-            merge.addProduct(request.body);
-            await this.repository.save(merge)
-            return response.status(200).json(merge);
+            const order = result.pop();
+            AppDataSource.getRepository(Product).findOneBy({
+                name: request.body.name
+            }).then(res => {
+                if (!res) {
+                    throw new Error('The product with the given name does not exist')
+                }
+                order.addProduct(res);
+                this.repository.save(order).then(() => {
+                    return response.status(200).json(order);
+                })
+            }).catch(e => {
+                return response.status(422).json({'message': e.message});
+            })
         }).catch(e => {
             return response.status(422).json({'message': e.message});
         })
@@ -130,19 +139,22 @@ export class OrderController extends Controller {
             },
             take: 1
         }).then(async result => {
-            const merge = result.pop();
-            merge.removeCategory(request.body);
-            validate(Object.assign(new Product() , merge)).then(async error => {
-                if (error.length > 0) {
-                    throw new Error(JSON.stringify(error.pop().constraints))
-                } else {
-                    await this.repository.save(merge).then(() => {
-                        return response.status(200).json(merge)
-                    })
+            const order = result.pop();
+            AppDataSource.getRepository(Product).findOneBy({
+                name: request.body.name
+            }).then(res => {
+                if (!res) {
+                    throw new Error('The product with the given name does not exist')
                 }
+                order.removeProduct(res);
+                this.repository.save(order).then(() => {
+                    return response.status(200).json(order);
+                })
             }).catch(e => {
                 return response.status(422).json({'message': e.message});
             })
+        }).catch(e => {
+            return response.status(422).json({'message': e.message});
         })
     }
 
