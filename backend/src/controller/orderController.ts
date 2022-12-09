@@ -82,7 +82,6 @@ export class OrderController extends Controller {
             take: 1
         }).then(async result => {
             const order = result.pop();
-            console.log(order)
             if (!order.status.name.match("Done")) {
                 AppDataSource.getRepository(Status).findOneBy({
                     name: request.body.status
@@ -91,10 +90,11 @@ export class OrderController extends Controller {
                         throw new Error('The specified state does not exist')
                     }
                     order.status = status;
-                    console.log(order)
                     this.repository.save(order).then(order => {
                         return response.status(200).json(order);
                     });
+                }).catch(e => {
+                    return response.status(422).json({'message': e.message});
                 })
             } else {
                 throw new Error('You cannot change the status of a completed order')
