@@ -44,14 +44,16 @@ export class OrderController extends Controller {
     }
 
     async getOrder(request: Request, response: Response, next: NextFunction) {
-        this.repository.findOneBy({
-            id: request.params.id,
+        this.repository.find({
             relations: {
                 products: true,
                 status: true
+            },
+            where: {
+                id: request.body.id
             }
         }).then(result => {
-            response.status(200).json(result);
+            response.status(200).json(result.pop());
         }).catch(e => {
             return response.status(422).json({'message': e.message});
         })
@@ -82,7 +84,9 @@ export class OrderController extends Controller {
             take: 1
         }).then(async result => {
             const order = result.pop();
-            if (!order.status.name.match("Done")) {
+            if (order.status.name.match("Done") || order.status.name.match("NotApproved")) {
+                throw new Error('You cannot change the status of a completed order');
+            } else {
                 AppDataSource.getRepository(Status).findOneBy({
                     name: request.body.name
                 }).then(status => {
@@ -96,8 +100,6 @@ export class OrderController extends Controller {
                 }).catch(e => {
                     return response.status(422).json({'message': e.message});
                 })
-            } else {
-                throw new Error('You cannot change the status of a completed order')
             }
         }).catch(e => {
             return response.status(422).json({'message': e.message});

@@ -55,7 +55,11 @@ export class ProductController extends Controller {
             },
             take: 1
         }).then(async result => {
-            const merge = {...result.pop(), ...request.body};
+            const product = result.pop()
+            if (!product) {
+                throw new Error('The given product does not exist')
+            }
+            const merge = {...product, ...request.body};
             validate(Object.assign(new Product() , merge)).then(async error => {
                 if (error.length > 0) {
                     throw new Error(JSON.stringify(error.pop().constraints))
@@ -67,6 +71,8 @@ export class ProductController extends Controller {
             }).catch(e => {
                 return response.status(422).json({'message': e.message});
             })
+        }).catch(e => {
+            return response.status(422).json({'message': e.message});
         })
     }
 
