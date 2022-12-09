@@ -2,7 +2,6 @@ import { NextFunction, Request, Response } from "express"
 import {Category} from "../model/category";
 import {Controller} from "./controller";
 import {validate} from "class-validator";
-import {Product} from "../model/product";
 
 export class CategoryController extends Controller {
 

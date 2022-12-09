@@ -14,6 +14,8 @@ export class ProductController extends Controller {
             relations: ['categories']
         }).then(result => {
             return response.status(200).json(result);
+        }).catch(e => {
+            return response.status(422).json({'message': e.message});
         })
     }
 
@@ -26,6 +28,8 @@ export class ProductController extends Controller {
             take: 1
         }).then(result => {
             return response.status(200).json(result.pop());
+        }).catch(e => {
+            return response.status(422).json({'message': e.message});
         })
     }
 
@@ -78,6 +82,8 @@ export class ProductController extends Controller {
             merge.addCategory(request.body);
             await this.repository.save(merge)
             return response.status(200).json(merge);
+        }).catch(e => {
+            return response.status(422).json({'message': e.message});
         })
     }
 
@@ -109,6 +115,8 @@ export class ProductController extends Controller {
         this.repository.findOneBy({ id: request.params.id }).then(async y => {
             await this.repository.remove(y)
             return response.status(200).json(y);
+        }).catch(e => {
+            return response.status(422).json({'message': e.message});
         })
     }
 

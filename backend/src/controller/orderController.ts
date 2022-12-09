@@ -3,6 +3,8 @@ import {Controller} from "./controller";
 import {Order} from "../model/order";
 import {validate} from "class-validator";
 import {Category} from "../model/category";
+import {AppDataSource} from "../utils/dataSource";
+import {Status} from "../model/status";
 
 export class OrderController extends Controller {
 
@@ -18,6 +20,8 @@ export class OrderController extends Controller {
             }
         }).then(result => {
             response.status(200).json(result);
+        }).catch(e => {
+            return response.status(422).json({'message': e.message});
         })
     }
 
@@ -34,6 +38,8 @@ export class OrderController extends Controller {
             }
         }).then(result => {
             response.status(200).json(result);
+        }).catch(e => {
+            return response.status(422).json({'message': e.message});
         })
     }
 
@@ -46,6 +52,8 @@ export class OrderController extends Controller {
             }
         }).then(result => {
             response.status(200).json(result);
+        }).catch(e => {
+            return response.status(422).json({'message': e.message});
         })
     }
 
@@ -64,16 +72,43 @@ export class OrderController extends Controller {
     }
 
     async editOrder(request: Request, response: Response, next: NextFunction) {
-        this.repository.findOneBy({ id: request.params.id }).then(async result => {
-            result.status = request.body.status;
-            await this.repository.save(result);
-            response.status(200).json(result);
+        this.repository.find({
+            relations: {
+                status: true
+            },
+            where: {
+                id: request.params.id
+            },
+            take: 1
+        }).then(async result => {
+            const order = result.pop();
+            console.log(order)
+            if (!order.status.name.match("Done")) {
+                AppDataSource.getRepository(Status).findOneBy({
+                    name: request.body.status
+                }).then(status => {
+                    if(!status) {
+                        throw new Error('The specified state does not exist')
+                    }
+                    order.status = status;
+                    console.log(order)
+                    this.repository.save(order).then(order => {
+                        return response.status(200).json(order);
+                    });
+                })
+            } else {
+                throw new Error('You cannot change the status of a completed order')
+            }
+        }).catch(e => {
+            return response.status(422).json({'message': e.message});
         })
     }
 
     async addProductToOrder(request: Request, response: Response, next: NextFunction) {//TODO: by ID!
         this.repository.save(request.body).then(y => {
             response.status(200).json(y);
+        }).catch(e => {
+            return response.status(422).json({'message': e.message});
         })
     }
 
@@ -87,6 +122,8 @@ export class OrderController extends Controller {
         this.repository.findOneBy({ id: request.params.id }).then(async y => {
             await this.repository.remove(y)
             response.status(200).json(y);
+        }).catch(e => {
+            return response.status(422).json({'message': e.message});
         })
     }
 

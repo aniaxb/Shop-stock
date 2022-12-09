@@ -11,6 +11,8 @@ export class StatusController extends Controller {
     async getAllStatuses(request: Request, response: Response, next: NextFunction) {
         this.repository.find().then(y => {
             response.status(200).json(y);
+        }).catch(e => {
+            return response.status(422).json({'message': e.message});
         })
     }
 
