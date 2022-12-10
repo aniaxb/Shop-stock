@@ -1,18 +1,17 @@
 <template>
-  <div>Categories</div>
   <div class="" id="divTable">
     <table class="table table-light table-striped mt-5 text-center">
       <thead class="">
         <tr>
           <th>#</th>
-          <th>Name</th>
+          <th>Status name</th>
           <th></th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="category in categories" :key="category">
-          <td>{{ category.id }}</td>
-          <td>{{ category.name }}</td>
+        <tr v-for="order in orders" :key="order">
+          <td>{{ order.id }}</td>
+          <td>{{ order.name }}</td>
           <td>
             <button v-on:click="edit()" class="btn btn-sm text-black">
               Edit
@@ -30,22 +29,22 @@ import axios from "axios";
 export default {
   data() {
     return {
-      categories: [],
+      orders: [],
     };
   },
 
   methods: {
-    fetchCategories() {
+    fetchorders() {
       axios
-        .get("http://localhost:3000/categories", {
+        .get("http://localhost:3000/orders", {
           headers: {
             Authorization: "Bearer " + this.token,
           },
         })
         .then((res) => {
           if (res.status == 200) {
-            this.categories = res.data;
-            // console.log(this.categories);
+            this.orders = res.data;
+            // console.log(this.orders);
           }
         })
         .catch((err) => console.log("err", err));
@@ -57,7 +56,7 @@ export default {
   },
   mounted() {
     this.token = localStorage.getItem("token");
-    this.fetchCategories();
+    this.fetchorders();
   },
 };
 </script>

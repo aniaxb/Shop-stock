@@ -30,6 +30,7 @@ export default {
     return {
       productData: json,
       products: Object,
+      cartedProducts: [],
     };
   },
   created() {
@@ -48,7 +49,7 @@ export default {
         .then((res) => {
           if (res.status == 200) {
             this.products = res.data;
-            console.log(this.products);
+            // console.log(this.products);
           }
         })
         .catch((err) => console.log("err", err));
@@ -61,44 +62,47 @@ export default {
         return;
       }
       // add to cart
-      axios
-        .post(
-          "http://localhost:3000/orders",
-          {
-            userName: "magik",
-            phoneNumber: "123123123",
-            status: {
-              id: 1,
-              name: "ACCEPTED",
-            },
-            products: [
-              {
-                name: "But5",
-                description: "wygodny",
-                imgUrl: "http//xd.pl",
-                price: 5.5,
-                weight: 6.6,
-                categories: [
-                  {
-                    id: 1,
-                    name: "skateboardowe",
-                  },
-                ],
-              },
-            ],
-          },
-          {
-            headers: {
-              Authorization: "Bearer " + this.token,
-            },
-          }
-        )
-        .then((res) => {
-          if (res.status == 200) {
-            console.log("Product added in cart");
-          }
-        })
-        .catch((err) => console.log("err", err));
+      this.cartedProducts.push(this.products);
+      localStorage.setItem("cartedProducts", this.cartedProducts);
+      console.log("Added to cart", this.cartedProducts);
+      // axios
+      //   .post(
+      //     "http://localhost:3000/orders",
+      //     {
+      //       userName: "magik",
+      //       phoneNumber: "123123123",
+      //       status: {
+      //         id: 1,
+      //         name: "ACCEPTED",
+      //       },
+      //       products: [
+      //         {
+      //           name: "But5",
+      //           description: "wygodny",
+      //           imgUrl: "http//xd.pl",
+      //           price: 5.5,
+      //           weight: 6.6,
+      //           categories: [
+      //             {
+      //               id: 1,
+      //               name: "skateboardowe",
+      //             },
+      //           ],
+      //         },
+      //       ],
+      //     },
+      //     {
+      //       headers: {
+      //         Authorization: "Bearer " + this.token,
+      //       },
+      //     }
+      //   )
+      //   .then((res) => {
+      //     if (res.status == 200) {
+      //       console.log("Product added in cart");
+      //     }
+      //   })
+      //   .catch((err) => console.log("err", err));
     },
   },
   mounted() {
