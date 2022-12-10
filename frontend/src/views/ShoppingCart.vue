@@ -5,7 +5,7 @@
       <div class="col-2"></div>
       <div class="col-md-3">
         <img
-          :src="cartItem.product.imgurl"
+          :src="cartItem.imgUrl"
           alt=""
           class="w-100 card-image-top embed-responsive embed-responsive-16by9"
           style="object-fit: cover"
@@ -16,18 +16,18 @@
       <div class="col-md-5 px-3">
         <div class="card-block px-3">
           <h6 class="card-title">
-            {{ cartItem.product.name }}
+            {{ cartItem.name }}
           </h6>
 
           <p class="mb-0 font-weight-bold" id="item-price">
-            $ {{ cartItem.product.price }} per unit
+            $ {{ cartItem.price }} per unit
           </p>
           <!-- <p class="mb-0">Quantity:{{ cartItem.quantity }}</p> -->
         </div>
         <p class="mb-0">
           Total:
           <span class="font-weight-bold">
-            $ {{ cartItem.product.price }}
+            $ {{ cartItem.price }}
             <!-- * cartItem.quantity -->
           </span>
         </p>
@@ -43,33 +43,52 @@
 </template>
 
 <script>
-import axios from "axios";
+// import axios from "axios";
 
 export default {
   data() {
     return {
-      cartItems: [],
+      cartItems: [
+        {
+          id: 2,
+          name: "Yeezy Boost 350 V2 Zebra",
+          description:
+            'Debuted in 2017, the adidas Yeezy Boost 350 V2 Zebra is known as one of the most renowned colorways in the Yeezy line. It features a white and black marbled Primeknit upper with a white side-stripe and red "SPLY-350" text. At the base, a cushioned Boost sole provides comfort and support.',
+          imgUrl:
+            "https://images.stockx.com/360/adidas-Yeezy-Boost-350-V2-Zebra/Images/adidas-Yeezy-Boost-350-V2-Zebra/Lv2/img01.jpg?fm=avif&auto=compress&w=576&dpr=1&updated_at=1635342807&h=384&q=57",
+          price: "220.00",
+          weight: "0.99",
+          categories: [],
+        },
+      ],
+      // cartItems: [],
+      // cartedProducts: null,
       token: null,
       totalCost: 0,
     };
   },
 
   methods: {
+    // listCartItems() {
+    //   axios
+    //     // .get(`${this.baseURL}cart/?token=${this.token}`)
+    //     .get("http://localhost:3000/cart")
+    //     .then((res) => {
+    //       const result = res.data;
+    //       this.cartItems = result.cartItems;
+    //       this.totalCost = result.totalCost;
+    //     })
+    //     .catch((err) => console.log("err", err));
+    // },
     listCartItems() {
-      axios
-        // .get(`${this.baseURL}cart/?token=${this.token}`)
-        .get("http://localhost:3000/cart")
-        .then((res) => {
-          const result = res.data;
-          this.cartItems = result.cartItems;
-          this.totalCost = result.totalCost;
-        })
-        .catch((err) => console.log("err", err));
+      // this.cartItems.push(this.cartedProducts);
+      console.log(this.cartItems);
     },
   },
 
   mounted() {
     this.token = localStorage.getItem("token");
+    this.cartedProducts = localStorage.getItem("cartedProducts");
     this.listCartItems();
   },
 };

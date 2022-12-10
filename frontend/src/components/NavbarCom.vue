@@ -23,6 +23,7 @@
       <RouterLink to="/browse" class="px-3 link">Browse</RouterLink>
       <RouterLink to="/products" class="px-3 link">Products</RouterLink>
       <RouterLink to="/categories" class="px-3 link">Categories</RouterLink>
+      <RouterLink to="/orders" class="px-3 link">Orders</RouterLink>
 
       <!--      Search Bar-->
       <form class="form-inline ml-auto mr-auto">
