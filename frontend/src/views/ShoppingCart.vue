@@ -1,7 +1,11 @@
 <template>
   <div><h1>Shopping Cart</h1></div>
   <div>
-    <div v-for="cartItem in cartItems" :key="cartItem.id" class="row mt-2 pt-3">
+    <div
+      v-for="cartItem in cartItems[0]"
+      :key="cartItem.id"
+      class="row mt-2 pt-3"
+    >
       <div class="col-2"></div>
       <div class="col-md-3">
         <img
@@ -11,8 +15,6 @@
           style="object-fit: cover"
         />
       </div>
-
-      <!-- display product name, quantity -->
       <div class="col-md-5 px-3">
         <div class="card-block px-3">
           <h6 class="card-title">
@@ -61,27 +63,40 @@ export default {
       //     categories: [],
       //   },
       // ],
-      cartItems: [],
-      cartedProducts: null,
+      cartItems: Object,
+      // cartedProducts: [],
+
       token: null,
       totalCost: 0,
     };
   },
 
   methods: {
-    listCartItems() {
-      this.cartItems.push(this.cartedProducts);
-      console.log(this.cartItems);
-    },
+    // listCartItems(cartedProducts) {
+    //   // this.cartItems = cartedItems;
+    //   this.cartItems = JSON.parse(JSON.stringify(cartedProducts));
+    //   // this.cartItems = Array.from(cartedProducts);
+    //   console.log(this.cartItems);
+    // },
   },
 
   mounted() {
     this.token = localStorage.getItem("token");
-    let cartedProductsJson = localStorage.getItem("cartedProducts");
-    this.cartedProducts = JSON.parse(cartedProductsJson);
-    this.listCartItems();
+
+    let cartedProducts = JSON.parse(localStorage.getItem("cartedProducts"));
+    console.log(cartedProducts);
+    this.cartItems = JSON.parse(localStorage.getItem("cartedProducts"));
+    // console.log(this.cartItems[0][0]);
+
   },
 };
 </script>
 
-<style></style>
+<style>
+img {
+  object-fit: contain;
+  max-width: 100%;
+  max-height: 100%;
+  mix-blend-mode: multiply;
+}
+</style>
