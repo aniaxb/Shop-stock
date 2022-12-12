@@ -48,47 +48,37 @@
 export default {
   data() {
     return {
-      cartItems: [
-        {
-          id: 2,
-          name: "Yeezy Boost 350 V2 Zebra",
-          description:
-            'Debuted in 2017, the adidas Yeezy Boost 350 V2 Zebra is known as one of the most renowned colorways in the Yeezy line. It features a white and black marbled Primeknit upper with a white side-stripe and red "SPLY-350" text. At the base, a cushioned Boost sole provides comfort and support.',
-          imgUrl:
-            "https://images.stockx.com/360/adidas-Yeezy-Boost-350-V2-Zebra/Images/adidas-Yeezy-Boost-350-V2-Zebra/Lv2/img01.jpg?fm=avif&auto=compress&w=576&dpr=1&updated_at=1635342807&h=384&q=57",
-          price: "220.00",
-          weight: "0.99",
-          categories: [],
-        },
-      ],
-      // cartItems: [],
-      // cartedProducts: null,
+      // cartItems: [
+      //   {
+      //     id: 2,
+      //     name: "Yeezy Boost 350 V2 Zebra",
+      //     description:
+      //       'Debuted in 2017, the adidas Yeezy Boost 350 V2 Zebra is known as one of the most renowned colorways in the Yeezy line. It features a white and black marbled Primeknit upper with a white side-stripe and red "SPLY-350" text. At the base, a cushioned Boost sole provides comfort and support.',
+      //     imgUrl:
+      //       "https://images.stockx.com/360/adidas-Yeezy-Boost-350-V2-Zebra/Images/adidas-Yeezy-Boost-350-V2-Zebra/Lv2/img01.jpg?fm=avif&auto=compress&w=576&dpr=1&updated_at=1635342807&h=384&q=57",
+      //     price: "220.00",
+      //     weight: "0.99",
+      //     categories: [],
+      //   },
+      // ],
+      cartItems: [],
+      cartedProducts: null,
       token: null,
       totalCost: 0,
     };
   },
 
   methods: {
-    // listCartItems() {
-    //   axios
-    //     // .get(`${this.baseURL}cart/?token=${this.token}`)
-    //     .get("http://localhost:3000/cart")
-    //     .then((res) => {
-    //       const result = res.data;
-    //       this.cartItems = result.cartItems;
-    //       this.totalCost = result.totalCost;
-    //     })
-    //     .catch((err) => console.log("err", err));
-    // },
     listCartItems() {
-      // this.cartItems.push(this.cartedProducts);
+      this.cartItems.push(this.cartedProducts);
       console.log(this.cartItems);
     },
   },
 
   mounted() {
     this.token = localStorage.getItem("token");
-    this.cartedProducts = localStorage.getItem("cartedProducts");
+    let cartedProductsJson = localStorage.getItem("cartedProducts");
+    this.cartedProducts = JSON.parse(cartedProductsJson);
     this.listCartItems();
   },
 };
