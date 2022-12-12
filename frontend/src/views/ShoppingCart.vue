@@ -65,6 +65,7 @@ export default {
       // ],
       cartItems: Object,
       // cartedProducts: [],
+
       token: null,
       totalCost: 0,
     };
@@ -81,10 +82,12 @@ export default {
 
   mounted() {
     this.token = localStorage.getItem("token");
+
     let cartedProducts = JSON.parse(localStorage.getItem("cartedProducts"));
     console.log(cartedProducts);
     this.cartItems = JSON.parse(localStorage.getItem("cartedProducts"));
     // console.log(this.cartItems[0][0]);
+
   },
 };
 </script>

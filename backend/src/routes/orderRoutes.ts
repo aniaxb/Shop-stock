@@ -6,6 +6,11 @@ export const OrderRoutes = [{
     controller: OrderController,
     action: "getAllOrders"
 }, {
+    method: "get",
+    route: "/orders/:id",
+    controller: OrderController,
+    action: "getOrder"
+}, {
     method: "post",
     route: "/orders",
     controller: OrderController,
@@ -27,7 +32,7 @@ export const OrderRoutes = [{
     action: "removeProductFromOrder"
 }, {
     method: "get",
-    route: "/orders/status/:id",
+    route: "/orders/status",
     controller: OrderController,
     action: "getAllOrdersByStatus"
 }, {

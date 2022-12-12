@@ -21,6 +21,12 @@ export class Product {
     @Column()
     description: string;
 
+    @MinLength(3, {
+        message: 'brand name is too short',
+    })
+    @Column()
+    brand: string;
+
     @Column({
         nullable: true
     })
