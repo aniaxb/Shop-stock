@@ -62,9 +62,14 @@ export default {
         return;
       }
       // add to cart
+      let cartedTest;
       this.cartedProducts.push(this.products);
-      localStorage.setItem("cartedProducts", this.cartedProducts);
-      console.log("Added to cart", this.cartedProducts);
+      cartedTest = JSON.parse(JSON.stringify(this.cartedProducts));
+      console.log(cartedTest);
+      // let cartedProductsJson = JSON.stringify(this.cartedProducts);
+      // localStorage.setItem("cartedProducts", this.cartedProductsJson);
+      localStorage.setItem("cartedProducts", JSON.stringify(cartedTest));
+      console.log("Added to cart", cartedTest);
       // axios
       //   .post(
       //     "http://localhost:3000/orders",

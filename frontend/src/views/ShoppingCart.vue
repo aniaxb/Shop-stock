@@ -1,7 +1,11 @@
 <template>
   <div><h1>Shopping Cart</h1></div>
   <div>
-    <div v-for="cartItem in cartItems" :key="cartItem.id" class="row mt-2 pt-3">
+    <div
+      v-for="cartItem in cartItems[0]"
+      :key="cartItem.id"
+      class="row mt-2 pt-3"
+    >
       <div class="col-2"></div>
       <div class="col-md-3">
         <img
@@ -11,8 +15,6 @@
           style="object-fit: cover"
         />
       </div>
-
-      <!-- display product name, quantity -->
       <div class="col-md-5 px-3">
         <div class="card-block px-3">
           <h6 class="card-title">
@@ -48,50 +50,50 @@
 export default {
   data() {
     return {
-      cartItems: [
-        {
-          id: 2,
-          name: "Yeezy Boost 350 V2 Zebra",
-          description:
-            'Debuted in 2017, the adidas Yeezy Boost 350 V2 Zebra is known as one of the most renowned colorways in the Yeezy line. It features a white and black marbled Primeknit upper with a white side-stripe and red "SPLY-350" text. At the base, a cushioned Boost sole provides comfort and support.',
-          imgUrl:
-            "https://images.stockx.com/360/adidas-Yeezy-Boost-350-V2-Zebra/Images/adidas-Yeezy-Boost-350-V2-Zebra/Lv2/img01.jpg?fm=avif&auto=compress&w=576&dpr=1&updated_at=1635342807&h=384&q=57",
-          price: "220.00",
-          weight: "0.99",
-          categories: [],
-        },
-      ],
-      // cartItems: [],
-      // cartedProducts: null,
+      // cartItems: [
+      //   {
+      //     id: 2,
+      //     name: "Yeezy Boost 350 V2 Zebra",
+      //     description:
+      //       'Debuted in 2017, the adidas Yeezy Boost 350 V2 Zebra is known as one of the most renowned colorways in the Yeezy line. It features a white and black marbled Primeknit upper with a white side-stripe and red "SPLY-350" text. At the base, a cushioned Boost sole provides comfort and support.',
+      //     imgUrl:
+      //       "https://images.stockx.com/360/adidas-Yeezy-Boost-350-V2-Zebra/Images/adidas-Yeezy-Boost-350-V2-Zebra/Lv2/img01.jpg?fm=avif&auto=compress&w=576&dpr=1&updated_at=1635342807&h=384&q=57",
+      //     price: "220.00",
+      //     weight: "0.99",
+      //     categories: [],
+      //   },
+      // ],
+      cartItems: Object,
+      // cartedProducts: [],
       token: null,
       totalCost: 0,
     };
   },
 
   methods: {
-    // listCartItems() {
-    //   axios
-    //     // .get(`${this.baseURL}cart/?token=${this.token}`)
-    //     .get("http://localhost:3000/cart")
-    //     .then((res) => {
-    //       const result = res.data;
-    //       this.cartItems = result.cartItems;
-    //       this.totalCost = result.totalCost;
-    //     })
-    //     .catch((err) => console.log("err", err));
+    // listCartItems(cartedProducts) {
+    //   // this.cartItems = cartedItems;
+    //   this.cartItems = JSON.parse(JSON.stringify(cartedProducts));
+    //   // this.cartItems = Array.from(cartedProducts);
+    //   console.log(this.cartItems);
     // },
-    listCartItems() {
-      // this.cartItems.push(this.cartedProducts);
-      console.log(this.cartItems);
-    },
   },
 
   mounted() {
     this.token = localStorage.getItem("token");
-    this.cartedProducts = localStorage.getItem("cartedProducts");
-    this.listCartItems();
+    let cartedProducts = JSON.parse(localStorage.getItem("cartedProducts"));
+    console.log(cartedProducts);
+    this.cartItems = JSON.parse(localStorage.getItem("cartedProducts"));
+    // console.log(this.cartItems[0][0]);
   },
 };
 </script>
 
-<style></style>
+<style>
+img {
+  object-fit: contain;
+  max-width: 100%;
+  max-height: 100%;
+  mix-blend-mode: multiply;
+}
+</style>
