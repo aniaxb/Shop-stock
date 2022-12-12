@@ -63,8 +63,9 @@ export default {
       }
       // add to cart
       this.cartedProducts.push(this.products);
-      localStorage.setItem("cartedProducts", this.cartedProducts);
       console.log("Added to cart", this.cartedProducts);
+      let convertedToJson = JSON.stringify(this.cartedProducts);
+      localStorage.setItem("cartedProducts", convertedToJson);
       // axios
       //   .post(
       //     "http://localhost:3000/orders",
