@@ -3,7 +3,9 @@
     <table class="table table-light table-striped mt-5 text-center">
       <thead class="">
         <tr>
-          <th>#</th>
+          <th>Order id</th>
+          <th>Username</th>
+          <th>Phone Number</th>
           <th>Status name</th>
           <th></th>
         </tr>
@@ -11,7 +13,9 @@
       <tbody>
         <tr v-for="order in orders" :key="order">
           <td>{{ order.id }}</td>
-          <td>{{ order.name }}</td>
+          <td>{{ order.userName }}</td>
+          <td>{{ order.phoneNumber }}</td>
+          <td>{{ order.status.name }}</td>
           <td>
             <button v-on:click="edit()" class="btn btn-sm text-black">
               Edit

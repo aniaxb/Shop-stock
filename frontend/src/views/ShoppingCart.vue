@@ -42,20 +42,40 @@
         <div class="row mb-3">
           <div class="col-3">
             <label class="form-label" for="exampleUsername">Username</label>
-            <input type="text" class="form-control" placeholder="username" />
+            <input
+              type="text"
+              class="form-control"
+              v-model="usernameForm"
+              placeholder="username"
+            />
           </div>
           <div class="col-5">
             <label for="exampleInputEmail" class="form-label"
               >Email address</label
             >
-            <input type="email" class="form-control" placeholder="email" />
+            <input
+              type="email"
+              class="form-control"
+              v-model="emailForm"
+              placeholder="email"
+            />
           </div>
         </div>
         <div class="mb-3 col-8">
           <label for="examplePhone" class="form-label">Phone number</label>
-          <input type="number" class="form-control" placeholder="123123123" />
+          <input
+            type="text"
+            class="form-control"
+            v-model="phoneNumberForm"
+            placeholder="123123123"
+          />
         </div>
-        <button type="submit" class="btn col-8" id="submitButton">
+        <button
+          type="submit"
+          @click.prevent="submitOrder"
+          class="btn col-8"
+          id="submitButton"
+        >
           Send Order
         </button>
       </form>
@@ -70,16 +90,48 @@
 <script>
 // import axios from "axios";
 
+import axios from "axios";
+
 export default {
   data() {
     return {
       cartItems: Object,
       token: null,
       totalCost: 0,
+      usernameForm: "",
+      emailForm: "",
+      phoneNumberForm: "",
     };
   },
 
-  methods: {},
+  methods: {
+    submitOrder() {
+      axios
+        .post(
+          "http://localhost:3000/orders",
+          {
+            userName: this.usernameForm,
+            phoneNumber: this.phoneNumberForm,
+            status: {
+              id: 1,
+              name: "Done",
+            },
+            products: [this.cartItems[0]],
+          },
+          {
+            headers: {
+              Authorization: "Bearer " + this.token,
+            },
+          }
+        )
+        .then((res) => {
+          if (res.status == 200) {
+            console.log("Submitted an order");
+          }
+        })
+        .catch((err) => console.log("err", err));
+    },
+  },
 
   mounted() {
     this.token = localStorage.getItem("token");

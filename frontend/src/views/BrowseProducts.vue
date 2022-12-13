@@ -1,18 +1,23 @@
 <template>
+  <input type="text" class="form-control" v-model="query" />
+  <!-- v-if="query && _.includes(shoe.name, query)" -->
+
   <div class="container justify-content-around">
     <div class="row mt-5 products text-center">
-      <div v-for="(shoe, index) in products" :key="index" class="col-lg-4">
+      <div v-for="shoe in products" :key="shoe" class="col-lg-4">
         <div class="p-2 mt-5 rounded item">
-          <div>{{ shoe.fullname }}</div>
-          <div id="picture"></div>
+          <div class="fw-semibold fs-5">{{ shoe.name }}</div>
           <div>
             <img :src="shoe.imgUrl" class="img-fluid" />
           </div>
           <div>{{ shoe.description }}</div>
-          <div>{{ shoe.price }}$</div>
-          <!-- <div>{{ shoe.id }}</div> -->
+          <div class="my-2 fw-bold">{{ shoe.price }}$</div>
           <div>
-            <button v-on:click="addToCart(shoe.id)" class="btn">
+            <button
+              v-on:click="addToCart(shoe.id)"
+              id="ATCbutton"
+              class="btn translate-middle"
+            >
               Add to cart
             </button>
           </div>
@@ -23,17 +28,20 @@
 </template>
 
 <script>
-import json from "../assets/products.json";
+// import json from "../assets/products.json";
 import axios from "axios";
+import _ from "lodash";
 
 export default {
   name: "BrowseProducts",
 
   data() {
     return {
-      productData: json,
-      products: Object,
+      // productData: json,
+      products: [],
       cartedProducts: [],
+      query: "",
+      shoe: {},
       // button,
     };
   },
@@ -116,16 +124,36 @@ export default {
     //   })
     //   .catch((err) => console.log("err", err));
     // },
+
+    // filterTable(query) {
+    //   this.products = this.productsTable;
+    //   console.log("pierwszy");
+    //   let includedTitle = function () {
+    //     return true;
+    //   };
+
+    //   if (query === "") {
+    //     console.log("drugi");
+    //     return;
+    //   }
+
+    //   if (query !== "") {
+    //     includedTitle = function (filter, movie) {
+    //       console.log("trzeci");
+    //       return movie.name.toLowerCase().includes(filter.toLowerCase());
+    //     };
+    //   } else return;
+
+    //   this.products = _.filter(this.productsTable, (movie) => {
+    //     console.log("czwarty");
+    //     return includedTitle(query, movie);
+    //   });
+    // },
   },
   mounted() {
     this.token = localStorage.getItem("token");
     this.fetchProducts();
-    // let button = document
-    //   .getElementById("add-to-cart-button")
-    //   .addEventListener("click", function () {
-    //     var productIndex = this.id;
-    //     products[productIndex].addToCart();
-    //   });
+    // this.products = this.productsTable;
   },
 };
 </script>
@@ -133,10 +161,18 @@ export default {
 <style scoped>
 .item {
   border: 2px solid #48acf0;
+  width: 416px;
+  height: 618px;
 }
 
-button {
+div .item {
+  position: relative;
+}
+
+#ATCbutton {
   background: #48acf0;
+  position: absolute;
+  bottom: 6px;
 }
 
 .link {
