@@ -10,8 +10,11 @@
           </div>
           <div>{{ shoe.description }}</div>
           <div>{{ shoe.price }}$</div>
+          <!-- <div>{{ shoe.id }}</div> -->
           <div>
-            <button v-on:click="addToCart()" class="btn">Add to cart</button>
+            <button v-on:click="addToCart(shoe.id)" class="btn">
+              Add to cart
+            </button>
           </div>
         </div>
       </div>
@@ -31,6 +34,7 @@ export default {
       productData: json,
       products: Object,
       cartedProducts: [],
+      // button,
     };
   },
   created() {
@@ -49,12 +53,16 @@ export default {
         .then((res) => {
           if (res.status == 200) {
             this.products = res.data;
+            this.products.sort(function (a, b) {
+              return -(b.id - a.id || a.name.localeCompare(b.name));
+            });
             // console.log(this.products);
           }
         })
         .catch((err) => console.log("err", err));
     },
-    addToCart() {
+
+    addToCart(index) {
       if (!this.token) {
         // user is not logged in
         // show error
@@ -63,56 +71,61 @@ export default {
       }
       // add to cart
       let cartedTest;
-      this.cartedProducts.push(this.products);
+      let productIndex = index - 1;
+      this.cartedProducts.push(this.products[productIndex]);
       cartedTest = JSON.parse(JSON.stringify(this.cartedProducts));
-      console.log(cartedTest);
-      // let cartedProductsJson = JSON.stringify(this.cartedProducts);
-      // localStorage.setItem("cartedProducts", this.cartedProductsJson);
       localStorage.setItem("cartedProducts", JSON.stringify(cartedTest));
       console.log("Added to cart", cartedTest);
-      // axios
-      //   .post(
-      //     "http://localhost:3000/orders",
-      //     {
-      //       userName: "magik",
-      //       phoneNumber: "123123123",
-      //       status: {
-      //         id: 1,
-      //         name: "ACCEPTED",
-      //       },
-      //       products: [
-      //         {
-      //           name: "But5",
-      //           description: "wygodny",
-      //           imgUrl: "http//xd.pl",
-      //           price: 5.5,
-      //           weight: 6.6,
-      //           categories: [
-      //             {
-      //               id: 1,
-      //               name: "skateboardowe",
-      //             },
-      //           ],
-      //         },
-      //       ],
-      //     },
-      //     {
-      //       headers: {
-      //         Authorization: "Bearer " + this.token,
-      //       },
-      //     }
-      //   )
-      //   .then((res) => {
-      //     if (res.status == 200) {
-      //       console.log("Product added in cart");
-      //     }
-      //   })
-      //   .catch((err) => console.log("err", err));
     },
+    // axios
+    //   .post(
+    //     "http://localhost:3000/orders",
+    //     {
+    //       userName: "magik",
+    //       phoneNumber: "123123123",
+    //       status: {
+    //         id: 1,
+    //         name: "ACCEPTED",
+    //       },
+    //       products: [
+    //         {
+    //           name: "But5",
+    //           description: "wygodny",
+    //           imgUrl: "http//xd.pl",
+    //           price: 5.5,
+    //           weight: 6.6,
+    //           categories: [
+    //             {
+    //               id: 1,
+    //               name: "skateboardowe",
+    //             },
+    //           ],
+    //         },
+    //       ],
+    //     },
+    //     {
+    //       headers: {
+    //         Authorization: "Bearer " + this.token,
+    //       },
+    //     }
+    //   )
+    //   .then((res) => {
+    //     if (res.status == 200) {
+    //       console.log("Product added in cart");
+    //     }
+    //   })
+    //   .catch((err) => console.log("err", err));
+    // },
   },
   mounted() {
     this.token = localStorage.getItem("token");
     this.fetchProducts();
+    // let button = document
+    //   .getElementById("add-to-cart-button")
+    //   .addEventListener("click", function () {
+    //     var productIndex = this.id;
+    //     products[productIndex].addToCart();
+    //   });
   },
 };
 </script>
