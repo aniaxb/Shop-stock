@@ -13,12 +13,16 @@ export class UserController extends Controller {
     async getAllUsers(request: Request, response: Response, next: NextFunction) {
         this.repository.find().then(y => {
             response.status(200).json(y);
+        }).catch(e => {
+            return response.status(422).json({'message': e.message});
         })
     }
 
     async getUser(request: Request, response: Response, next: NextFunction) {
         this.repository.findOneBy({ id: request.params.id }).then(y => {
             response.status(200).json(y);
+        }).catch(e => {
+            return response.status(422).json({'message': e.message});
         })
     }
 
@@ -40,6 +44,8 @@ export class UserController extends Controller {
         this.repository.findOneBy({ id: request.params.id }).then(async y => {
             await this.repository.remove(y)
             response.status(200).json(y);
+        }).catch(e => {
+            return response.status(422).json({'message': e.message});
         })
     }
 

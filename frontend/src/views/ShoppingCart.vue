@@ -61,6 +61,7 @@ export default {
       // ],
       cartItems: Object,
       // cartedProducts: [],
+
       token: null,
       totalCost: 0,
     };
@@ -80,6 +81,7 @@ export default {
 
   mounted() {
     this.token = localStorage.getItem("token");
+
     let cartedProducts = JSON.parse(localStorage.getItem("cartedProducts"));
     if (cartedProducts) {
       // console.log(cartedProducts);
@@ -95,6 +97,7 @@ export default {
       // this.countTotalCost();
     }
     // console.log(this.cartItems[0][0]);
+
   },
 };
 </script>
