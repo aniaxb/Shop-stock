@@ -1,11 +1,7 @@
 <template>
   <div><h1>Shopping Cart</h1></div>
   <div>
-    <div
-      v-for="cartItem in cartItems[0]"
-      :key="cartItem.id"
-      class="row mt-2 pt-3"
-    >
+    <div v-for="cartItem in cartItems" :key="cartItem.id" class="row mt-2 pt-3">
       <div class="col-2"></div>
       <div class="col-md-3">
         <img
@@ -39,7 +35,7 @@
     </div>
 
     <div class="total-cost pt-2 text-right">
-      <h5>Total : ${{ totalCost }}</h5>
+      <h5>Total : ${{ this.totalCost }}</h5>
     </div>
   </div>
 </template>
@@ -71,6 +67,9 @@ export default {
   },
 
   methods: {
+    countTotalCost(cartItem) {
+      // totalCost += cartItem.price;
+    },
     // listCartItems(cartedProducts) {
     //   // this.cartItems = cartedItems;
     //   this.cartItems = JSON.parse(JSON.stringify(cartedProducts));
@@ -82,8 +81,19 @@ export default {
   mounted() {
     this.token = localStorage.getItem("token");
     let cartedProducts = JSON.parse(localStorage.getItem("cartedProducts"));
-    console.log(cartedProducts);
-    this.cartItems = JSON.parse(localStorage.getItem("cartedProducts"));
+    if (cartedProducts) {
+      // console.log(cartedProducts);
+      this.cartItems = JSON.parse(localStorage.getItem("cartedProducts"));
+      // let totalCost = 0;
+      if (this.cartItems[0]) {
+        for (let cartItem of this.cartItems) {
+          this.totalCost += parseFloat(cartItem.price);
+          // console.log(cartItem.price);
+        }
+        // console.log(this.totalCost);
+      }
+      // this.countTotalCost();
+    }
     // console.log(this.cartItems[0][0]);
   },
 };
