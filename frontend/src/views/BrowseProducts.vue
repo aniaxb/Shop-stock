@@ -1,10 +1,17 @@
 <template>
-  <input type="text" class="form-control" v-model="query" />
-  <!-- v-if="query && _.includes(shoe.name, query)" -->
+  <input type="text" class="form-control" v-model="query"
+         v-on:keyup.enter="filterProduct"/>
+  <div>Selected Brand: {{ selected }}</div>
 
+  <select v-model="selected" @click="filterProduct">
+    <option disabled value="">Select brand</option>
+    <option>Nike</option>
+    <option>Jordan</option>
+    <option>Adidas</option>
+  </select>
   <div class="container justify-content-around">
     <div class="row mt-5 products text-center">
-      <div v-for="shoe in products" :key="shoe" class="col-lg-4">
+      <div v-for="shoe in displayed" :key="shoe" class="col-lg-4">
         <div class="p-2 mt-5 rounded item">
           <div class="fw-semibold fs-5">{{ shoe.name }}</div>
           <div>
@@ -38,10 +45,12 @@ export default {
   data() {
     return {
       // productData: json,
-      products: [],
+      allProducts: [],
+      displayed: [],
       cartedProducts: [],
       query: "",
       shoe: {},
+      selected: ""
       // button,
     };
   },
@@ -52,22 +61,22 @@ export default {
 
   methods: {
     fetchProducts() {
-      axios
-        .get("http://localhost:3000/products", {
-          headers: {
-            Authorization: "Bearer " + this.token,
-          },
-        })
-        .then((res) => {
-          if (res.status == 200) {
-            this.products = res.data;
-            this.products.sort(function (a, b) {
-              return -(b.id - a.id || a.name.localeCompare(b.name));
-            });
-            // console.log(this.products);
-          }
-        })
-        .catch((err) => console.log("err", err));
+        axios
+            .get("http://localhost:3000/products", {
+              headers: {
+                Authorization: "Bearer " + this.token,
+              },
+            })
+            .then((res) => {
+              if (res.status === 200) {
+                this.allProducts = res.data;
+                this.allProducts.sort(function (a, b) {
+                  return -(b.id - a.id || a.name.localeCompare(b.name));
+                });
+                this.displayed = this.allProducts;
+              }
+            })
+            .catch((err) => console.log("err", err.response.data));
     },
 
     addToCart(index) {
@@ -80,11 +89,32 @@ export default {
       // add to cart
       let cartedTest;
       let productIndex = index - 1;
-      this.cartedProducts.push(this.products[productIndex]);
+      this.cartedProducts.push(this.allProducts[productIndex]);
       cartedTest = JSON.parse(JSON.stringify(this.cartedProducts));
       localStorage.setItem("cartedProducts", JSON.stringify(cartedTest));
       console.log("Added to cart", cartedTest);
     },
+
+
+    filterProduct() {
+      let filter = [];
+      if (this.query && !this.selected) {
+        for (const product of this.allProducts) {
+          if (product.name.includes(this.query)) {
+            filter.push(product);
+          }
+        }
+      } else if (this.selected && !this.query) {
+        for (const product of this.allProducts) {
+          if (product.brand.includes(this.selected)) {
+            filter.push(product);
+          }
+        }
+      }
+      this.displayed = filter;
+      this.query = "";
+    }
+
     // axios
     //   .post(
     //     "http://localhost:3000/orders",

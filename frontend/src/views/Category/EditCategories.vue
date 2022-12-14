@@ -1,5 +1,5 @@
 <template>
-  <div>Categories</div>
+  <div class="text-center">Categories</div>
   <div class="" id="divTable">
     <table class="table table-light table-striped mt-5 text-center">
       <thead class="">
@@ -43,12 +43,12 @@ export default {
           },
         })
         .then((res) => {
-          if (res.status == 200) {
+          if (res.status === 200) {
             this.categories = res.data;
             // console.log(this.categories);
           }
         })
-        .catch((err) => console.log("err", err));
+        .catch((err) => console.log("err", err.response.data));
     },
   },
   created() {

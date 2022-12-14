@@ -112,6 +112,8 @@ export default {
           {
             userName: this.usernameForm,
             phoneNumber: this.phoneNumberForm,
+            email: this.emailForm,
+            totalPrice: this.totalCost,
             status: {
               id: 1,
               name: "Done",
@@ -125,11 +127,11 @@ export default {
           }
         )
         .then((res) => {
-          if (res.status == 200) {
+          if (res.status === 200) {
             console.log("Submitted an order");
           }
         })
-        .catch((err) => console.log("err", err));
+        .catch((err) => console.log("err", err.response.data));
     },
   },
 
