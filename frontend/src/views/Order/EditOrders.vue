@@ -46,12 +46,12 @@ export default {
           },
         })
         .then((res) => {
-          if (res.status == 200) {
+          if (res.status === 200) {
             this.orders = res.data;
             // console.log(this.orders);
           }
         })
-        .catch((err) => console.log("err", err));
+        .catch((err) => console.log("err", err.response.data));
     },
   },
   created() {
