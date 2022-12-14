@@ -1,7 +1,7 @@
 import {Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable, OneToMany, ManyToOne} from "typeorm"
 import {Product} from "./product";
 import {Status} from "./status";
-import {ArrayMinSize, Matches, MinLength} from "class-validator";
+import {ArrayMinSize, Matches, Min, MinLength} from "class-validator";
 
 @Entity()
 export class Order {
@@ -20,6 +20,12 @@ export class Order {
     @Column()
     userName: string;
 
+    @MinLength(3, {
+        message: 'email is too short',
+    })
+    @Column()
+    email: string;
+
     @Matches(/^[0-9]+$/, {
         message: 'phone number is not correct',
     })
@@ -28,6 +34,12 @@ export class Order {
     })
     @Column()
     phoneNumber: string;
+
+    @Min(0, {
+        message: 'total price cannot be less than 0',
+    })
+    @Column({ type: "numeric" })
+    totalPrice: number;
 
     @ManyToOne(() => Status)
     status: Status;
