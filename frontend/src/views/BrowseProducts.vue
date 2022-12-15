@@ -5,6 +5,7 @@
 
   <select v-model="selected" @click="filterProduct">
     <option disabled value="">Select brand</option>
+    <option>None</option>
     <option>Nike</option>
     <option>Jordan</option>
     <option>Adidas</option>
@@ -50,7 +51,7 @@ export default {
       cartedProducts: [],
       query: "",
       shoe: {},
-      selected: ""
+      selected: "None"
       // button,
     };
   },
@@ -98,21 +99,17 @@ export default {
 
     filterProduct() {
       let filter = [];
-      if (this.query && !this.selected) {
-        for (const product of this.allProducts) {
-          if (product.name.includes(this.query)) {
-            filter.push(product);
-          }
-        }
-      } else if (this.selected && !this.query) {
-        for (const product of this.allProducts) {
-          if (product.brand.includes(this.selected)) {
-            filter.push(product);
-          }
+
+      for (const product of this.allProducts) {
+        if (product.name.toLowerCase().includes(this.query) && this.selected.match("None")) {
+          filter.push(product);
+        } else if(product.brand === this.selected && !this.query) {
+          filter.push(product);
+        } else if (product.brand === this.selected && product.name.toLowerCase().includes(this.query)) {
+          filter.push(product);
         }
       }
       this.displayed = filter;
-      this.query = "";
     }
 
     // axios
