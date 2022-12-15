@@ -1,20 +1,4 @@
 <template>
-  <!-- <div class="container justify-content-around">
-    <div class="row mt-5 products text-center">
-      <div v-for="(shoe, index) in products" :key="index" class="col-lg-4">
-        <div class="p-2 mt-5 rounded item">
-          <div>{{ shoe.name }}</div>
-          <div id="picture"></div>
-          <div><img :src="shoe.imgUrl" class="img-fluid" /></div>
-          <div>{{ shoe.brand }}</div>
-          <div>{{ shoe.price }}$</div>
-          <div>
-            <button v-on:click="edit()" class="btn">Edit</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div> -->
 
   <div class="" id="divTable">
     <table class="table table-light table-striped mt-5 text-center">
@@ -44,6 +28,45 @@
       </tbody>
     </table>
   </div>
+
+  <div class="">
+      <form class="col-8 mx-auto">
+        <div class="row mb-3">
+          <div class="col-3">
+            <label class="form-label" for="exampleUsername">Product brand</label>
+            <input
+              type="text"
+              class="form-control"
+              v-model="Pbrand"
+              placeholder="Jordan"
+            />
+          </div>
+          <div class="col-5">
+            <label for="exampleInputEmail" class="form-label"
+              >Product name</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              v-model="Pname"
+              placeholder="Jordan 1 Dark Mocha"
+            />
+          </div>
+          <div class="col-5">
+            <label for="exampleInputEmail" class="form-label"
+              >Product description</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              v-model="Pdescription"
+              placeholder="Jordan 1 Dark Mocha"
+            />
+          </div>
+        </div>
+        
+      </form>
+    </div>
 </template>
 
 <script>
@@ -53,6 +76,9 @@ export default {
   data() {
     return {
       products: [],
+      Pbrand: "",
+      Pname: "",
+      Pdescription: ""
     };
   },
 
