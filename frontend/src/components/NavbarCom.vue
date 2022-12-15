@@ -22,7 +22,6 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <RouterLink to="/browse" class="px-3 link">Browse</RouterLink>
       <RouterLink to="/products" class="px-3 link">Products</RouterLink>
-      <RouterLink to="/categories" class="px-3 link">Categories</RouterLink>
       <RouterLink to="/orders" class="px-3 link">Orders</RouterLink>
       <div class="mx-auto order-0"></div>
       <!-- dropdown for browse -->

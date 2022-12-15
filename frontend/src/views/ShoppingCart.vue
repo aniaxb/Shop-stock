@@ -115,8 +115,8 @@ export default {
             email: this.emailForm,
             totalPrice: this.totalCost,
             status: {
-              id: 1,
-              name: "Done",
+              id: 2,
+              name: "Accepted",
             },
             products: [this.cartItems[0]],
           },
