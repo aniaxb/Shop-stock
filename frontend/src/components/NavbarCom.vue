@@ -24,36 +24,7 @@
       <RouterLink to="/products" class="px-3 link">Products</RouterLink>
       <RouterLink to="/categories" class="px-3 link">Categories</RouterLink>
       <RouterLink to="/orders" class="px-3 link">Orders</RouterLink>
-
-      <!--      Search Bar-->
-      <form class="form-inline ml-auto mr-auto">
-        <div class="input-group">
-          <input
-            size="70"
-            type="text"
-            class="form-control"
-            placeholder="Search Items"
-            aria-label="Username"
-            aria-describedby="basic-addon1"
-          />
-          <div class="input-group-prepend">
-            <span class="input-group-text" id="search-button-navbar">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="18"
-                height="25"
-                fill="currentColor"
-                class="bi bi-search"
-                viewBox="0 0 16 16"
-              >
-                <path
-                  d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"
-                />
-              </svg>
-            </span>
-          </div>
-        </div>
-      </form>
+      <div class="mx-auto order-0"></div>
       <!-- dropdown for browse -->
       <!-- dropdown for account -->
       <RouterLink v-if="!token" class="nav-item link mx-3" to="/login"

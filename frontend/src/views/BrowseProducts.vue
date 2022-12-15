@@ -1,14 +1,52 @@
 <template>
-  <input type="text" class="form-control" v-model="query"
-         v-on:keyup.enter="filterProduct"/>
-  <div>Selected Brand: {{ selected }}</div>
+  <div>Enter name:</div>
+  <form class="form-inline ml-auto mr-auto">
+    <div class="input-group">
+      <input
+          size="70"
+          type="text"
+          class="form-control"
+          placeholder="Search Items"
+          aria-label="Username"
+          aria-describedby="basic-addon1"
+          v-model="query"
+          v-on:keyup.enter="filterProduct"
+      />
+<!--      <div class="input-group-prepend">-->
+<!--            <span class="input-group-text" id="search-button-navbar">-->
+<!--              <svg-->
+<!--                  xmlns="http://www.w3.org/2000/svg"-->
+<!--                  width="18"-->
+<!--                  height="25"-->
+<!--                  fill="currentColor"-->
+<!--                  class="bi bi-search"-->
+<!--                  viewBox="0 0 16 16"-->
+<!--              >-->
+<!--                <path-->
+<!--                    d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"-->
+<!--                />-->
+<!--              </svg>-->
+<!--            </span>-->
+<!--      </div>-->
+    </div>
+  </form>
 
+  <div>Selected Brand: {{ selected }}</div>
   <select v-model="selected" @click="filterProduct">
     <option disabled value="">Select brand</option>
     <option>None</option>
     <option>Nike</option>
     <option>Jordan</option>
     <option>Adidas</option>
+  </select>
+
+  <div>Selected Category: {{ selectedCategory }}</div>
+  <select v-model="selectedCategory" @click="filterProduct">
+    <option disabled value="">Select category</option>
+    <option>xd</option>
+    <option>1</option>
+    <option>2</option>
+    <option>3</option>
   </select>
   <div class="container justify-content-around">
     <div class="row mt-5 products text-center">
@@ -51,7 +89,8 @@ export default {
       cartedProducts: [],
       query: "",
       shoe: {},
-      selected: "None"
+      selected: "None",
+      selectedCategory: "None"
       // button,
     };
   },
