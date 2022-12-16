@@ -28,9 +28,10 @@ export class Product {
     brand: string;
 
     @Column({
+        length: 10000,
         nullable: true
     })
-    imgUrl: string;
+    img: string;
 
     @Min(0, {
         message: 'price cannot be less than 0',
