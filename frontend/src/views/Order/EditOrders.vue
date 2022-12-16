@@ -6,6 +6,7 @@
           <th>Order id</th>
           <th>Username</th>
           <th>Phone Number</th>
+          <th>Status ID</th>
           <th>Status name</th>
           <th></th>
         </tr>
@@ -15,9 +16,10 @@
           <td>{{ order.id }}</td>
           <td>{{ order.userName }}</td>
           <td>{{ order.phoneNumber }}</td>
+          <td>{{order.status.id}}</td>
           <td>{{ order.status.name }}</td>
           <td>
-            <button v-on:click="edit(order.id)" class="btn btn-sm text-black">
+            <button v-on:click="edit(order.id, order.status.name)" class="btn btn-sm text-black">
               Edit
             </button>
           </td>
@@ -83,9 +85,9 @@ export default {
         })
         .catch((err) => console.log("err", err.response.data));
     },
-    edit(id) {
-      axios
-      .put(`http://localhost:3000/orders/${id}`, {
+    async edit(id, name) {
+      await axios
+      .put(`http://localhost:3000/orders/${id}`, {"name": name}, {
           headers: {
             Authorization: "Bearer " + this.token,
           },
@@ -93,9 +95,9 @@ export default {
         .then((res) => {
           if (res.status === 200) {
             // this.orders = res.data;
-            console.log(this.token)
-            let newstatus = 2;
-            for(const order of orders) {
+            // console.log(this.token)
+            let newstatus = 3;
+            for(const order of this.orders) {
               if(order.id == id) {
                 order.status.id = newstatus;
               }
