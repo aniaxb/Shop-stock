@@ -5,7 +5,7 @@ require('dotenv').config()
 
 export const verifyJWT = (req, res, next) => {
     const authHeader = req.headers.authorization || req.headers.Authorization;
-    if(allowedEndpoints.some(path => path.match(req.path))) {
+    if(allowedEndpoints.some(uri => uri.path.match(req.path)) && allowedEndpoints.some(uri => uri.method.match(req.method))) {
         next();
     } else {
         if (!authHeader?.startsWith('Bearer ')){
