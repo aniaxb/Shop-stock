@@ -9,7 +9,7 @@
       <div class="col-2"></div>
       <div class="col-md-3">
         <img
-          :src="cartItem.imgUrl"
+          :src="cartItem.img"
           alt=""
           class="w-100 card-image-top embed-responsive embed-responsive-16by9"
           style="object-fit: cover"
