@@ -16,10 +16,9 @@
           <td>{{ order.id }}</td>
           <td>{{ order.userName }}</td>
           <td>{{ order.phoneNumber }}</td>
-          <td>{{order.status.id}}</td>
           <td>{{ order.status.name }}</td>
           <td>
-            <button v-on:click="edit(order.id, order.status.name)" class="btn btn-sm text-black">
+            <button v-on:click="edit(order.id)" class="btn btn-sm text-black">
               Edit
             </button>
           </td>
@@ -44,12 +43,9 @@
             <label for="exampleInputEmail" class="form-label"
               >Status name</label
             >
-            <input
-              type="text"
-              class="form-control"
-              v-model="Sname"
-              placeholder="email"
-            />
+            <select v-model="Sname">
+              <option :value="i" v-for="i in statuslist">i</option>
+            </select>
           </div>
         </div>
         
@@ -66,6 +62,7 @@ export default {
       orders: [],
       Sid: "",
       Sname: "",
+      statuslist: []
     };
   },
 
@@ -85,27 +82,33 @@ export default {
         })
         .catch((err) => console.log("err", err.response.data));
     },
-    async edit(id, name) {
+    fetchstatus() {
+      axios
+          .get("http://localhost:3000/status", {
+            headers: {
+              Authorization: "Bearer " + this.token,
+            },
+          })
+          .then((res) => {
+            if (res.status === 200) {
+              this.orders = res.data;
+              // console.log(this.orders);
+            }
+          })
+          .catch((err) => console.log("err", err.response.data));
+    },
+    async edit(id) {
       await axios
-      .put(`http://localhost:3000/orders/${id}`, {"name": name}, {
+      .put(`http://localhost:3000/orders/${id}`, {"name": this.Sname}, {
           headers: {
             Authorization: "Bearer " + this.token,
           },
-        })
-        .then((res) => {
+        }).then((res) => {
           if (res.status === 200) {
-            // this.orders = res.data;
-            // console.log(this.token)
-            let newstatus = 3;
-            for(const order of this.orders) {
-              if(order.id == id) {
-                order.status.id = newstatus;
-              }
-            }
             console.log("Order has been updated");
           }
         })
-        .catch((err) => console.log("err", err.response.data, this.token));
+        .catch((err) => console.log("err", err.response.data));
     },
   },
   created() {

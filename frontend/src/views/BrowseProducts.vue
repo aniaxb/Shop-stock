@@ -10,8 +10,8 @@
           aria-label="Username"
           aria-describedby="basic-addon1"
           v-model="query"
-          v-on:keyup.enter="filterProduct"
       />
+      <button class="btn" @click="filterProduct" type="button">Search</button>
 <!--      <div class="input-group-prepend">-->
 <!--            <span class="input-group-text" id="search-button-navbar">-->
 <!--              <svg-->
@@ -54,7 +54,7 @@
         <div class="p-2 mt-5 rounded item">
           <div class="fw-semibold fs-5">{{ shoe.name }}</div>
           <div>
-            <img :src="shoe.imgUrl" class="img-fluid" />
+            <img :src="shoe.img" class="img-fluid" />
           </div>
           <div>{{ shoe.description }}</div>
           <div class="my-2 fw-bold">{{ shoe.price }}$</div>
@@ -74,7 +74,6 @@
 </template>
 
 <script>
-// import json from "../assets/products.json";
 import axios from "axios";
 import _ from "lodash";
 
@@ -135,16 +134,16 @@ export default {
       console.log("Added to cart", cartedTest);
     },
 
-
     filterProduct() {
+      console.log("XD")
       let filter = [];
 
       for (const product of this.allProducts) {
-        if (product.name.toLowerCase().includes(this.query) && this.selected.match("None")) {
+        if (product.name.toLowerCase().includes(this.query.toLocaleLowerCase()) && this.selected.match("None")) {
           filter.push(product);
         } else if(product.brand === this.selected && !this.query) {
           filter.push(product);
-        } else if (product.brand === this.selected && product.name.toLowerCase().includes(this.query)) {
+        } else if (product.brand === this.selected && product.name.toLowerCase().includes(this.query.toLocaleLowerCase())) {
           filter.push(product);
         }
       }
