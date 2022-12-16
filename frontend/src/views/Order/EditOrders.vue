@@ -29,22 +29,15 @@
 
   <div class="">
       <form class="col-8 mx-auto">
-        <div class="row mb-3">
-          <div class="col-3">
-            <label class="form-label" for="exampleUsername">Status ID</label>
-            <input
-              type="text"
-              class="form-control"
-              v-model="Sid"
-              placeholder="username"
-            />
+        <div   class="row mb-3">
+          <div class="row">
+            <div class="col-5">
+              <label for="exampleInputEmail" class="form-label">Status name</label>
+            </div>
           </div>
           <div class="col-5">
-            <label for="exampleInputEmail" class="form-label"
-              >Status name</label
-            >
-            <select v-model="Sname">
-              <option :value="i" v-for="i in statuslist">i</option>
+            <select v-model="Sname" class="col-5">
+              <option :value="i" v-for="i in statuslist">{{i.name}}</option>
             </select>
           </div>
         </div>
@@ -55,6 +48,7 @@
 
 <script>
 import axios from "axios";
+import {toRaw} from "vue";
 
 export default {
   data() {
@@ -65,7 +59,6 @@ export default {
       statuslist: []
     };
   },
-
   methods: {
     fetchorders() {
       axios
@@ -91,7 +84,7 @@ export default {
           })
           .then((res) => {
             if (res.status === 200) {
-              this.orders = res.data;
+              this.statuslist = res.data;
               // console.log(this.orders);
             }
           })
@@ -99,7 +92,7 @@ export default {
     },
     async edit(id) {
       await axios
-      .put(`http://localhost:3000/orders/${id}`, {"name": this.Sname}, {
+      .put(`http://localhost:3000/orders/${id}`, {"name": toRaw(this.Sname.name)}, {
           headers: {
             Authorization: "Bearer " + this.token,
           },
@@ -118,6 +111,7 @@ export default {
   mounted() {
     this.token = localStorage.getItem("token");
     this.fetchorders();
+    this.fetchstatus();
   },
 };
 </script>
