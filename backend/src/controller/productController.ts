@@ -60,7 +60,7 @@ export class ProductController extends Controller {
                 throw new Error('The given product does not exist')
             }
             const merge = {...product, ...request.body};
-            validate(Object.assign(new Product() , merge)).then(async error => {
+            validate(Object.assign(new Product(), merge)).then(async error => {
                 if (error.length > 0) {
                     throw new Error(JSON.stringify(error.pop().constraints))
                 } else {
