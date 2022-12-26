@@ -2,6 +2,7 @@ import {Entity, PrimaryGeneratedColumn, Column, ManyToMany} from "typeorm"
 import {Category} from "./category";
 import {JoinTable} from 'typeorm';
 import {ArrayMinSize, Min, MinLength} from "class-validator";
+import {ColumnNumericTransformer} from "../utils/ColumnNumericTransformer";
 
 @Entity()
 export class Product {
@@ -36,13 +37,21 @@ export class Product {
     @Min(0, {
         message: 'price cannot be less than 0',
     })
-    @Column({ type: "numeric" })
+    @Column('numeric', {
+        precision: 7,
+        scale: 2,
+        transformer: new ColumnNumericTransformer(),
+    })
     price: number;
 
     @Min(0, {
         message: 'weight cannot be less than 0',
     })
-    @Column({ type: "numeric" })
+    @Column('numeric', {
+        precision: 7,
+        scale: 2,
+        transformer: new ColumnNumericTransformer(),
+    })
     weight: number;
 
     @ArrayMinSize(1, {
