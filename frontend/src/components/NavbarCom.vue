@@ -1,13 +1,10 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-dark" id="mainNavbar">
-    <!-- Navbar content -->
-    <!--    Logo-->
     <RouterLink class="navbar-brand" to="/">
       <img src="http://cdn.onlinewebfonts.com/svg/img_473618.png" alt="" />
       ShoeStock
     </RouterLink>
 
-    <!--    Burger Button-->
     <button
       class="navbar-toggler"
       type="button"
@@ -21,57 +18,37 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <RouterLink to="/browse" class="px-3 link">Browse</RouterLink>
-      <RouterLink to="/products" class="px-3 link">Products</RouterLink>
-      <RouterLink to="/orders" class="px-3 link">Orders</RouterLink>
+      <RouterLink to="/products" v-if="token" class="px-3 link"
+        >Products</RouterLink
+      >
+      <RouterLink to="/orders" v-if="token" class="px-3 link"
+        >Orders</RouterLink
+      >
       <div class="mx-auto order-0"></div>
-      <!-- dropdown for browse -->
-      <!-- dropdown for account -->
+
       <RouterLink v-if="!token" class="nav-item link mx-3" to="/login"
         >Sign in
       </RouterLink>
       <a class="nav-item link mx-3" v-if="token" @click.prevent="signOut"
         >Sign out
       </a>
-      <!-- <ul class="navbar-nav mr-auto">
-        <li class="nav-item dropdown border rounded mx-3">
-          <a
-            class="nav-link dropdown-toggle"
-            href="#"
-            id="navbarAccount"
-            data-toggle="dropdown"
-          >
-            Account
-          </a>
 
-          <div class="dropdown-menu" aria-labelledby="navbarAccount">
-          <RouterLink v-if="token" class="dropdown-item" to="/browse"
-              >Wishlist
-            </RouterLink>
-          <RouterLink v-if="!token" class="dropdown-item" to="/login"
-              >Sign up
-            </RouterLink>
-          <RouterLink v-if="!token" class="dropdown-item" to="/login"
-              >Sign in
-            </RouterLink>
-            <a class="dropdown-item" v-if="token" href="#" @click="signout"
-              >Sign out
-            </a>
-          </div>
-        </li>
-      </ul> -->
-      <RouterLink class="text-light px-3 py-2 border rounded" to="/cart"
-        ><svg
+      <RouterLink class="text-light px-3 py-2 border rounded" to="/cart">
+        <svg
           xmlns="http://www.w3.org/2000/svg"
           width="16"
           height="16"
           fill="currentColor"
-          class="bi bi-cart-fill"
+          class="bi bi-cart-fill mx-1"
           viewBox="0 0 16 16"
         >
           <path
             d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"
           />
         </svg>
+        <span class="px-2 border border-danger bg-danger rounded-circle">
+          {{ this.countCarted }}</span
+        >
       </RouterLink>
     </div>
   </nav>
@@ -83,6 +60,7 @@ export default {
   data() {
     return {
       token: null,
+      countCarted: 0,
     };
   },
   methods: {
@@ -90,10 +68,14 @@ export default {
       console.log("signed out");
       localStorage.removeItem("token");
       this.token = null;
+      window.location.reload();
     },
   },
   mounted() {
     this.token = localStorage.getItem("token");
+    this.countCarted = localStorage.getItem("countCarted");
+    // console.log(this.countCarted);
+    // window.location.reload();
   },
 };
 </script>

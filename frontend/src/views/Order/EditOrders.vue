@@ -1,4 +1,13 @@
 <template>
+  <form class="col-8 mt-2">
+    <div class="col-5">
+      <label for="exampleInputEmail" class="form-label">Status name</label>
+      <select v-model="Sname" class="form-select col-5">
+        <option :value="i" v-for="i in statuslist">{{ i.name }}</option>
+      </select>
+    </div>
+  </form>
+
   <div class="" id="divTable">
     <table class="table table-light table-striped mt-5 text-center">
       <thead class="">
@@ -6,8 +15,9 @@
           <th>Order id</th>
           <th>Username</th>
           <th>Phone Number</th>
-          <th>Status ID</th>
           <th>Status name</th>
+          <th>Total price</th>
+
           <th></th>
         </tr>
       </thead>
@@ -17,6 +27,8 @@
           <td>{{ order.userName }}</td>
           <td>{{ order.phoneNumber }}</td>
           <td>{{ order.status.name }}</td>
+          <td>{{ order.totalPrice }}$</td>
+
           <td>
             <button v-on:click="edit(order.id)" class="btn btn-sm text-black">
               Edit
@@ -26,37 +38,18 @@
       </tbody>
     </table>
   </div>
-
-  <div class="">
-      <form class="col-8 mx-auto">
-        <div   class="row mb-3">
-          <div class="row">
-            <div class="col-5">
-              <label for="exampleInputEmail" class="form-label">Status name</label>
-            </div>
-          </div>
-          <div class="col-5">
-            <select v-model="Sname" class="col-5">
-              <option :value="i" v-for="i in statuslist">{{i.name}}</option>
-            </select>
-          </div>
-        </div>
-        
-      </form>
-    </div>
 </template>
 
 <script>
 import axios from "axios";
-import {toRaw} from "vue";
+import { toRaw } from "vue";
 
 export default {
   data() {
     return {
       orders: [],
-      Sid: "",
       Sname: "",
-      statuslist: []
+      statuslist: [],
     };
   },
   methods: {
@@ -70,6 +63,11 @@ export default {
         .then((res) => {
           if (res.status === 200) {
             this.orders = res.data;
+            this.orders.sort(function (a, b) {
+              return -(b.id - a.id || a.name.localeCompare(b.name));
+            });
+
+            // console.log(this.orders[0].products);
             // console.log(this.orders);
           }
         })
@@ -77,28 +75,34 @@ export default {
     },
     fetchstatus() {
       axios
-          .get("http://localhost:3000/status", {
-            headers: {
-              Authorization: "Bearer " + this.token,
-            },
-          })
-          .then((res) => {
-            if (res.status === 200) {
-              this.statuslist = res.data;
-              // console.log(this.orders);
-            }
-          })
-          .catch((err) => console.log("err", err.response.data));
-    },
-    async edit(id) {
-      await axios
-      .put(`http://localhost:3000/orders/${id}`, {"name": toRaw(this.Sname.name)}, {
+        .get("http://localhost:3000/status", {
           headers: {
             Authorization: "Bearer " + this.token,
           },
-        }).then((res) => {
+        })
+        .then((res) => {
+          if (res.status === 200) {
+            this.statuslist = res.data;
+            // console.log(this.orders);
+          }
+        })
+        .catch((err) => console.log("err", err.response.data));
+    },
+    async edit(id) {
+      await axios
+        .put(
+          `http://localhost:3000/orders/${id}`,
+          { name: toRaw(this.Sname.name) },
+          {
+            headers: {
+              Authorization: "Bearer " + this.token,
+            },
+          }
+        )
+        .then((res) => {
           if (res.status === 200) {
             console.log("Order has been updated");
+            window.location.reload();
           }
         })
         .catch((err) => console.log("err", err.response.data));
@@ -117,6 +121,12 @@ export default {
 </script>
 
 <style scoped>
+form {
+  max-width: 64em;
+  margin: auto;
+  /* text-align: center; */
+}
+
 #divTable {
   margin-left: 10%;
   margin-right: 10%;

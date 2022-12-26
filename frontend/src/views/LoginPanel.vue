@@ -59,7 +59,9 @@ export default {
           console.log(res);
           this.$router.replace("/browse");
           localStorage.setItem("token", res.data.token);
+          localStorage.setItem("username", this.email);
           console.log("Login successful");
+
           // swal({
           //   text: "Login successful",
           //   icon: "success",
@@ -72,6 +74,7 @@ export default {
     // #CCDDE2
     document.body.style.backgroundColor = "#e9f1f7";
   },
+  mounted() {},
 };
 </script>
 

@@ -1,55 +1,57 @@
 <template>
-  <div>Enter name:</div>
-  <form class="form-inline ml-auto mr-auto">
-    <div class="input-group">
-      <input
-          size="70"
-          type="text"
-          class="form-control"
-          placeholder="Search Items"
-          aria-label="Username"
-          aria-describedby="basic-addon1"
-          v-model="query"
-      />
-      <button class="btn" @click="filterProduct" type="button">Search</button>
-<!--      <div class="input-group-prepend">-->
-<!--            <span class="input-group-text" id="search-button-navbar">-->
-<!--              <svg-->
-<!--                  xmlns="http://www.w3.org/2000/svg"-->
-<!--                  width="18"-->
-<!--                  height="25"-->
-<!--                  fill="currentColor"-->
-<!--                  class="bi bi-search"-->
-<!--                  viewBox="0 0 16 16"-->
-<!--              >-->
-<!--                <path-->
-<!--                    d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"-->
-<!--                />-->
-<!--              </svg>-->
-<!--            </span>-->
-<!--      </div>-->
+  <form class="form col-12 ml-auto mr-auto">
+    <div class="row">
+      <div class="col-4">
+        <label for="" class="form-label">Enter product name:</label>
+        <div class="input-group">
+          <input
+            size="70"
+            type="text"
+            class="form-control"
+            placeholder="Jordan"
+            aria-label="Username"
+            aria-describedby="basic-addon1"
+            v-model="query"
+          />
+          <button
+            class="btn"
+            @click="filterProduct"
+            id="searchButton"
+            type="button"
+          >
+            Search
+          </button>
+        </div>
+      </div>
+
+      <div class="col-4">
+        <label class="form-label">Selected Brand: {{ selected }}</label>
+        <select class="form-select" v-model="selected" @click="filterProduct">
+          <option :value="brand" v-for="brand in brands">
+            {{ brand }}
+          </option>
+        </select>
+      </div>
+
+      <div class="col-4">
+        <label class="form-label"
+          >Selected Category: {{ selectedCategory.name }}</label
+        >
+        <select
+          class="form-select"
+          v-model="selectedCategory"
+          @click="filterProduct"
+        >
+          <option :value="category" v-for="category in categories">
+            {{ category.name }}
+          </option>
+        </select>
+      </div>
     </div>
   </form>
 
-  <div>Selected Brand: {{ selected }}</div>
-  <select v-model="selected" @click="filterProduct">
-    <option disabled value="">Select brand</option>
-    <option>None</option>
-    <option>Nike</option>
-    <option>Jordan</option>
-    <option>Adidas</option>
-  </select>
-
-  <div>Selected Category: {{ selectedCategory }}</div>
-  <select v-model="selectedCategory" @click="filterProduct">
-    <option disabled value="">Select category</option>
-    <option>xd</option>
-    <option>1</option>
-    <option>2</option>
-    <option>3</option>
-  </select>
   <div class="container justify-content-around">
-    <div class="row mt-5 products text-center">
+    <div class="row mt-3 products text-center">
       <div v-for="shoe in displayed" :key="shoe" class="col-lg-4">
         <div class="p-2 mt-5 rounded item">
           <div class="fw-semibold fs-5">{{ shoe.name }}</div>
@@ -89,7 +91,9 @@ export default {
       query: "",
       shoe: {},
       selected: "None",
-      selectedCategory: "None"
+      selectedCategory: "None",
+      categories: [],
+      brands: [],
       // button,
     };
   },
@@ -100,22 +104,58 @@ export default {
 
   methods: {
     fetchProducts() {
-        axios
-            .get("http://localhost:3000/products", {
-              headers: {
-                Authorization: "Bearer " + this.token,
-              },
-            })
-            .then((res) => {
-              if (res.status === 200) {
-                this.allProducts = res.data;
-                this.allProducts.sort(function (a, b) {
-                  return -(b.id - a.id || a.name.localeCompare(b.name));
-                });
-                this.displayed = this.allProducts;
-              }
-            })
-            .catch((err) => console.log("err", err.response.data));
+      axios
+        .get("http://localhost:3000/products", {
+          headers: {
+            Authorization: "Bearer " + this.token,
+          },
+        })
+        .then((res) => {
+          if (res.status === 200) {
+            this.allProducts = res.data;
+            this.allProducts.sort(function (a, b) {
+              return -(b.id - a.id || a.name.localeCompare(b.name));
+            });
+            this.displayed = this.allProducts;
+          }
+        })
+        .catch((err) => console.log("err", err.response.data));
+    },
+    fetchCategories() {
+      axios
+        .get("http://localhost:3000/categories", {
+          headers: {
+            Authorization: "Bearer " + this.token,
+          },
+        })
+        .then((res) => {
+          if (res.status === 200) {
+            this.categories = res.data;
+          }
+        })
+        .catch((err) => console.log("err", err.response.data));
+    },
+    fetchBrands() {
+      axios
+        .get("http://localhost:3000/products", {
+          headers: {
+            Authorization: "Bearer " + this.token,
+          },
+        })
+        .then((res) => {
+          if (res.status === 200) {
+            this.shoesData = res.data;
+            let arr = [];
+            for (let shoe of this.shoesData) {
+              arr.push(shoe.brand);
+            }
+            this.brands = arr.filter(
+              (item, index, self) => self.indexOf(item) === index
+            );
+            localStorage.setItem("brands", JSON.stringify(this.brands));
+          }
+        })
+        .catch((err) => console.log("err", err.response.data));
     },
 
     addToCart(index) {
@@ -132,92 +172,37 @@ export default {
       cartedTest = JSON.parse(JSON.stringify(this.cartedProducts));
       localStorage.setItem("cartedProducts", JSON.stringify(cartedTest));
       console.log("Added to cart", cartedTest);
+      // window.location.reload();
     },
 
     filterProduct() {
-      console.log("XD")
       let filter = [];
 
       for (const product of this.allProducts) {
-        if (product.name.toLowerCase().includes(this.query.toLocaleLowerCase()) && this.selected.match("None")) {
+        if (
+          product.name.toLowerCase().includes(this.query.toLocaleLowerCase()) &&
+          this.selected.match("None")
+        ) {
           filter.push(product);
-        } else if(product.brand === this.selected && !this.query) {
+        } else if (product.brand === this.selected && !this.query) {
           filter.push(product);
-        } else if (product.brand === this.selected && product.name.toLowerCase().includes(this.query.toLocaleLowerCase())) {
+        } else if (
+          product.brand === this.selected &&
+          product.name.toLowerCase().includes(this.query.toLocaleLowerCase())
+        ) {
           filter.push(product);
         }
       }
       this.displayed = filter;
-    }
-
-    // axios
-    //   .post(
-    //     "http://localhost:3000/orders",
-    //     {
-    //       userName: "magik",
-    //       phoneNumber: "123123123",
-    //       status: {
-    //         id: 1,
-    //         name: "ACCEPTED",
-    //       },
-    //       products: [
-    //         {
-    //           name: "But5",
-    //           description: "wygodny",
-    //           imgUrl: "http//xd.pl",
-    //           price: 5.5,
-    //           weight: 6.6,
-    //           categories: [
-    //             {
-    //               id: 1,
-    //               name: "skateboardowe",
-    //             },
-    //           ],
-    //         },
-    //       ],
-    //     },
-    //     {
-    //       headers: {
-    //         Authorization: "Bearer " + this.token,
-    //       },
-    //     }
-    //   )
-    //   .then((res) => {
-    //     if (res.status == 200) {
-    //       console.log("Product added in cart");
-    //     }
-    //   })
-    //   .catch((err) => console.log("err", err));
-    // },
-
-    // filterTable(query) {
-    //   this.products = this.productsTable;
-    //   console.log("pierwszy");
-    //   let includedTitle = function () {
-    //     return true;
-    //   };
-
-    //   if (query === "") {
-    //     console.log("drugi");
-    //     return;
-    //   }
-
-    //   if (query !== "") {
-    //     includedTitle = function (filter, movie) {
-    //       console.log("trzeci");
-    //       return movie.name.toLowerCase().includes(filter.toLowerCase());
-    //     };
-    //   } else return;
-
-    //   this.products = _.filter(this.productsTable, (movie) => {
-    //     console.log("czwarty");
-    //     return includedTitle(query, movie);
-    //   });
-    // },
+    },
   },
   mounted() {
+    // window.location.reload();
     this.token = localStorage.getItem("token");
+
     this.fetchProducts();
+    this.fetchCategories();
+    this.fetchBrands();
     // this.products = this.productsTable;
   },
 };
@@ -230,6 +215,15 @@ export default {
   height: 618px;
 }
 
+form {
+  max-width: 64em;
+  margin: auto;
+  /* text-align: center; */
+}
+form label {
+  margin-top: 1em;
+}
+
 div .item {
   position: relative;
 }
@@ -238,6 +232,9 @@ div .item {
   background: #48acf0;
   position: absolute;
   bottom: 6px;
+}
+#searchButton {
+  background: #48acf0;
 }
 
 .link {
@@ -255,11 +252,13 @@ div .item {
 .container .products {
   display: flex;
   flex-direction: row;
+  align-items: center;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 1400px) {
   .container .products {
     flex-direction: column;
+    align-items: center;
   }
 }
 </style>
