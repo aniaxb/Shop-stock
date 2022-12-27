@@ -30,7 +30,9 @@ export class OrderController extends Controller {
     async getAllOrdersByStatus(request: Request, response: Response, next: NextFunction) {
         this.repository.find({
             relations: {
-                productQuantities: true,
+                productQuantities: {
+                    product: true
+                },
                 status: true
             },
             where: {
@@ -48,7 +50,9 @@ export class OrderController extends Controller {
     async getOrder(request: Request, response: Response, next: NextFunction) {
         this.repository.find({
             relations: {
-                productQuantities: true,
+                productQuantities: {
+                    product: true
+                },
                 status: true
             },
             where: {
@@ -79,6 +83,9 @@ export class OrderController extends Controller {
     async editOrder(request: Request, response: Response, next: NextFunction) {
         this.repository.find({
             relations: {
+                productQuantities: {
+                    product: true
+                },
                 status: true
             },
             where: {
@@ -111,7 +118,12 @@ export class OrderController extends Controller {
 
     async addProductToOrder(request: Request, response: Response, next: NextFunction) {
         this.repository.find({
-            relations: ['productQuantities'],
+            relations: {
+                productQuantities: {
+                    product: true
+                },
+                status: true
+            },
             where: {
                 id: request.params.id,
             },
@@ -138,7 +150,12 @@ export class OrderController extends Controller {
 
     async removeProductFromOrder(request: Request, response: Response, next: NextFunction) {
         this.repository.find({
-            relations: ['productQuantities'],
+            relations: {
+                productQuantities: {
+                    product: true
+                },
+                status: true
+            },
             where: {
                 id: request.params.id,
             },
