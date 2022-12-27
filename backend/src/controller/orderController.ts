@@ -15,7 +15,9 @@ export class OrderController extends Controller {
     async getAllOrders(request: Request, response: Response, next: NextFunction) {
         this.repository.find({
             relations: {
-                products: true,
+                productQuantities: {
+                    product: true
+                },
                 status: true
             }
         }).then(result => {
@@ -28,7 +30,7 @@ export class OrderController extends Controller {
     async getAllOrdersByStatus(request: Request, response: Response, next: NextFunction) {
         this.repository.find({
             relations: {
-                products: true,
+                productQuantities: true,
                 status: true
             },
             where: {
@@ -46,7 +48,7 @@ export class OrderController extends Controller {
     async getOrder(request: Request, response: Response, next: NextFunction) {
         this.repository.find({
             relations: {
-                products: true,
+                productQuantities: true,
                 status: true
             },
             where: {
@@ -69,6 +71,7 @@ export class OrderController extends Controller {
                 })
             }
         }).catch(e => {
+            console.log(e)
             return response.status(422).json({'message': e.message});
         })
     }
@@ -108,7 +111,7 @@ export class OrderController extends Controller {
 
     async addProductToOrder(request: Request, response: Response, next: NextFunction) {
         this.repository.find({
-            relations: ['products'],
+            relations: ['productQuantities'],
             where: {
                 id: request.params.id,
             },
@@ -135,7 +138,7 @@ export class OrderController extends Controller {
 
     async removeProductFromOrder(request: Request, response: Response, next: NextFunction) {
         this.repository.find({
-            relations: ['products'],
+            relations: ['productQuantities'],
             where: {
                 id: request.params.id,
             },
