@@ -5,6 +5,7 @@ import {Product} from "../model/product";
 import {Category} from "../model/category";
 import {Order} from "../model/order";
 import {Status} from "../model/status";
+import {ProductQuantity} from "../model/productQuantity";
 require('dotenv').config()
 
 export const AppDataSource = new DataSource({
@@ -16,7 +17,7 @@ export const AppDataSource = new DataSource({
     database: process.env.DB,
     synchronize: true,
     logging: false,
-    entities: [User, Product, Category, Order, Status],
+    entities: [User, Product, Category, Order, Status, ProductQuantity],
     migrations: ["/migrations/"],
     subscribers: []
 });

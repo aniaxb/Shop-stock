@@ -1,7 +1,8 @@
-import {Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable, OneToMany, ManyToOne} from "typeorm"
-import {Product} from "./product";
+import {Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToOne, JoinTable} from "typeorm"
 import {Status} from "./status";
 import {ArrayMinSize, Matches, Min, MinLength} from "class-validator";
+import {ProductQuantity} from "./productQuantity";
+import {ColumnNumericTransformer} from "../utils/ColumnNumericTransformer";
 
 @Entity()
 export class Order {
@@ -38,7 +39,11 @@ export class Order {
     @Min(0, {
         message: 'total price cannot be less than 0',
     })
-    @Column({ type: "numeric" })
+    @Column('numeric', {
+        precision: 7,
+        scale: 2,
+        transformer: new ColumnNumericTransformer(),
+    })
     totalPrice: number;
 
     @ManyToOne(() => Status)
@@ -47,19 +52,8 @@ export class Order {
     @ArrayMinSize(1, {
         message: 'order must have at least one product',
     })
-    @ManyToMany(() => Product, {
-        cascade: true,
+    @OneToMany(() => ProductQuantity, productQuantity => productQuantity.order, {
+        cascade: true
     })
-    @JoinTable()
-    products: Product[];
-
-    public addProduct(product: Product): void {
-        this.products.push(product)
-    }
-
-    public removeProduct(product: Product): void {
-        this.products.forEach( (item, index) => {
-            if(item === product) this.products.splice(index,1);
-        });
-    }
+    productQuantities!: ProductQuantity[];
 }

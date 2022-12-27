@@ -1,8 +1,9 @@
-import {Entity, PrimaryGeneratedColumn, Column, ManyToMany} from "typeorm"
+import {Entity, PrimaryGeneratedColumn, Column, ManyToMany, OneToMany} from "typeorm"
 import {Category} from "./category";
 import {JoinTable} from 'typeorm';
 import {ArrayMinSize, Min, MinLength} from "class-validator";
 import {ColumnNumericTransformer} from "../utils/ColumnNumericTransformer";
+import {ProductQuantity} from "./productQuantity";
 
 @Entity()
 export class Product {
@@ -62,6 +63,11 @@ export class Product {
     })
     @JoinTable()
     categories: Category[];
+
+    @OneToMany(() => ProductQuantity, productQuantity => productQuantity.product, {
+        cascade: true
+    })
+    productQuantities!: ProductQuantity[];
 
     public addCategory(category: Category): void {
         this.categories.push(category);
