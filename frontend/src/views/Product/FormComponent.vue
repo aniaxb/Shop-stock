@@ -92,6 +92,9 @@ export default {
       this.$emit("close");
     },
   },
+  mounted() {
+    this.brands = JSON.parse(localStorage.getItem("brands"));
+  },
 };
 </script>
 

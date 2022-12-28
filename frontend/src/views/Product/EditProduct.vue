@@ -54,10 +54,7 @@
       </div>
     </div>
   </form>
-  <button class="btn btn-sm text-black" @click="showForm = true">
-    Show Form
-  </button>
-  <formComponent v-if="showForm" class="form-popup" @close="showForm = false" />
+
   <!-- </div> -->
 
   <div class="" id="divTable">
@@ -70,6 +67,7 @@
           <th>Description</th>
           <th>Price</th>
           <th>Weight</th>
+          <th></th>
           <th></th>
         </tr>
       </thead>
@@ -85,6 +83,16 @@
             <button @click="edit(shoe.id)" class="btn btn-sm text-black">
               Edit
             </button>
+          </td>
+          <td>
+            <button class="btn btn-sm text-black" @click="showForm = true">
+              Show Form
+            </button>
+            <formComponent
+              v-if="showForm"
+              class="form-popup"
+              @close="showForm = false"
+            />
           </td>
         </tr>
       </tbody>
