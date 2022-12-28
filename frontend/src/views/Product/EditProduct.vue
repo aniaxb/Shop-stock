@@ -54,6 +54,7 @@
       </div>
     </div>
   </form>
+
   <!-- </div> -->
 
   <div class="" id="divTable">
@@ -66,6 +67,7 @@
           <th>Description</th>
           <th>Price</th>
           <th>Weight</th>
+          <th></th>
           <th></th>
         </tr>
       </thead>
@@ -82,6 +84,16 @@
               Edit
             </button>
           </td>
+          <td>
+            <button class="btn btn-sm text-black" @click="showForm = true">
+              Show Form
+            </button>
+            <formComponent
+              v-if="showForm"
+              class="form-popup"
+              @close="showForm = false"
+            />
+          </td>
         </tr>
       </tbody>
     </table>
@@ -90,8 +102,11 @@
 
 <script>
 import axios from "axios";
-
+import formComponent from "./FormComponent.vue";
 export default {
+  components: {
+    formComponent,
+  },
   data() {
     return {
       products: [],
@@ -99,8 +114,9 @@ export default {
       Pname: "",
       Pdescription: "",
       Pprice: "",
-      Pweight: "" ,
+      Pweight: "",
       brands: Object,
+      showForm: false,
     };
   },
 
@@ -124,11 +140,17 @@ export default {
         .catch((err) => console.log("err", err.response.data));
     },
     async edit(id) {
-      console.log(this.Pbrand, this.Pname, this.Pdescription, this.Pprice, this.Pweight)
+      console.log(
+        this.Pbrand,
+        this.Pname,
+        this.Pdescription,
+        this.Pprice,
+        this.Pweight
+      );
       //przed wyslaniem zczytac to co wyzek ^ i jak jest rozne od "" dodac do jakies mapy
       //i pozniej w put wyciagnac wszystkie wartosci z tej mapy ktore wlozylismy bo
       //mamy pewnosc ze nie sa ""
-      
+
       await axios
         .put(
           `http://localhost:3000/products/${id}`,
@@ -202,6 +224,19 @@ button {
 .container .products {
   display: flex;
   flex-direction: row;
+}
+
+.form-popup {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 30%;
+  height: 35%;
+  background: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  margin-left: 1em;
+  z-index: 1;
+  overflow-y: auto;
 }
 
 @media (max-width: 600px) {
