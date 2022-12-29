@@ -3,7 +3,7 @@
     <div class="fw-bold fs-3">Edit Product</div>
     <form class="mx-3">
       <div class="row mt-2">
-        <div class="col-3">
+        <div class="col-4">
           <label class="form-label" for="exampleUsername">Product brand</label>
 
           <select v-model="Pbrand" class="form-select col-5">

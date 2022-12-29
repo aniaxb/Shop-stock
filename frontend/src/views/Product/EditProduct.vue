@@ -6,9 +6,9 @@
           Add Product
         </button>
         <addFormComponent
-            v-if="addShowForm"
-            class="form-popup"
-            @close="addShowForm = false"
+          v-if="addShowForm"
+          class="form-popup"
+          @close="addShowForm = false"
         />
       </div>
     </div>
@@ -16,35 +16,36 @@
   <div class="" id="divTable">
     <table class="table table-light table-striped mt-5 text-center">
       <thead class="">
-      <tr>
-        <th>#</th>
-        <th>Name</th>
-        <th>Brand</th>
-        <th>Description</th>
-        <th>Price</th>
-        <th>Weight</th>
-        <th></th>
-      </tr>
+        <tr>
+          <th>#</th>
+          <th>Name</th>
+          <th>Brand</th>
+          <th>Description</th>
+          <th>Price</th>
+          <th>Weight</th>
+          <th></th>
+        </tr>
       </thead>
       <tbody>
-      <tr v-for="shoe in products" :key="shoe">
-        <td>{{ shoe.id }}</td>
-        <td>{{ shoe.brand }}</td>
-        <td>{{ shoe.name }}</td>
-        <td>{{ shoe.description }}</td>
-        <td>{{ shoe.price }}$</td>
-        <td>{{ shoe.weight }}kg</td>
-        <td>
-          <button class="btn btn-sm text-black" @click="edit(shoe.id)">
-            Edit
-          </button>
-          <formComponent :product_id="product_id"
-                         v-if="showForm"
-                         class="form-popup"
-                         @close="showForm = false"
-          />
-        </td>
-      </tr>
+        <tr v-for="shoe in products" :key="shoe">
+          <td>{{ shoe.id }}</td>
+          <td>{{ shoe.brand }}</td>
+          <td>{{ shoe.name }}</td>
+          <td>{{ shoe.description }}</td>
+          <td>{{ shoe.price }}$</td>
+          <td>{{ shoe.weight }}kg</td>
+          <td>
+            <button class="btn btn-sm text-black" @click="edit(shoe.id)">
+              Edit
+            </button>
+            <formComponent
+              :product_id="product_id"
+              v-if="showForm"
+              class="form-popup"
+              @close="showForm = false"
+            />
+          </td>
+        </tr>
       </tbody>
     </table>
   </div>
@@ -57,7 +58,7 @@ import addFormComponent from "./AddFormComponent.vue";
 export default {
   components: {
     formComponent,
-    addFormComponent
+    addFormComponent,
   },
   data() {
     return {
@@ -77,21 +78,21 @@ export default {
   methods: {
     fetchProducts() {
       axios
-          .get("http://localhost:3000/products", {
-            headers: {
-              Authorization: "Bearer " + this.token,
-            },
-          })
-          .then((res) => {
-            if (res.status === 200) {
-              this.products = res.data;
-              this.products.sort(function (a, b) {
-                return -(b.id - a.id || a.name.localeCompare(b.name));
-              });
-              // console.log(this.products);
-            }
-          })
-          .catch((err) => console.log(err.response.data.message));
+        .get("http://localhost:3000/products", {
+          headers: {
+            Authorization: "Bearer " + this.token,
+          },
+        })
+        .then((res) => {
+          if (res.status === 200) {
+            this.products = res.data;
+            this.products.sort(function (a, b) {
+              return -(b.id - a.id || a.name.localeCompare(b.name));
+            });
+            // console.log(this.products);
+          }
+        })
+        .catch((err) => console.log(err.response.data.message));
     },
     async edit(id) {
       this.product_id = id;
@@ -99,7 +100,7 @@ export default {
     },
     addProduct() {
       this.addShowForm = true;
-    }
+    },
   },
   created() {
     // #CCDDE2
@@ -157,7 +158,7 @@ button {
   top: 25%;
   right: 37%;
   width: 30%;
-  height: 40%;
+  height: 42%;
   background: white;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   margin-left: 1em;
