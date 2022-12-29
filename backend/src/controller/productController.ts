@@ -69,7 +69,6 @@ export class ProductController extends Controller {
                     })
                 }
             }).catch(e => {
-                console.log(e.message.message)
                 return response.status(422).json({'message': e.message});
             })
         }).catch(e => {
