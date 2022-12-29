@@ -110,6 +110,7 @@
 // import axios from "axios";
 
 import axios from "axios";
+import {toRaw} from "vue";
 
 export default {
   data() {
@@ -128,6 +129,15 @@ export default {
 
   methods: {
     submitOrder() {
+      let jsonArray = [];
+      const set = new Set(toRaw(this.cartItems))
+      for (const cartItem of set) {
+        const element = {};
+        element.productId = cartItem.id
+        element.quantity = this.quantities[cartItem.id]
+        jsonArray.push(element)
+      }
+
       axios
         .post(
           "http://localhost:3000/orders",
@@ -139,19 +149,7 @@ export default {
             status: {
               id: 4,
             },
-            // products: [this.cartItems[0]],
-
-            // productQuantities: {
-            //   productId: this.cartItems[id].id,
-            //   quantity: this.quantity[id],
-            //   product: [this.cartItems[id - 1]],
-            // },
-
-            productQuantities: this.cartItems.map((item) => ({
-              productId: item.id + 1,
-              quantity: this.quantities[item.id],
-              // product: [this.cartItems[item.id - 1]],
-            })),
+            productQuantities: jsonArray
           },
           {
             headers: {
@@ -181,10 +179,11 @@ export default {
     },
     addItem(id) {
       let newArr = [];
+      let price = 0;
       for (let carted of this.cartItems) {
-        if (carted.id == id) {
+        if (carted.id === id) {
           newArr.push(carted);
-          console.log(newArr);
+          price = carted.price;
 
           //this.cartedProducts.push(this.allProducts[productIndex]);
           // cartedTest = JSON.parse(JSON.stringify(this.cartedProducts));
@@ -194,23 +193,21 @@ export default {
       }
       this.cartItems.push(newArr[0]);
       this.quantities[id] += 1;
-      console.log(this.quantities);
-      this.totalCost += this.cartItems[id].price;
+      this.totalCost += price
 
       console.log("Added this item again");
     },
     deleteItem(id) {
-      let newArr = [];
-      for (let carted of this.cartItems) {
-        if (carted.id == id) {
-          newArr.pop(carted);
-          console.log(newArr);
+      let price = 0;
+      for (let i = 0; i < this.cartItems.length; i++) {
+        if (this.cartItems[i].id === id) {
+          price = this.cartItems[i].price;
+          this.cartItems.splice(i, 1)
+          break;
         }
       }
-      this.totalCost -= this.cartItems[id].price;
-      this.cartItems.pop(newArr[0]);
+      this.totalCost -= price;
       this.quantities[id] -= 1;
-      console.log(this.quantities);
 
       console.log("Deleted this item");
     },
