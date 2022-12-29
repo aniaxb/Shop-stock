@@ -60,8 +60,13 @@
         <div class="row mb-3">
           <div class="col-3">
             <label class="form-label" for="exampleUsername">Username</label>
-            <input type="text" class="form-control" v-model="usernameForm" />
-            <div>{{ this.usernameLS }}</div>
+            <input
+              type="text"
+              class="form-control"
+              v-model="usernameForm"
+              placeholder="username"
+            />
+            <!-- <div>{{ this.usernameLS }}</div> -->
           </div>
           <div class="col-5">
             <label for="exampleInputEmail" class="form-label"
@@ -116,7 +121,8 @@ export default {
       emailForm: "",
       phoneNumberForm: "",
       countCarted: 0,
-      usernameLS: "",
+      // usernameLS: null,
+      quantities: {},
     };
   },
 
@@ -131,10 +137,21 @@ export default {
             email: this.emailForm,
             totalPrice: this.totalCost,
             status: {
-              id: 2,
-              name: "Accepted",
+              id: 4,
             },
-            products: [this.cartItems[0]],
+            // products: [this.cartItems[0]],
+
+            // productQuantities: {
+            //   productId: this.cartItems[id].id,
+            //   quantity: this.quantity[id],
+            //   product: [this.cartItems[id - 1]],
+            // },
+
+            productQuantities: this.cartItems.map((item) => ({
+              productId: item.id + 1,
+              quantity: this.quantities[item.id],
+              // product: [this.cartItems[item.id - 1]],
+            })),
           },
           {
             headers: {
@@ -145,9 +162,22 @@ export default {
         .then((res) => {
           if (res.status === 200) {
             console.log("Submitted an order");
+            this.$swal({
+              toast: true,
+              title: "Good job!",
+              text: "Submitted an order!",
+              icon: "success",
+            });
           }
         })
-        .catch((err) => console.log("err", err.response.data));
+        .catch((err) => {
+          console.log("err", err.response.data);
+          this.$swal({
+            title: "Error",
+            text: err.response.data.message,
+            icon: "error",
+          });
+        });
     },
     addItem(id) {
       let newArr = [];
@@ -155,40 +185,60 @@ export default {
         if (carted.id == id) {
           newArr.push(carted);
           console.log(newArr);
+
+          //this.cartedProducts.push(this.allProducts[productIndex]);
+          // cartedTest = JSON.parse(JSON.stringify(this.cartedProducts));
+          // localStorage.setItem("cartedProducts", JSON.stringify(cartedTest));
+          // console.log("Added to cart", cartedTest);
         }
       }
       this.cartItems.push(newArr[0]);
+      this.quantities[id] += 1;
+      console.log(this.quantities);
+      this.totalCost += this.cartItems[id].price;
+
       console.log("Added this item again");
     },
     deleteItem(id) {
       let newArr = [];
       for (let carted of this.cartItems) {
         if (carted.id == id) {
-          newArr.push(carted);
+          newArr.pop(carted);
           console.log(newArr);
         }
       }
+      this.totalCost -= this.cartItems[id].price;
       this.cartItems.pop(newArr[0]);
+      this.quantities[id] -= 1;
+      console.log(this.quantities);
+
       console.log("Deleted this item");
     },
   },
 
   mounted() {
     this.token = localStorage.getItem("token");
-    this.usernameLS = localStorage.getItem("username");
-    console.log(this.usernameLS);
+    // this.usernameLS = localStorage.getItem("username");
+    // console.log(this.usernameLS);
     let cartedProducts = JSON.parse(localStorage.getItem("cartedProducts"));
     if (cartedProducts) {
-      // console.log(cartedProducts);
       this.cartItems = JSON.parse(localStorage.getItem("cartedProducts"));
-      // let totalCost = 0;
+
+      this.cartItems.forEach((product) => {
+        if (product.id in this.quantities) {
+          this.quantities[product.id] += 1;
+        } else {
+          this.quantities[product.id] = 1;
+        }
+      });
+      console.log(this.quantities);
+      console.log(this.cartItems[0].id);
+
       if (this.cartItems[0]) {
         for (let cartItem of this.cartItems) {
           this.totalCost += parseFloat(cartItem.price);
           this.countCarted += 1;
-          // console.log(cartItem.price);
         }
-        // console.log(this.countCarted);
         localStorage.setItem("countCarted", this.countCarted);
       }
     }
