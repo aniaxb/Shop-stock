@@ -226,8 +226,19 @@ export default {
         }
       }
 
-
-      this.displayed = filterProd;
+      if(filterProd.length === 0) {
+        this.$swal({
+          title: "Error",
+          text: "No product meets the given categories",
+          icon: "error",
+        });
+        this.query = "";
+        this.selected = "None";
+        this.selectedCategory ="None";
+        this.displayed = this.allProducts;
+      } else {
+        this.displayed = filterProd;
+      }
     },
   },
   mounted() {
