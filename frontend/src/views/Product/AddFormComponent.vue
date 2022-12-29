@@ -141,7 +141,14 @@ export default {
               window.location.reload();
             }
           })
-          .catch((err) => console.log(err.response.data.message));
+          .catch((err) => {
+            this.$swal({
+              title: "Error",
+              text: err.response.data.message,
+              icon: "error",
+            });
+            console.log(err.response.data.message)
+          });
     },
     addCategory() {
       if(this.Pcategory !== "") {
