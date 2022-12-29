@@ -61,13 +61,20 @@ export default {
           localStorage.setItem("token", res.data.token);
           localStorage.setItem("username", this.email);
           console.log("Login successful");
-
-          // swal({
-          //   text: "Login successful",
-          //   icon: "success",
-          // });
+          this.$swal({
+            title: "Good job!",
+            text: "Sucessfully logged in!",
+            icon: "success",
+          });
         })
-        .catch((err) => console.log("err", err.response.data));
+        .catch((err) => {
+          console.log("err", err.response.data);
+          this.$swal({
+            title: "Error",
+            text: err.response.data.message,
+            icon: "error",
+          });
+        });
     },
   },
   created() {

@@ -78,7 +78,7 @@
 import axios from "axios";
 
 export default {
-  props: ['product_id'],
+  props: ["product_id"],
   data() {
     return {
       Pbrand: "",
@@ -92,46 +92,67 @@ export default {
   methods: {
     async loadProduct() {
       axios
-          .get(`http://localhost:3000/products/${this.product_id}`, {
-            headers: {
-              Authorization: "Bearer " + localStorage.getItem("token"),
-            },
-          })
-          .then((res) => {
-            if (res.status === 200) {
-              this.Pname = res.data.name;
-              this.Pdescription = res.data.description;
-              this.Pprice = res.data.price;
-              this.Pweight = res.data.weight;
-              this.Pbrand = res.data.brand;
-            }
-          })
-          .catch((err) => console.log("err", err.response.data));
+        .get(`http://localhost:3000/products/${this.product_id}`, {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        })
+        .then((res) => {
+          if (res.status === 200) {
+            this.Pname = res.data.name;
+            this.Pdescription = res.data.description;
+            this.Pprice = res.data.price;
+            this.Pweight = res.data.weight;
+            this.Pbrand = res.data.brand;
+          }
+        })
+        .catch((err) => {
+          console.log("err", err.response.data);
+          this.$swal({
+            title: "Error",
+            text: err.response.data.message,
+            icon: "error",
+          });
+        });
     },
     async handleSubmit() {
       await axios
-          .put(
-              `http://localhost:3000/products/${this.product_id}`,
-              {
-                name: this.Pname,
-                brand: this.Pbrand,
-                description: this.Pdescription,
-                price: parseFloat(this.Pprice),
-                weight: parseFloat(this.Pweight),
-              },
-              {
-                headers: {
-                  Authorization: "Bearer " + localStorage.getItem("token"),
-                },
-              }
-          )
-          .then((res) => {
-            if (res.status === 200) {
-              console.log("Product has been updated");
-              window.location.reload();
-            }
-          })
-          .catch((err) => console.log(err.response.data.message));
+        .put(
+          `http://localhost:3000/products/${this.product_id}`,
+          {
+            name: this.Pname,
+            brand: this.Pbrand,
+            description: this.Pdescription,
+            price: parseFloat(this.Pprice),
+            weight: parseFloat(this.Pweight),
+          },
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          }
+        )
+        .then((res) => {
+          if (res.status === 200) {
+            console.log("Product has been updated");
+
+            // this.$swal({
+            //   toast: true,
+            //   title: "Good job!",
+            //   text: "Product has been updated",
+            //   icon: "success",
+            // });
+            window.location.reload();
+          }
+        })
+        .catch((err) => {
+          console.log(err.response.data.message);
+          this.$swal({
+            title: "Error",
+            text: err.response.data.message,
+            icon: "error",
+          });
+        });
     },
   },
   mounted() {

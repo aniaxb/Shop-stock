@@ -24,7 +24,8 @@
             <button class="btn btn-sm text-black" @click="edit(shoe.id)">
               Edit
             </button>
-            <formComponent :product_id="product_id"
+            <formComponent
+              :product_id="product_id"
               v-if="showForm"
               class="form-popup"
               @close="showForm = false"
@@ -74,12 +75,19 @@ export default {
             // console.log(this.products);
           }
         })
-        .catch((err) => console.log(err.response.data.message));
+        .catch((err) => {
+          console.log(err.response.data.message);
+          this.$swal({
+            title: "Error",
+            text: err.response.data.message,
+            icon: "error",
+          });
+        });
     },
     async edit(id) {
       this.product_id = id;
       this.showForm = true;
-      console.log(this.product_id)
+      console.log(this.product_id);
     },
   },
   created() {

@@ -119,7 +119,14 @@ export default {
             this.displayed = this.allProducts;
           }
         })
-        .catch((err) => console.log("err", err.response.data));
+        .catch((err) => {
+          console.log("err", err.response.data);
+          this.$swal({
+            title: "Error",
+            text: err.response.data.message,
+            icon: "error",
+          });
+        });
     },
     fetchCategories() {
       axios
@@ -133,7 +140,14 @@ export default {
             this.categories = res.data;
           }
         })
-        .catch((err) => console.log("err", err.response.data));
+        .catch((err) => {
+          console.log("err", err.response.data);
+          this.$swal({
+            title: "Error",
+            text: err.response.data.message,
+            icon: "error",
+          });
+        });
     },
     fetchBrands() {
       axios
@@ -155,7 +169,14 @@ export default {
             localStorage.setItem("brands", JSON.stringify(this.brands));
           }
         })
-        .catch((err) => console.log("err", err.response.data));
+        .catch((err) => {
+          console.log("err", err.response.data);
+          this.$swal({
+            title: "Error",
+            text: err.response.data.message,
+            icon: "error",
+          });
+        });
     },
 
     addToCart(index) {
@@ -172,6 +193,12 @@ export default {
       cartedTest = JSON.parse(JSON.stringify(this.cartedProducts));
       localStorage.setItem("cartedProducts", JSON.stringify(cartedTest));
       console.log("Added to cart", cartedTest);
+      this.$swal({
+        toast: true,
+        title: "Good job!",
+        text: "Added product to cart!",
+        icon: "success",
+      });
       // window.location.reload();
     },
 
