@@ -184,14 +184,12 @@ export default {
         if (carted.id === id) {
           newArr.push(carted);
           price = carted.price;
-
-          //this.cartedProducts.push(this.allProducts[productIndex]);
-          // cartedTest = JSON.parse(JSON.stringify(this.cartedProducts));
-          // localStorage.setItem("cartedProducts", JSON.stringify(cartedTest));
-          // console.log("Added to cart", cartedTest);
         }
       }
       this.cartItems.push(newArr[0]);
+
+      localStorage.setItem("cartedProducts", JSON.stringify(this.cartItems));
+
       this.quantities[id] += 1;
       this.totalCost += price
 
@@ -206,6 +204,8 @@ export default {
           break;
         }
       }
+
+      localStorage.setItem("cartedProducts", JSON.stringify(this.cartItems));
       this.totalCost -= price;
       this.quantities[id] -= 1;
 
