@@ -78,13 +78,13 @@
 <script>
 import axios from "axios";
 import _ from "lodash";
+import {toRaw} from "vue";
 
 export default {
   name: "BrowseProducts",
 
   data() {
     return {
-      // productData: json,
       allProducts: [],
       displayed: [],
       cartedProducts: [],
@@ -94,11 +94,9 @@ export default {
       selectedCategory: "None",
       categories: [],
       brands: [],
-      // button,
     };
   },
   created() {
-    // #CCDDE2
     document.body.style.backgroundColor = "#e9f1f7";
   },
 
@@ -176,24 +174,33 @@ export default {
     },
 
     filterProduct() {
-      let filter = [];
+      let filterProd = [];
+      const filter = {};
+      if (this.query) {
+        filter.name = this.query;
+      }
+      if (this.selected !== "None") {
+        filter.brand = this.selected;
+      }
 
-      for (const product of this.allProducts) {
-        if (
-          product.name.toLowerCase().includes(this.query.toLocaleLowerCase()) &&
-          this.selected.match("None")
-        ) {
-          filter.push(product);
-        } else if (product.brand === this.selected && !this.query) {
-          filter.push(product);
-        } else if (
-          product.brand === this.selected &&
-          product.name.toLowerCase().includes(this.query.toLocaleLowerCase())
-        ) {
-          filter.push(product);
+      filterProd = this.allProducts.filter(function(item) {
+        for (const key in filter) {
+          if (item[key] === undefined || !item[key].toLocaleLowerCase().includes(filter[key].toLocaleLowerCase()))
+            return false;
+        }
+        return true;
+      });
+
+      if (this.selectedCategory !== "None") {
+        for (let i = 0; i < filterProd.length; i++) {
+          if (!filterProd[i].categories.some(e => e.name === this.selectedCategory.name)) {
+            filterProd.splice(i, 1);
+          }
         }
       }
-      this.displayed = filter;
+
+
+      this.displayed = filterProd;
     },
   },
   mounted() {
