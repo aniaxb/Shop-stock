@@ -1,5 +1,6 @@
 <template>
   <div class="">
+    <div class="fw-bold fs-3">Edit Product</div>
     <form class="mx-3">
       <div class="row mt-2">
         <div class="col-3">
@@ -59,7 +60,7 @@
       </div>
     </form>
     <button
-      @click="$emit('submit')"
+      @click="handleSubmit()"
       class="btn btn-sm btn-primary text-light mx-3 mt-2"
     >
       Submit
@@ -74,10 +75,12 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
+  props: ['product_id'],
   data() {
     return {
-      products: [],
       Pbrand: "",
       Pname: "",
       Pdescription: "",
@@ -87,13 +90,53 @@ export default {
     };
   },
   methods: {
-    handleSubmit() {
-      // form submission logic goes here
-      this.$emit("close");
+    async loadProduct() {
+      axios
+          .get(`http://localhost:3000/products/${this.product_id}`, {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          })
+          .then((res) => {
+            if (res.status === 200) {
+              this.Pname = res.data.name;
+              this.Pdescription = res.data.description;
+              this.Pprice = res.data.price;
+              this.Pweight = res.data.weight;
+              this.Pbrand = res.data.brand;
+            }
+          })
+          .catch((err) => console.log("err", err.response.data));
+    },
+    async handleSubmit() {
+      await axios
+          .put(
+              `http://localhost:3000/products/${this.product_id}`,
+              {
+                name: this.Pname,
+                brand: this.Pbrand,
+                description: this.Pdescription,
+                price: parseFloat(this.Pprice),
+                weight: parseFloat(this.Pweight),
+              },
+              {
+                headers: {
+                  Authorization: "Bearer " + localStorage.getItem("token"),
+                },
+              }
+          )
+          .then((res) => {
+            if (res.status === 200) {
+              console.log("Product has been updated");
+              window.location.reload();
+            }
+          })
+          .catch((err) => console.log(err.response.data.message));
     },
   },
   mounted() {
     this.brands = JSON.parse(localStorage.getItem("brands"));
+    this.loadProduct();
   },
 };
 </script>
