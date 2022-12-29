@@ -77,8 +77,6 @@
 
 <script>
 import axios from "axios";
-import _ from "lodash";
-import {toRaw} from "vue";
 
 export default {
   name: "BrowseProducts",

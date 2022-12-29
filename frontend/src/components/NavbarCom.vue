@@ -55,6 +55,8 @@
 </template>
 
 <script>
+import {toRaw} from "vue";
+
 export default {
   name: "NavbarCom",
   data() {
@@ -70,13 +72,25 @@ export default {
       this.token = null;
       window.location.reload();
     },
+    interval() {
+      setInterval(function() {
+        let cartedProducts = JSON.parse(localStorage.getItem("cartedProducts"));
+        this.countCarted = cartedProducts.length;
+      }.bind(this), 500);
+    }
   },
   mounted() {
     this.token = localStorage.getItem("token");
     this.countCarted = localStorage.getItem("countCarted");
     // console.log(this.countCarted);
     // window.location.reload();
+    this.interval();
   },
+  watch: {
+    localStorageVariable(newValue, oldValue) {
+      console.log(`localStorageVariable changed from ${oldValue} to ${newValue}`)
+    }
+  }
 };
 </script>
 
