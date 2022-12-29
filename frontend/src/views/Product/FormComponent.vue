@@ -1,5 +1,6 @@
 <template>
   <div class="">
+    <div class="fw-bold fs-3">Edit Product</div>
     <form class="mx-3">
       <div class="row mt-2">
         <div class="col-3">
@@ -130,7 +131,7 @@ export default {
               window.location.reload();
             }
           })
-          .catch((err) => console.log("err", err.response.data));
+          .catch((err) => console.log(err.response.data.message));
     },
   },
   mounted() {

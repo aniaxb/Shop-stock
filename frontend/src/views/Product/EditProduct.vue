@@ -1,62 +1,4 @@
 <template>
-  <!-- <div class="d-flex justify-content-center"> -->
-  <form class="">
-    <div class="row mt-2">
-      <div class="col-3">
-        <label class="form-label" for="exampleUsername">Product brand</label>
-
-        <select v-model="Pbrand" class="form-select col-5">
-          <option :value="i" v-for="i in this.brands">
-            {{ i }}
-          </option>
-        </select>
-      </div>
-      <div class="col-7">
-        <label for="exampleInputEmail" class="form-label">Product name</label>
-        <input
-          type="text"
-          class="form-control"
-          v-model="Pname"
-          placeholder="Jordan 1 Dark Mocha"
-        />
-      </div>
-    </div>
-
-    <div class="col-10">
-      <label for="exampleInputEmail" class="form-label"
-        >Product description</label
-      >
-      <input
-        type="text"
-        class="form-control"
-        v-model="Pdescription"
-        placeholder="This is a great shoe, released in 2019 ..."
-      />
-    </div>
-    <div class="row">
-      <div class="col-5">
-        <label for="exampleInputEmail" class="form-label">Product price</label>
-        <input
-          type="text"
-          class="form-control"
-          v-model="Pprice"
-          placeholder="100.00"
-        />
-      </div>
-      <div class="col-5">
-        <label for="exampleInputEmail" class="form-label">Product weight</label>
-        <input
-          type="text"
-          class="form-control"
-          v-model="Pweight"
-          placeholder="0.7"
-        />
-      </div>
-    </div>
-  </form>
-
-  <!-- </div> -->
-
   <div class="" id="divTable">
     <table class="table table-light table-striped mt-5 text-center">
       <thead class="">
@@ -67,7 +9,6 @@
           <th>Description</th>
           <th>Price</th>
           <th>Weight</th>
-          <th></th>
           <th></th>
         </tr>
       </thead>
@@ -80,13 +21,8 @@
           <td>{{ shoe.price }}$</td>
           <td>{{ shoe.weight }}kg</td>
           <td>
-            <button @click="edit(shoe.id)" class="btn btn-sm text-black">
-              Edit
-            </button>
-          </td>
-          <td>
             <button class="btn btn-sm text-black" @click="edit(shoe.id)">
-              Show Form
+              Edit
             </button>
             <formComponent :product_id="product_id"
               v-if="showForm"
@@ -138,7 +74,7 @@ export default {
             // console.log(this.products);
           }
         })
-        .catch((err) => console.log("err", err.response.data));
+        .catch((err) => console.log(err.response.data.message));
     },
     async edit(id) {
       this.product_id = id;
@@ -199,10 +135,10 @@ button {
 
 .form-popup {
   position: fixed;
-  top: 0;
-  right: 0;
+  top: 25%;
+  right: 37%;
   width: 30%;
-  height: 35%;
+  height: 40%;
   background: white;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   margin-left: 1em;
