@@ -85,10 +85,10 @@
             </button>
           </td>
           <td>
-            <button class="btn btn-sm text-black" @click="showForm = true">
+            <button class="btn btn-sm text-black" @click="edit(shoe.id)">
               Show Form
             </button>
-            <formComponent
+            <formComponent :product_id="product_id"
               v-if="showForm"
               class="form-popup"
               @close="showForm = false"
@@ -109,6 +109,7 @@ export default {
   },
   data() {
     return {
+      product_id: 0,
       products: [],
       Pbrand: "",
       Pname: "",
@@ -140,39 +141,9 @@ export default {
         .catch((err) => console.log("err", err.response.data));
     },
     async edit(id) {
-      console.log(
-        this.Pbrand,
-        this.Pname,
-        this.Pdescription,
-        this.Pprice,
-        this.Pweight
-      );
-      //przed wyslaniem zczytac to co wyzek ^ i jak jest rozne od "" dodac do jakies mapy
-      //i pozniej w put wyciagnac wszystkie wartosci z tej mapy ktore wlozylismy bo
-      //mamy pewnosc ze nie sa ""
-
-      await axios
-        .put(
-          `http://localhost:3000/products/${id}`,
-          {
-            name: this.Pname,
-            brand: this.Pbrand,
-            description: this.Pdescription,
-            price: parseFloat(this.Pprice),
-            weight: parseFloat(this.Pweight),
-          },
-          {
-            headers: {
-              Authorization: "Bearer " + this.token,
-            },
-          }
-        )
-        .then((res) => {
-          if (res.status === 200) {
-            console.log("Product has been updated");
-          }
-        })
-        .catch((err) => console.log("err", err.response.data));
+      this.product_id = id;
+      this.showForm = true;
+      console.log(this.product_id)
     },
   },
   created() {
