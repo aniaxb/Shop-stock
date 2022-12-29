@@ -1,37 +1,50 @@
 <template>
+  <div class="container">
+    <div class="row">
+      <div class="col text-center">
+        <button class="btn btn-sm text-black" @click="addProduct()">
+          Add Product
+        </button>
+        <addFormComponent
+            v-if="addShowForm"
+            class="form-popup"
+            @close="addShowForm = false"
+        />
+      </div>
+    </div>
+  </div>
   <div class="" id="divTable">
     <table class="table table-light table-striped mt-5 text-center">
       <thead class="">
-        <tr>
-          <th>#</th>
-          <th>Name</th>
-          <th>Brand</th>
-          <th>Description</th>
-          <th>Price</th>
-          <th>Weight</th>
-          <th></th>
-        </tr>
+      <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Brand</th>
+        <th>Description</th>
+        <th>Price</th>
+        <th>Weight</th>
+        <th></th>
+      </tr>
       </thead>
       <tbody>
-        <tr v-for="shoe in products" :key="shoe">
-          <td>{{ shoe.id }}</td>
-          <td>{{ shoe.brand }}</td>
-          <td>{{ shoe.name }}</td>
-          <td>{{ shoe.description }}</td>
-          <td>{{ shoe.price }}$</td>
-          <td>{{ shoe.weight }}kg</td>
-          <td>
-            <button class="btn btn-sm text-black" @click="edit(shoe.id)">
-              Edit
-            </button>
-            <formComponent
-              :product_id="product_id"
-              v-if="showForm"
-              class="form-popup"
-              @close="showForm = false"
-            />
-          </td>
-        </tr>
+      <tr v-for="shoe in products" :key="shoe">
+        <td>{{ shoe.id }}</td>
+        <td>{{ shoe.brand }}</td>
+        <td>{{ shoe.name }}</td>
+        <td>{{ shoe.description }}</td>
+        <td>{{ shoe.price }}$</td>
+        <td>{{ shoe.weight }}kg</td>
+        <td>
+          <button class="btn btn-sm text-black" @click="edit(shoe.id)">
+            Edit
+          </button>
+          <formComponent :product_id="product_id"
+                         v-if="showForm"
+                         class="form-popup"
+                         @close="showForm = false"
+          />
+        </td>
+      </tr>
       </tbody>
     </table>
   </div>
@@ -40,9 +53,11 @@
 <script>
 import axios from "axios";
 import formComponent from "./FormComponent.vue";
+import addFormComponent from "./AddFormComponent.vue";
 export default {
   components: {
     formComponent,
+    addFormComponent
   },
   data() {
     return {
@@ -55,40 +70,36 @@ export default {
       Pweight: "",
       brands: Object,
       showForm: false,
+      addShowForm: false,
     };
   },
 
   methods: {
     fetchProducts() {
       axios
-        .get("http://localhost:3000/products", {
-          headers: {
-            Authorization: "Bearer " + this.token,
-          },
-        })
-        .then((res) => {
-          if (res.status === 200) {
-            this.products = res.data;
-            this.products.sort(function (a, b) {
-              return -(b.id - a.id || a.name.localeCompare(b.name));
-            });
-            // console.log(this.products);
-          }
-        })
-        .catch((err) => {
-          console.log(err.response.data.message);
-          this.$swal({
-            title: "Error",
-            text: err.response.data.message,
-            icon: "error",
-          });
-        });
+          .get("http://localhost:3000/products", {
+            headers: {
+              Authorization: "Bearer " + this.token,
+            },
+          })
+          .then((res) => {
+            if (res.status === 200) {
+              this.products = res.data;
+              this.products.sort(function (a, b) {
+                return -(b.id - a.id || a.name.localeCompare(b.name));
+              });
+              // console.log(this.products);
+            }
+          })
+          .catch((err) => console.log(err.response.data.message));
     },
     async edit(id) {
       this.product_id = id;
       this.showForm = true;
-      console.log(this.product_id);
     },
+    addProduct() {
+      this.addShowForm = true;
+    }
   },
   created() {
     // #CCDDE2
