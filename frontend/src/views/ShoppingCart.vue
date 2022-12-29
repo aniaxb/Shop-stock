@@ -110,7 +110,7 @@
 // import axios from "axios";
 
 import axios from "axios";
-import {toRaw} from "vue";
+import { toRaw } from "vue";
 
 export default {
   data() {
@@ -126,16 +126,19 @@ export default {
       quantities: {},
     };
   },
+  created() {
+    document.body.style.backgroundColor = "#e9f1f7";
+  },
 
   methods: {
     submitOrder() {
       let jsonArray = [];
-      const set = new Set(toRaw(this.cartItems))
+      const set = new Set(toRaw(this.cartItems));
       for (const cartItem of set) {
         const element = {};
-        element.productId = cartItem.id
-        element.quantity = this.quantities[cartItem.id]
-        jsonArray.push(element)
+        element.productId = cartItem.id;
+        element.quantity = this.quantities[cartItem.id];
+        jsonArray.push(element);
       }
 
       axios
@@ -149,7 +152,7 @@ export default {
             status: {
               id: 4,
             },
-            productQuantities: jsonArray
+            productQuantities: jsonArray,
           },
           {
             headers: {
@@ -191,7 +194,7 @@ export default {
       localStorage.setItem("cartedProducts", JSON.stringify(this.cartItems));
 
       this.quantities[id] += 1;
-      this.totalCost += price
+      this.totalCost += price;
 
       console.log("Added this item again");
     },
@@ -200,7 +203,7 @@ export default {
       for (let i = 0; i < this.cartItems.length; i++) {
         if (this.cartItems[i].id === id) {
           price = this.cartItems[i].price;
-          this.cartItems.splice(i, 1)
+          this.cartItems.splice(i, 1);
           break;
         }
       }

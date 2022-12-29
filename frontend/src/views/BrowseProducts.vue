@@ -52,7 +52,7 @@
 
   <div class="container justify-content-around">
     <div class="row mt-3 products text-center">
-      <div v-for="shoe in displayed" :key="shoe" class="col-lg-4">
+      <div v-for="shoe in getShoes()" :key="shoe" class="col-lg-4">
         <div class="p-2 mt-5 rounded item">
           <div class="fw-semibold fs-5">{{ shoe.name }}</div>
           <div>
@@ -71,6 +71,14 @@
           </div>
         </div>
       </div>
+    </div>
+    <div>
+      <button
+        class="my-2 col-12 btn btn-dark btn-block"
+        v-on:click="expandTable"
+      >
+        Show more
+      </button>
     </div>
   </div>
 </template>
@@ -92,6 +100,8 @@ export default {
       selectedCategory: "None",
       categories: [],
       brands: [],
+      tableSize: 3,
+      expandBy: 3,
     };
   },
   created() {
@@ -99,6 +109,19 @@ export default {
   },
 
   methods: {
+    getShoes() {
+      return this.displayed.slice(0, this.tableSize);
+    },
+
+    expandTable() {
+      if (this.displayed.length + this.expandBy <= this.tableSize) {
+        this.tableSize = this.displayed.length;
+        // this.showButton = false;
+      } else {
+        this.tableSize += this.expandBy;
+        // this.showButton = true;
+      }
+    },
     fetchProducts() {
       axios
         .get("http://localhost:3000/products", {
@@ -208,9 +231,14 @@ export default {
         filter.brand = this.selected;
       }
 
-      filterProd = this.allProducts.filter(function(item) {
+      filterProd = this.allProducts.filter(function (item) {
         for (const key in filter) {
-          if (item[key] === undefined || !item[key].toLocaleLowerCase().includes(filter[key].toLocaleLowerCase()))
+          if (
+            item[key] === undefined ||
+            !item[key]
+              .toLocaleLowerCase()
+              .includes(filter[key].toLocaleLowerCase())
+          )
             return false;
         }
         return true;
@@ -218,13 +246,17 @@ export default {
 
       if (this.selectedCategory !== "None") {
         for (let i = 0; i < filterProd.length; i++) {
-          if (!filterProd[i].categories.some(e => e.name === this.selectedCategory.name)) {
+          if (
+            !filterProd[i].categories.some(
+              (e) => e.name === this.selectedCategory.name
+            )
+          ) {
             filterProd.splice(i, 1);
           }
         }
       }
 
-      if(filterProd.length === 0) {
+      if (filterProd.length === 0) {
         this.$swal({
           title: "Error",
           text: "No product meets the given categories",
@@ -232,7 +264,7 @@ export default {
         });
         this.query = "";
         this.selected = "None";
-        this.selectedCategory ="None";
+        this.selectedCategory = "None";
         this.displayed = this.allProducts;
       } else {
         this.displayed = filterProd;
