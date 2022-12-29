@@ -30,13 +30,24 @@
           <td>{{ order.totalPrice }}$</td>
 
           <td>
-            <button v-on:click="edit(order.id)" class="btn btn-sm text-black">
+            <button
+              v-on:click="edit(order.id)"
+              class="btn btn-sm edit text-black"
+            >
               Edit
             </button>
           </td>
         </tr>
       </tbody>
     </table>
+    <div>
+      <button
+        class="mt-2 col-12 btn btn-dark btn-block"
+        v-on:click="expandTable"
+      >
+        Show more
+      </button>
+    </div>
   </div>
 </template>
 
@@ -50,9 +61,24 @@ export default {
       orders: [],
       Sname: "",
       statuslist: [],
+      tableSize: 3,
+      expandBy: 3,
     };
   },
   methods: {
+    getOrders() {
+      return this.orders.slice(0, this.tableSize);
+    },
+
+    expandTable() {
+      if (this.orders.length + this.expandBy <= this.tableSize) {
+        this.tableSize = this.orders.length;
+        // this.showButton = false;
+      } else {
+        this.tableSize += this.expandBy;
+        // this.showButton = true;
+      }
+    },
     fetchorders() {
       axios
         .get("http://localhost:3000/orders", {
@@ -131,7 +157,7 @@ form {
   margin-left: 10%;
   margin-right: 10%;
 }
-button {
+.edit {
   background: #48acf0;
 }
 </style>

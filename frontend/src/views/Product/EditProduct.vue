@@ -27,7 +27,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="shoe in products" :key="shoe">
+        <tr v-for="shoe in getShoes()" :key="shoe">
           <td>{{ shoe.id }}</td>
           <td>{{ shoe.brand }}</td>
           <td>{{ shoe.name }}</td>
@@ -35,7 +35,7 @@
           <td>{{ shoe.price }}$</td>
           <td>{{ shoe.weight }}kg</td>
           <td>
-            <button class="btn btn-sm text-black" @click="edit(shoe.id)">
+            <button class="btn btn-sm text-black edit" @click="edit(shoe.id)">
               Edit
             </button>
             <formComponent
@@ -48,6 +48,14 @@
         </tr>
       </tbody>
     </table>
+    <div>
+      <button
+        class="mt-2 col-12 btn btn-dark btn-block"
+        v-on:click="expandTable"
+      >
+        Show more
+      </button>
+    </div>
   </div>
 </template>
 
@@ -72,10 +80,25 @@ export default {
       brands: Object,
       showForm: false,
       addShowForm: false,
+      tableSize: 3,
+      expandBy: 3,
     };
   },
 
   methods: {
+    getShoes() {
+      return this.products.slice(0, this.tableSize);
+    },
+
+    expandTable() {
+      if (this.products.length + this.expandBy <= this.tableSize) {
+        this.tableSize = this.products.length;
+        // this.showButton = false;
+      } else {
+        this.tableSize += this.expandBy;
+        // this.showButton = true;
+      }
+    },
     fetchProducts() {
       axios
         .get("http://localhost:3000/products", {
@@ -128,7 +151,7 @@ form label {
   border: 2px solid #48acf0;
 }
 
-button {
+.edit {
   background: #48acf0;
 }
 
