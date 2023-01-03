@@ -37,7 +37,7 @@ export class OrderController extends Controller {
             },
             where: {
                 status: {
-                    name: request.body.name
+                    name: request.query.status
                 }
             }
         }).then(result => {
@@ -56,7 +56,7 @@ export class OrderController extends Controller {
                 status: true
             },
             where: {
-                id: request.body.id
+                id: request.params.id
             }
         }).then(result => {
             response.status(200).json(result.pop());

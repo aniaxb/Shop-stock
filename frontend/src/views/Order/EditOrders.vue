@@ -1,13 +1,13 @@
 <template>
-  <form class="col-8 mt-2">
-    <div class="col-5">
-      <label for="exampleInputEmail" class="form-label">Status name</label>
-      <select v-model="Sname" class="form-select col-5">
-        <option :value="i" v-for="i in statuslist">{{ i.name }}</option>
-      </select>
-    </div>
-  </form>
 
+  <div class="col-4">
+    <label class="form-label">Select Status: {{ selectedStatus.name }}</label>
+    <select class="form-select" v-model="selectedStatus" @click="filterOrder">
+      <option :value="stat" v-for="stat in statusList">
+        {{ stat.name }}
+      </option>
+    </select>
+  </div>
   <div class="" id="divTable">
     <table class="table table-light table-striped mt-5 text-center">
       <thead class="">
@@ -31,18 +31,37 @@
 
           <td>
             <button
-              v-on:click="edit(order.id)"
-              class="btn btn-sm edit text-black"
+                v-on:click="orderDetails(order.id)"
+                class="btn btn-sm edit text-black"
             >
-              Edit
+              Details
             </button>
+            <OrderDetails
+                :order_id="order_id"
+                v-if="orderDetailsForm"
+                class="form-popup"
+                @close="orderDetailsForm = false"
+            />
+
+            <button
+              v-on:click="editOrder(order.id)"
+              class="btn btn-sm edit text-black mx-2"
+            >
+              Edit Status
+            </button>
+            <OrderStatus
+                :order_id="order_id"
+                v-if="orderStatusForm"
+                class="form-popup"
+                @close="orderStatusForm = false"
+            />
           </td>
         </tr>
       </tbody>
     </table>
     <div>
       <button
-        class="mt-2 col-12 btn btn-dark btn-block"
+        class="mt-2 col-12 btn btn-dark btn-block mx-2"
         v-on:click="expandTable"
       >
         Show more
@@ -53,23 +72,44 @@
 
 <script>
 import axios from "axios";
-import { toRaw } from "vue";
+import OrderDetails from "./OrderDetails.vue";
+import OrderStatus from "./OrderStatus.vue";
 
 export default {
+  components: {
+    OrderDetails,
+    OrderStatus,
+  },
   data() {
     return {
       orders: [],
-      Sname: "",
-      statuslist: [],
       tableSize: 3,
       expandBy: 3,
+      orderDetailsForm: false,
+      orderStatusForm: false,
+      order_id: 0,
+      selectedStatus: "",
+      statusList: [],
     };
   },
   methods: {
-    getOrders() {
-      return this.orders.slice(0, this.tableSize);
+    filterOrder() {
+      axios
+          .get("http://localhost:3000/orders/selectBy/status", {
+            params: { status: this.selectedStatus.name },
+            headers: {
+              Authorization: "Bearer " + this.token,
+            },
+          })
+          .then((res) => {
+            if (res.status === 200) {
+              this.orders = res.data;
+              this.orders.sort(function (a, b) {
+                return -(b.id - a.id || a.name.localeCompare(b.name));
+              });
+            }
+          }).catch((err) => console.log("err", err.response.data));
     },
-
     expandTable() {
       if (this.orders.length + this.expandBy <= this.tableSize) {
         this.tableSize = this.orders.length;
@@ -93,45 +133,31 @@ export default {
               return -(b.id - a.id || a.name.localeCompare(b.name));
             });
 
-            // console.log(this.orders[0].products);
-            // console.log(this.orders);
           }
         })
         .catch((err) => console.log("err", err.response.data));
     },
     fetchstatus() {
       axios
-        .get("http://localhost:3000/status", {
-          headers: {
-            Authorization: "Bearer " + this.token,
-          },
-        })
-        .then((res) => {
-          if (res.status === 200) {
-            this.statuslist = res.data;
-            // console.log(this.orders);
-          }
-        })
-        .catch((err) => console.log("err", err.response.data));
-    },
-    async edit(id) {
-      await axios
-        .put(
-          `http://localhost:3000/orders/${id}`,
-          { name: toRaw(this.Sname.name) },
-          {
+          .get("http://localhost:3000/status", {
             headers: {
-              Authorization: "Bearer " + this.token,
+              Authorization: "Bearer " + localStorage.getItem("token"),
             },
-          }
-        )
-        .then((res) => {
-          if (res.status === 200) {
-            console.log("Order has been updated");
-            window.location.reload();
-          }
-        })
-        .catch((err) => console.log("err", err.response.data));
+          })
+          .then((res) => {
+            if (res.status === 200) {
+              this.statusList = res.data;
+            }
+          })
+          .catch((err) => console.log("err", err.response.data));
+    },
+    async orderDetails(id) {
+      this.order_id = id;
+      this.orderDetailsForm = true;
+    },
+    async editOrder(id) {
+      this.order_id = id;
+      this.orderStatusForm = true;
     },
   },
   created() {
@@ -151,6 +177,19 @@ form {
   max-width: 64em;
   margin: auto;
   /* text-align: center; */
+}
+
+.form-popup {
+  position: fixed;
+  top: 25%;
+  right: 37%;
+  width: 30%;
+  height: 60%;
+  background: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  margin-left: 1em;
+  z-index: 1;
+  overflow-y: auto;
 }
 
 #divTable {
