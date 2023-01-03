@@ -224,21 +224,21 @@ export default {
     if (cartedProducts) {
       this.cartItems = JSON.parse(localStorage.getItem("cartedProducts"));
 
-      this.cartItems.forEach((product) => {
-        if (product.id in this.quantities) {
-          this.quantities[product.id] += 1;
-        } else {
-          this.quantities[product.id] = 1;
-        }
-      });
-      console.log(this.quantities);
-      console.log(this.cartItems[0].id);
+      // console.log(this.quantities);
+      // console.log(this.cartItems[0].id);
 
       if (this.cartItems[0]) {
         for (let cartItem of this.cartItems) {
           this.totalCost += parseFloat(cartItem.price);
           this.countCarted += 1;
         }
+        this.cartItems.forEach((product) => {
+          if (product.id in this.quantities) {
+            this.quantities[product.id] += 1;
+          } else {
+            this.quantities[product.id] = 1;
+          }
+        });
         localStorage.setItem("countCarted", this.countCarted);
       }
     }

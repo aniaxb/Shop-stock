@@ -74,6 +74,7 @@
     </div>
     <div>
       <button
+        v-if="isButtonVisible"
         class="my-2 col-12 btn btn-dark btn-block"
         v-on:click="expandTable"
       >
@@ -102,6 +103,7 @@ export default {
       brands: [],
       tableSize: 3,
       expandBy: 3,
+      isButtonVisible: true,
     };
   },
   created() {
@@ -110,6 +112,9 @@ export default {
 
   methods: {
     getShoes() {
+      if (this.tableSize >= this.displayed.length) {
+        this.isButtonVisible = false;
+      } else this.isButtonVisible = true;
       return this.displayed.slice(0, this.tableSize);
     },
 
@@ -136,6 +141,7 @@ export default {
               return -(b.id - a.id || a.name.localeCompare(b.name));
             });
             this.displayed = this.allProducts;
+            // console.log(this.displayed.length);
           }
         })
         .catch((err) => {
