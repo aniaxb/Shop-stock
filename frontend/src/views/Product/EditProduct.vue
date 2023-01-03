@@ -50,6 +50,7 @@
     </table>
     <div>
       <button
+        v-if="isButtonVisible"
         class="mt-2 col-12 btn btn-dark btn-block"
         v-on:click="expandTable"
       >
@@ -82,11 +83,15 @@ export default {
       addShowForm: false,
       tableSize: 3,
       expandBy: 3,
+      isButtonVisible: true,
     };
   },
 
   methods: {
     getShoes() {
+      if (this.tableSize >= this.products.length) {
+        this.isButtonVisible = false;
+      } else this.isButtonVisible = true;
       return this.products.slice(0, this.tableSize);
     },
 

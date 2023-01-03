@@ -1,13 +1,15 @@
 <template>
-
-  <div class="col-4">
-    <label class="form-label">Select Status: {{ selectedStatus.name }}</label>
+  <div class="col-4" id="selectStatus">
+    <label class="form-label fs-5 fw-bolder"
+      >Select Status: {{ selectedStatus.name }}</label
+    >
     <select class="form-select" v-model="selectedStatus" @click="filterOrder">
       <option :value="stat" v-for="stat in statusList">
         {{ stat.name }}
       </option>
     </select>
   </div>
+
   <div class="" id="divTable">
     <table class="table table-light table-striped mt-5 text-center">
       <thead class="">
@@ -22,7 +24,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="order in orders" :key="order">
+        <tr v-for="order in getOrders()" :key="order">
           <td>{{ order.id }}</td>
           <td>{{ order.userName }}</td>
           <td>{{ order.phoneNumber }}</td>
@@ -31,16 +33,16 @@
 
           <td>
             <button
-                v-on:click="orderDetails(order.id)"
-                class="btn btn-sm edit text-black"
+              v-on:click="orderDetails(order.id)"
+              class="btn btn-sm edit text-black"
             >
               Details
             </button>
             <OrderDetails
-                :order_id="order_id"
-                v-if="orderDetailsForm"
-                class="form-popup"
-                @close="orderDetailsForm = false"
+              :order_id="order_id"
+              v-if="orderDetailsForm"
+              class="form-popup"
+              @close="orderDetailsForm = false"
             />
 
             <button
@@ -50,10 +52,10 @@
               Edit Status
             </button>
             <OrderStatus
-                :order_id="order_id"
-                v-if="orderStatusForm"
-                class="form-popup"
-                @close="orderStatusForm = false"
+              :order_id="order_id"
+              v-if="orderStatusForm"
+              class="form-popup"
+              @close="orderStatusForm = false"
             />
           </td>
         </tr>
@@ -61,6 +63,7 @@
     </table>
     <div>
       <button
+        v-if="isButtonVisible"
         class="mt-2 col-12 btn btn-dark btn-block mx-2"
         v-on:click="expandTable"
       >
@@ -90,25 +93,33 @@ export default {
       order_id: 0,
       selectedStatus: "",
       statusList: [],
+      isButtonVisible: true,
     };
   },
   methods: {
+    getOrders() {
+      if (this.tableSize >= this.orders.length) {
+        this.isButtonVisible = false;
+      } else this.isButtonVisible = true;
+      return this.orders.slice(0, this.tableSize);
+    },
     filterOrder() {
       axios
-          .get("http://localhost:3000/orders/selectBy/status", {
-            params: { status: this.selectedStatus.name },
-            headers: {
-              Authorization: "Bearer " + this.token,
-            },
-          })
-          .then((res) => {
-            if (res.status === 200) {
-              this.orders = res.data;
-              this.orders.sort(function (a, b) {
-                return -(b.id - a.id || a.name.localeCompare(b.name));
-              });
-            }
-          }).catch((err) => console.log("err", err.response.data));
+        .get("http://localhost:3000/orders/selectBy/status", {
+          params: { status: this.selectedStatus.name },
+          headers: {
+            Authorization: "Bearer " + this.token,
+          },
+        })
+        .then((res) => {
+          if (res.status === 200) {
+            this.orders = res.data;
+            this.orders.sort(function (a, b) {
+              return -(b.id - a.id || a.name.localeCompare(b.name));
+            });
+          }
+        })
+        .catch((err) => console.log("err", err.response.data));
     },
     expandTable() {
       if (this.orders.length + this.expandBy <= this.tableSize) {
@@ -132,24 +143,23 @@ export default {
             this.orders.sort(function (a, b) {
               return -(b.id - a.id || a.name.localeCompare(b.name));
             });
-
           }
         })
         .catch((err) => console.log("err", err.response.data));
     },
     fetchstatus() {
       axios
-          .get("http://localhost:3000/status", {
-            headers: {
-              Authorization: "Bearer " + localStorage.getItem("token"),
-            },
-          })
-          .then((res) => {
-            if (res.status === 200) {
-              this.statusList = res.data;
-            }
-          })
-          .catch((err) => console.log("err", err.response.data));
+        .get("http://localhost:3000/status", {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        })
+        .then((res) => {
+          if (res.status === 200) {
+            this.statusList = res.data;
+          }
+        })
+        .catch((err) => console.log("err", err.response.data));
     },
     async orderDetails(id) {
       this.order_id = id;
@@ -173,6 +183,11 @@ export default {
 </script>
 
 <style scoped>
+#selectStatus {
+  margin-left: 5em;
+  margin-top: 1.5em;
+}
+
 form {
   max-width: 64em;
   margin: auto;
