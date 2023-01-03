@@ -31,10 +31,23 @@
 
           <td>
             <button
-              v-on:click="edit(order.id)"
+                v-on:click="orderDetails(order.id)"
+                class="btn btn-sm edit text-black"
+            >
+              Details
+            </button>
+            <OrderDetails
+                :order_id="order_id"
+                v-if="orderDetailsForm"
+                class="form-popup"
+                @close="orderDetailsForm = false"
+            />
+
+            <button
+              v-on:click="editOrder(order.id)"
               class="btn btn-sm edit text-black"
             >
-              Edit
+              Edit Status
             </button>
           </td>
         </tr>
@@ -53,9 +66,14 @@
 
 <script>
 import axios from "axios";
-import { toRaw } from "vue";
+import OrderDetails from "./OrderDetails.vue";
+import OrderStatus from "./OrderStatus.vue";
 
 export default {
+  components: {
+    OrderDetails,
+    OrderStatus,
+  },
   data() {
     return {
       orders: [],
@@ -63,6 +81,9 @@ export default {
       statuslist: [],
       tableSize: 3,
       expandBy: 3,
+      orderDetailsForm: false,
+      orderStatusForm: false,
+      order_id: 0
     };
   },
   methods: {
@@ -114,24 +135,30 @@ export default {
         })
         .catch((err) => console.log("err", err.response.data));
     },
-    async edit(id) {
-      await axios
-        .put(
-          `http://localhost:3000/orders/${id}`,
-          { name: toRaw(this.Sname.name) },
-          {
-            headers: {
-              Authorization: "Bearer " + this.token,
-            },
-          }
-        )
-        .then((res) => {
-          if (res.status === 200) {
-            console.log("Order has been updated");
-            window.location.reload();
-          }
-        })
-        .catch((err) => console.log("err", err.response.data));
+    async orderDetails(id) {
+      this.order_id = id;
+      this.orderDetailsForm = true;
+    },
+    async editOrder(id) {
+      this.order_id = id;
+      this.orderStatusForm = true;
+      // await axios
+      //   .put(
+      //     `http://localhost:3000/orders/${id}`,
+      //     { name: toRaw(this.Sname.name) },
+      //     {
+      //       headers: {
+      //         Authorization: "Bearer " + this.token,
+      //       },
+      //     }
+      //   )
+      //   .then((res) => {
+      //     if (res.status === 200) {
+      //       console.log("Order has been updated");
+      //       window.location.reload();
+      //     }
+      //   })
+      //   .catch((err) => console.log("err", err.response.data));
     },
   },
   created() {
@@ -151,6 +178,19 @@ form {
   max-width: 64em;
   margin: auto;
   /* text-align: center; */
+}
+
+.form-popup {
+  position: fixed;
+  top: 25%;
+  right: 37%;
+  width: 30%;
+  height: 42%;
+  background: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  margin-left: 1em;
+  z-index: 1;
+  overflow-y: auto;
 }
 
 #divTable {
