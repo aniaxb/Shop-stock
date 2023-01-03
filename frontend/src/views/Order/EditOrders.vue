@@ -1,4 +1,13 @@
 <template>
+
+  <div class="col-4">
+    <label class="form-label">Select Status: {{ selectedStatus.name }}</label>
+    <select class="form-select" v-model="selectedStatus" @click="filterOrder">
+      <option :value="stat" v-for="stat in statusList">
+        {{ stat.name }}
+      </option>
+    </select>
+  </div>
   <div class="" id="divTable">
     <table class="table table-light table-striped mt-5 text-center">
       <thead class="">
@@ -74,20 +83,33 @@ export default {
   data() {
     return {
       orders: [],
-      Sname: "",
-      statuslist: [],
       tableSize: 3,
       expandBy: 3,
       orderDetailsForm: false,
       orderStatusForm: false,
       order_id: 0,
+      selectedStatus: "",
+      statusList: [],
     };
   },
   methods: {
-    getOrders() {
-      return this.orders.slice(0, this.tableSize);
+    filterOrder() {
+      axios
+          .get("http://localhost:3000/orders/selectBy/status", {
+            params: { status: this.selectedStatus.name },
+            headers: {
+              Authorization: "Bearer " + this.token,
+            },
+          })
+          .then((res) => {
+            if (res.status === 200) {
+              this.orders = res.data;
+              this.orders.sort(function (a, b) {
+                return -(b.id - a.id || a.name.localeCompare(b.name));
+              });
+            }
+          }).catch((err) => console.log("err", err.response.data));
     },
-
     expandTable() {
       if (this.orders.length + this.expandBy <= this.tableSize) {
         this.tableSize = this.orders.length;
@@ -111,11 +133,23 @@ export default {
               return -(b.id - a.id || a.name.localeCompare(b.name));
             });
 
-            // console.log(this.orders[0].products);
-            // console.log(this.orders);
           }
         })
         .catch((err) => console.log("err", err.response.data));
+    },
+    fetchstatus() {
+      axios
+          .get("http://localhost:3000/status", {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          })
+          .then((res) => {
+            if (res.status === 200) {
+              this.statusList = res.data;
+            }
+          })
+          .catch((err) => console.log("err", err.response.data));
     },
     async orderDetails(id) {
       this.order_id = id;
@@ -133,6 +167,7 @@ export default {
   mounted() {
     this.token = localStorage.getItem("token");
     this.fetchorders();
+    this.fetchstatus();
   },
 };
 </script>

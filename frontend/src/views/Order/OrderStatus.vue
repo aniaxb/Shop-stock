@@ -1,6 +1,12 @@
 <template>
   <div class="">
     <div class="fw-bold fs-3">Order Status</div>
+
+    <div>
+      <b>ID:</b>
+      <div v-html="order_id"></div>
+    </div>
+
     <div>
       <b>Status:</b>
       <div v-html="status"></div>
@@ -76,7 +82,6 @@ export default {
           .then((res) => {
             if (res.status === 200) {
               this.statusList = res.data;
-              // console.log(this.orders);
             }
           })
           .catch((err) => console.log("err", err.response.data));
