@@ -1,64 +1,50 @@
 <template>
   <div class="">
     <div class="fw-bold fs-3">Order Details</div>
-<!--    <form class="mx-3">-->
-<!--      <div class="row mt-2">-->
-<!--        <div class="col-4">-->
-<!--          <label class="form-label" for="exampleUsername">Product brand</label>-->
+    <div>
+      <b>UserName:</b>
+      <div v-html="userName"></div>
+    </div>
 
-<!--          <select v-model="Pbrand" class="form-select col-5">-->
-<!--            <option :value="i" v-for="i in this.brands">-->
-<!--              {{ i }}-->
-<!--            </option>-->
-<!--          </select>-->
-<!--        </div>-->
-<!--        <div class="col-7">-->
-<!--          <label for="exampleInputEmail" class="form-label">Product name</label>-->
-<!--          <input-->
-<!--              type="text"-->
-<!--              class="form-control"-->
-<!--              v-model="Pname"-->
-<!--              placeholder="Jordan 1 Dark Mocha"-->
-<!--          />-->
-<!--        </div>-->
-<!--      </div>-->
+    <div>
+      <b>Email:</b>
+      <div v-html="email"></div>
+    </div>
 
-<!--      <div class="col-10">-->
-<!--        <label for="exampleInputEmail" class="form-label"-->
-<!--        >Product description</label-->
-<!--        >-->
-<!--        <input-->
-<!--            type="text"-->
-<!--            class="form-control"-->
-<!--            v-model="Pdescription"-->
-<!--            placeholder="This is a great shoe, released in 2019 ..."-->
-<!--        />-->
-<!--      </div>-->
-<!--      <div class="row">-->
-<!--        <div class="col-5">-->
-<!--          <label for="exampleInputEmail" class="form-label"-->
-<!--          >Product price</label-->
-<!--          >-->
-<!--          <input-->
-<!--              type="text"-->
-<!--              class="form-control"-->
-<!--              v-model="Pprice"-->
-<!--              placeholder="100.00"-->
-<!--          />-->
-<!--        </div>-->
-<!--        <div class="col-5">-->
-<!--          <label for="exampleInputEmail" class="form-label"-->
-<!--          >Product weight</label-->
-<!--          >-->
-<!--          <input-->
-<!--              type="text"-->
-<!--              class="form-control"-->
-<!--              v-model="Pweight"-->
-<!--              placeholder="0.7"-->
-<!--          />-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </form>-->
+    <div>
+      <b>PhoneNumber:</b>
+      <div v-html="phoneNumber"></div>
+    </div>
+
+    <div>
+      <b>Price:</b>
+      <div v-html="totalPrice"></div>
+    </div>
+
+    <div>
+      <b>Status:</b>
+      <div v-html="status"></div>
+    </div>
+
+    <div class="" id="divTable">
+      <table class="table table-light table-striped mt-5 text-center">
+        <thead class="">
+        <tr>
+          <th>Product</th>
+          <th>quantity</th>
+          <th>Price</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="prod in productQuantities" :key="prod">
+          <td>{{ prod.product.name }}</td>
+          <td>{{ prod.quantity }}</td>
+          <td>{{ prod.product.price }}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
     <button
         @click="$emit('close')"
         class="btn btn-sm btn-primary text-light mt-2"
@@ -75,40 +61,42 @@ export default {
   props: ["order_id"],
   data() {
     return {
-      Pbrand: "",
-      Pname: "",
-      Pdescription: "",
-      Pprice: "",
-      Pweight: "",
-      brands: Object,
+      date: "",
+      userName: "",
+      email: "",
+      phoneNumber: "",
+      totalPrice: "",
+      productQuantities: [],
+      status: ""
     };
   },
   methods: {
     async loadOrder() {
-      console.log(this.order_id)
-      // axios
-      //     .get(`http://localhost:3000/products/${this.product_id}`, {
-      //       headers: {
-      //         Authorization: "Bearer " + localStorage.getItem("token"),
-      //       },
-      //     })
-      //     .then((res) => {
-      //       if (res.status === 200) {
-      //         this.Pname = res.data.name;
-      //         this.Pdescription = res.data.description;
-      //         this.Pprice = res.data.price;
-      //         this.Pweight = res.data.weight;
-      //         this.Pbrand = res.data.brand;
-      //       }
-      //     })
-      //     .catch((err) => {
-      //       console.log("err", err.response.data);
-      //       this.$swal({
-      //         title: "Error",
-      //         text: err.response.data.message,
-      //         icon: "error",
-      //       });
-      //     });
+      axios
+          .get(`http://localhost:3000/orders/${this.order_id}`, {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          })
+          .then((res) => {
+            if (res.status === 200) {
+              this.date = res.data.date;
+              this.userName = res.data.userName;
+              this.email = res.data.email;
+              this.phoneNumber = res.data.phoneNumber;
+              this.totalPrice = res.data.totalPrice;
+              this.productQuantities = res.data.productQuantities;
+              this.status = res.data.status.name;
+            }
+          })
+          .catch((err) => {
+            console.log("err", err.response.data);
+            this.$swal({
+              title: "Error",
+              text: err.response.data.message,
+              icon: "error",
+            });
+          });
     },
   },
   mounted() {
