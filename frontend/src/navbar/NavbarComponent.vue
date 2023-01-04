@@ -55,7 +55,6 @@
 </template>
 
 <script>
-import {toRaw} from "vue";
 
 export default {
   name: "NavbarCom",
