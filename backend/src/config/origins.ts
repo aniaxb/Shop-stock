@@ -7,5 +7,6 @@ export const allowedOrigins = [
 export const allowedEndpoints = [
     {"path": "/login", "method": "POST"},
     {"path": "/register", "method": "POST"},
-    {"path": "/products", "method": "GET"}
+    {"path": "/products", "method": "GET"},
+    {"path": "/categories", "method": "GET"}
 ];

@@ -208,6 +208,11 @@ export default {
         // user is not logged in
         // show error
         console.log("please login to add item to cart");
+        this.$swal({
+          title: "Error",
+          text: "please login to add item to cart",
+          icon: "error",
+        });
         return;
       }
       // add to cart
@@ -223,7 +228,6 @@ export default {
         text: "Added product to cart!",
         icon: "success",
       });
-      // window.location.reload();
     },
 
     filterProduct() {

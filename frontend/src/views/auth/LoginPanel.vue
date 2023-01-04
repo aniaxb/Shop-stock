@@ -61,8 +61,10 @@ export default {
           console.log("Login successful");
           this.$swal({
             title: "Good job!",
-            text: "Sucessfully logged in!",
+            text: "Successfully logged in!",
             icon: "success",
+          }).then(function () {
+            window.location.reload();
           });
         })
         .catch((err) => {

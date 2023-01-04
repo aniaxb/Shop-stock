@@ -33,7 +33,7 @@
         >Sign out
       </a>
 
-      <RouterLink class="text-light px-3 py-2 border rounded" to="/cart">
+      <RouterLink class="text-light px-3 py-2 border rounded" to="/cart" v-if="token">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="16"
@@ -69,7 +69,7 @@ export default {
       console.log("signed out");
       localStorage.removeItem("token");
       this.token = null;
-      window.location.reload();
+      this.$router.push(this.$route.query.redirect || '/')
     },
     interval() {
       setInterval(function() {
