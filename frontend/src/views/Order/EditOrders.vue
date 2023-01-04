@@ -54,7 +54,7 @@
             <OrderStatus
               :order_id="order_id"
               v-if="orderStatusForm"
-              class="form-popup"
+              class="form-popup-status"
               @close="orderStatusForm = false"
             />
           </td>
@@ -199,7 +199,20 @@ form {
   top: 25%;
   right: 37%;
   width: 30%;
-  height: 60%;
+  height: 65%;
+  background: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  margin-left: 1em;
+  z-index: 1;
+  overflow-y: auto;
+}
+
+.form-popup-status {
+  position: fixed;
+  top: 25%;
+  right: 37%;
+  width: 30%;
+  height: 35%;
   background: white;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   margin-left: 1em;

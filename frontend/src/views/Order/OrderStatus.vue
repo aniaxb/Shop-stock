@@ -12,9 +12,9 @@
       <div v-html="status"></div>
     </div>
 
-    <form class="col-8 mt-2">
-      <div class="col-5">
-        <label for="exampleInputEmail" class="form-label">Status name</label>
+    <form class="col-8 mt-2 mx-auto">
+      <div class="col-6 mx-auto mb-2">
+        <label for="exampleInputEmail" class="col-12 form-label">Status name</label>
         <select v-model="selected" class="form-select col-5">
           <option :value="i" v-for="i in statusList">{{ i.name }}</option>
         </select>
