@@ -42,11 +42,10 @@ import axios from "axios";
 import {toRaw} from "vue";
 
 export default {
-  props: ["order_id"],
+  props: ["order_id", "statusList"],
   data() {
     return {
       status: "",
-      statusList: [],
       selected: "",
     };
   },
@@ -72,20 +71,6 @@ export default {
             });
           });
     },
-    fetchstatus() {
-      axios
-          .get("http://localhost:3000/status", {
-            headers: {
-              Authorization: "Bearer " + localStorage.getItem("token"),
-            },
-          })
-          .then((res) => {
-            if (res.status === 200) {
-              this.statusList = res.data;
-            }
-          })
-          .catch((err) => console.log("err", err.response.data));
-    },
     async handleSubmit() {
       await axios
           .put(
@@ -99,7 +84,7 @@ export default {
           )
           .then((res) => {
             if (res.status === 200) {
-              console.log("Product has been updated");
+              console.log("products has been updated");
               window.location.reload();
             }
           })
@@ -115,7 +100,6 @@ export default {
   },
   mounted() {
     this.loadOrder();
-    this.fetchstatus();
   },
 };
 </script>

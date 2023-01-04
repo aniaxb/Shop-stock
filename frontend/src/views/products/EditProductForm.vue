@@ -134,15 +134,15 @@ export default {
         )
         .then((res) => {
           if (res.status === 200) {
-            console.log("Product has been updated");
-
-            // this.$swal({
-            //   toast: true,
-            //   title: "Good job!",
-            //   text: "Product has been updated",
-            //   icon: "success",
-            // });
-            window.location.reload();
+            console.log("products has been updated");
+            this.$swal({
+              toast: true,
+              title: "Good job!",
+              text: "products has been updated!",
+              icon: "success",
+            });
+            this.$emit('close')
+            //window.location.reload();
           }
         })
         .catch((err) => {

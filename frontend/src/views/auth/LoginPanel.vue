@@ -53,10 +53,8 @@ export default {
         password: this.password,
       };
       await axios
-        // .post(`${this.baseURL}/login`, body)
         .post("http://localhost:3000/login", body)
         .then((res) => {
-          console.log(res);
           this.$router.replace("/browse");
           localStorage.setItem("token", res.data.token);
           localStorage.setItem("username", this.email);

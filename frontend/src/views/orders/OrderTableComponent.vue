@@ -53,6 +53,7 @@
             </button>
             <OrderStatus
               :order_id="order_id"
+              :statusList="statusList"
               v-if="orderStatusForm"
               class="form-popup-status"
               @close="orderStatusForm = false"
@@ -75,8 +76,8 @@
 
 <script>
 import axios from "axios";
-import OrderDetails from "./OrderDetails.vue";
-import OrderStatus from "./OrderStatus.vue";
+import OrderDetails from "./OrderDetailsForm.vue";
+import OrderStatus from "./EditOrderStatusForm.vue";
 
 export default {
   components: {

@@ -24,13 +24,11 @@
           <p class="mb-0 font-weight-bold" id="item-price">
             $ {{ cartItem.price }} per unit
           </p>
-          <!-- <p class="mb-0">Weight:{{ cartItem.weight }}</p> -->
         </div>
         <p class="mb-0">
           Total:
           <span class="font-weight-bold">
             $ {{ cartItem.price }}
-            <!-- * cartItem.weight -->
           </span>
         </p>
       </div>
@@ -66,7 +64,6 @@
               v-model="usernameForm"
               placeholder="username"
             />
-            <!-- <div>{{ this.usernameLS }}</div> -->
           </div>
           <div class="col-5">
             <label for="exampleInputEmail" class="form-label"
@@ -107,7 +104,6 @@
 </template>
 
 <script>
-// import axios from "axios";
 
 import axios from "axios";
 import { toRaw } from "vue";
@@ -122,7 +118,6 @@ export default {
       emailForm: "",
       phoneNumberForm: "",
       countCarted: 0,
-      // usernameLS: null,
       quantities: {},
     };
   },
@@ -218,14 +213,9 @@ export default {
 
   mounted() {
     this.token = localStorage.getItem("token");
-    // this.usernameLS = localStorage.getItem("username");
-    // console.log(this.usernameLS);
     let cartedProducts = JSON.parse(localStorage.getItem("cartedProducts"));
     if (cartedProducts) {
       this.cartItems = JSON.parse(localStorage.getItem("cartedProducts"));
-
-      // console.log(this.quantities);
-      // console.log(this.cartItems[0].id);
 
       if (this.cartItems[0]) {
         for (let cartItem of this.cartItems) {
@@ -242,7 +232,6 @@ export default {
         localStorage.setItem("countCarted", this.countCarted);
       }
     }
-    // console.log(this.cartItems[0][0]);
   },
 };
 </script>

@@ -140,7 +140,7 @@ export default {
         )
         .then((res) => {
           if (res.status === 200) {
-            console.log("Product has been added");
+            console.log("products has been added");
             window.location.reload();
           }
         })

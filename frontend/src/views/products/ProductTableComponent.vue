@@ -42,7 +42,7 @@
               :product_id="product_id"
               v-if="showForm"
               class="form-popup"
-              @close="showForm = false"
+              @close="fetchProducts"
             />
           </td>
         </tr>
@@ -62,12 +62,12 @@
 
 <script>
 import axios from "axios";
-import formComponent from "./FormComponent.vue";
-import addFormComponent from "./AddFormComponent.vue";
+import editForm from "./EditProductForm.vue";
+import addForm from "./AddProductForm.vue";
 export default {
   components: {
-    formComponent,
-    addFormComponent,
+    formComponent: editForm,
+    addFormComponent: addForm,
   },
   data() {
     return {
@@ -105,6 +105,8 @@ export default {
       }
     },
     fetchProducts() {
+      this.showForm = false;
+      this.addShowForm = false;
       axios
         .get("http://localhost:3000/products", {
           headers: {
@@ -117,7 +119,6 @@ export default {
             this.products.sort(function (a, b) {
               return -(b.id - a.id || a.name.localeCompare(b.name));
             });
-            // console.log(this.products);
           }
         })
         .catch((err) => console.log(err.response.data.message));
@@ -137,7 +138,6 @@ export default {
   mounted() {
     this.token = localStorage.getItem("token");
     this.brands = JSON.parse(localStorage.getItem("brands"));
-    // console.log(this.brands);
     this.fetchProducts();
   },
 };

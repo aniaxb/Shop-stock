@@ -141,7 +141,6 @@ export default {
               return -(b.id - a.id || a.name.localeCompare(b.name));
             });
             this.displayed = this.allProducts;
-            // console.log(this.displayed.length);
           }
         })
         .catch((err) => {
@@ -277,14 +276,12 @@ export default {
       }
     },
   },
-  mounted() {
-    // window.location.reload();
-    this.token = localStorage.getItem("token");
 
+  mounted() {
+    this.token = localStorage.getItem("token");
     this.fetchProducts();
     this.fetchCategories();
     this.fetchBrands();
-    // this.products = this.productsTable;
   },
 };
 </script>

@@ -82,15 +82,8 @@ export default {
   mounted() {
     this.token = localStorage.getItem("token");
     this.countCarted = localStorage.getItem("countCarted");
-    // console.log(this.countCarted);
-    // window.location.reload();
     this.interval();
   },
-  watch: {
-    localStorageVariable(newValue, oldValue) {
-      console.log(`localStorageVariable changed from ${oldValue} to ${newValue}`)
-    }
-  }
 };
 </script>
 
