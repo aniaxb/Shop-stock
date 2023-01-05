@@ -85,7 +85,8 @@
 </template>
 
 <script>
-import axios from "axios";
+import {Network} from "../../helpers/network";
+import {SweetAlert} from "../../helpers/sweetAlert";
 
 export default {
   name: "BrowseProducts",
@@ -106,6 +107,7 @@ export default {
       isButtonVisible: true,
     };
   },
+
   created() {
     document.body.style.backgroundColor = "#e9f1f7";
   },
@@ -121,113 +123,64 @@ export default {
     expandTable() {
       if (this.displayed.length + this.expandBy <= this.tableSize) {
         this.tableSize = this.displayed.length;
-        // this.showButton = false;
       } else {
         this.tableSize += this.expandBy;
-        // this.showButton = true;
       }
     },
+
     fetchProducts() {
-      axios
-        .get("http://localhost:3000/products", {
-          headers: {
-            Authorization: "Bearer " + this.token,
-          },
-        })
-        .then((res) => {
-          if (res.status === 200) {
-            this.allProducts = res.data;
-            this.allProducts.sort(function (a, b) {
-              return -(b.id - a.id || a.name.localeCompare(b.name));
-            });
-            this.displayed = this.allProducts;
-          }
-        })
-        .catch((err) => {
-          console.log("err", err.response.data);
-          this.$swal({
-            title: "Error",
-            text: err.response.data.message,
-            icon: "error",
-          });
+      Network.getProducts().then(result => {
+        this.allProducts = result;
+        this.allProducts.sort(function (a, b) {
+          return -(b.id - a.id || a.name.localeCompare(b.name));
         });
+        this.displayed = this.allProducts;
+      }).catch((err) => {
+        console.log("err", err.response.data);
+        SweetAlert.error(this.$swal, err.response.data.message);
+      });
     },
+
     fetchCategories() {
-      axios
-        .get("http://localhost:3000/categories", {
-          headers: {
-            Authorization: "Bearer " + this.token,
-          },
-        })
-        .then((res) => {
-          if (res.status === 200) {
-            this.categories = res.data;
-          }
-        })
-        .catch((err) => {
-          console.log("err", err.response.data);
-          this.$swal({
-            title: "Error",
-            text: err.response.data.message,
-            icon: "error",
-          });
-        });
+      Network.getCategories().then(result => {
+        this.categories = result;
+      }).catch((err) => {
+        console.log("err", err.response.data);
+        SweetAlert.error(this.$swal, err.response.data.message);
+      });
     },
+
     fetchBrands() {
-      axios
-        .get("http://localhost:3000/products", {
-          headers: {
-            Authorization: "Bearer " + this.token,
-          },
-        })
-        .then((res) => {
-          if (res.status === 200) {
-            this.shoesData = res.data;
-            let arr = [];
-            for (let shoe of this.shoesData) {
-              arr.push(shoe.brand);
-            }
-            this.brands = arr.filter(
-              (item, index, self) => self.indexOf(item) === index
-            );
-            localStorage.setItem("brands", JSON.stringify(this.brands));
-          }
-        })
-        .catch((err) => {
-          console.log("err", err.response.data);
-          this.$swal({
-            title: "Error",
-            text: err.response.data.message,
-            icon: "error",
-          });
-        });
+      Network.getProducts().then(result => {
+        this.shoesData = result;
+        let arr = [];
+        for (let shoe of this.shoesData) {
+          arr.push(shoe.brand);
+        }
+        this.brands = arr.filter(
+            (item, index, self) => self.indexOf(item) === index
+        );
+        localStorage.setItem("brands", JSON.stringify(this.brands));
+      }).catch((err) => {
+        console.log("err", err.response.data);
+        SweetAlert.error(this.$swal, err.response.data.message)
+      });
     },
 
     addToCart(index) {
       if (!this.token) {
-        // user is not logged in
-        // show error
         console.log("please login to add item to cart");
-        this.$swal({
-          title: "Error",
-          text: "please login to add item to cart",
-          icon: "error",
-        });
+        SweetAlert.error(this.$swal, "please login to add item to cart")
         return;
       }
-      // add to cart
+
       let cartedTest;
       let productIndex = index - 1;
       this.cartedProducts.push(this.allProducts[productIndex]);
       cartedTest = JSON.parse(JSON.stringify(this.cartedProducts));
       localStorage.setItem("cartedProducts", JSON.stringify(cartedTest));
       console.log("Added to cart", cartedTest);
-      this.$swal({
-        toast: true,
-        title: "Good job!",
-        text: "Added product to cart!",
-        icon: "success",
-      });
+      SweetAlert.accepted(this.$swal, "Added product to cart!")
     },
 
     filterProduct() {
@@ -266,11 +219,7 @@ export default {
       }
 
       if (filterProd.length === 0) {
-        this.$swal({
-          title: "Error",
-          text: "No product meets the given categories",
-          icon: "error",
-        });
+        SweetAlert.error(this.$swal, "No product meets the given categories")
         this.query = "";
         this.selected = "None";
         this.selectedCategory = "None";

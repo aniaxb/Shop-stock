@@ -1,17 +1,18 @@
 
 export class SweetAlert {
-    static accepted(swal): object {
+
+    static accepted(swal, message: string): object {
         return swal({
             title: "Good job!",
-            text: "Successfully logged in!",
+            text: message,
             icon: "success",
         })
     }
 
-    static error(swal, error: string): object {
+    static error(swal, message: string): object {
         return swal({
             title: "Error",
-            text: error,
+            text: message,
             icon: "error",
         })
     }

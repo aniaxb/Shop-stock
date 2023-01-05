@@ -46,6 +46,7 @@ export default {
       password: null,
     };
   },
+
   methods: {
     async loginUser(e) {
       e.preventDefault();
@@ -54,7 +55,7 @@ export default {
         localStorage.setItem("token", result);
         localStorage.setItem("username", this.email);
         console.log("Login successful");
-        SweetAlert.accepted(this.$swal).then(function () {
+        SweetAlert.accepted(this.$swal, "Successfully logged in!").then(function () {
           window.location.reload();
         });
       }).catch((err) => {
@@ -63,9 +64,11 @@ export default {
       });
     },
   },
+
   created() {
     document.body.style.backgroundColor = "#e9f1f7";
   },
+
   mounted() {},
 };
 </script>

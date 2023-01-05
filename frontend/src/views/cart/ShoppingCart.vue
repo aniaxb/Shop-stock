@@ -107,6 +107,8 @@
 
 import axios from "axios";
 import { toRaw } from "vue";
+import {SweetAlert} from "../../helpers/sweetAlert";
+import {Network} from "../../helpers/network";
 
 export default {
   data() {
@@ -121,6 +123,7 @@ export default {
       quantities: {},
     };
   },
+
   created() {
     document.body.style.backgroundColor = "#e9f1f7";
   },
@@ -136,45 +139,20 @@ export default {
         jsonArray.push(element);
       }
 
-      axios
-        .post(
-          "http://localhost:3000/orders",
-          {
-            userName: this.usernameForm,
-            phoneNumber: this.phoneNumberForm,
-            email: this.emailForm,
-            totalPrice: this.totalCost,
-            status: {
-              id: 4,
-            },
-            productQuantities: jsonArray,
-          },
-          {
-            headers: {
-              Authorization: "Bearer " + this.token,
-            },
-          }
-        )
-        .then((res) => {
-          if (res.status === 200) {
-            console.log("Submitted an order");
-            this.$swal({
-              toast: true,
-              title: "Good job!",
-              text: "Submitted an order!",
-              icon: "success",
-            });
-          }
-        })
-        .catch((err) => {
-          console.log("err", err.response.data);
-          this.$swal({
-            title: "Error",
-            text: err.response.data.message,
-            icon: "error",
-          });
-        });
+      Network.addOrder(this.token, this.usernameForm,
+          this.phoneNumberForm,
+          this.emailForm,
+          this.totalCost,
+          4,
+          jsonArray).then(result => {
+          console.log("Submitted an order");
+          SweetAlert.accepted(this.$swal, "Submitted an order!")
+      }).catch((err) => {
+        console.log("err", err.response.data);
+        SweetAlert.error(this.$swal, err.response.data.message)
+      });
     },
+
     addItem(id) {
       let newArr = [];
       let price = 0;
@@ -185,14 +163,12 @@ export default {
         }
       }
       this.cartItems.push(newArr[0]);
-
       localStorage.setItem("cartedProducts", JSON.stringify(this.cartItems));
-
       this.quantities[id] += 1;
       this.totalCost += price;
-
       console.log("Added this item again");
     },
+
     deleteItem(id) {
       let price = 0;
       for (let i = 0; i < this.cartItems.length; i++) {
@@ -202,11 +178,9 @@ export default {
           break;
         }
       }
-
       localStorage.setItem("cartedProducts", JSON.stringify(this.cartItems));
       this.totalCost -= price;
       this.quantities[id] -= 1;
-
       console.log("Deleted this item");
     },
   },
