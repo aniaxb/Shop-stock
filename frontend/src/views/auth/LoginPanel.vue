@@ -36,7 +36,8 @@
 </template>
 
 <script>
-import axios from "axios";
+import {Network} from "../../helpers/network";
+import {SweetAlert} from "../../helpers/sweetAlert";
 
 export default {
   data() {
@@ -48,37 +49,21 @@ export default {
   methods: {
     async loginUser(e) {
       e.preventDefault();
-      const body = {
-        email: this.email,
-        password: this.password,
-      };
-      await axios
-        .post("http://localhost:3000/login", body)
-        .then((res) => {
-          this.$router.replace("/browse");
-          localStorage.setItem("token", res.data.token);
-          localStorage.setItem("username", this.email);
-          console.log("Login successful");
-          this.$swal({
-            title: "Good job!",
-            text: "Successfully logged in!",
-            icon: "success",
-          }).then(function () {
-            window.location.reload();
-          });
-        })
-        .catch((err) => {
-          console.log("err", err.response.data);
-          this.$swal({
-            title: "Error",
-            text: err.response.data.message,
-            icon: "error",
-          });
+      Network.loginUser(this.email, this.password).then(result => {
+        this.$router.replace("/browse");
+        localStorage.setItem("token", result);
+        localStorage.setItem("username", this.email);
+        console.log("Login successful");
+        SweetAlert.accepted(this.$swal).then(function () {
+          window.location.reload();
         });
+      }).catch((err) => {
+        console.log("err", err.response.data.message);
+        SweetAlert.error(this.$swal, err.response.data.message)
+      });
     },
   },
   created() {
-    // #CCDDE2
     document.body.style.backgroundColor = "#e9f1f7";
   },
   mounted() {},
