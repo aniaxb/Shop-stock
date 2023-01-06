@@ -23,7 +23,9 @@ export class AuthController extends Controller {
                 throw new Error('Username and password are required.');
             }
             if (!user){
-                return response.sendStatus(401);
+                return response.status(401).json({
+                    'message': "The given login or password is incorrect"
+                });
             } else {
                 bcrypt.compare(password, user.password).then(result => {
                     if (result) {

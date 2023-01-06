@@ -2,13 +2,13 @@
   <div class="container">
     <div class="row">
       <div class="col text-center">
-        <button class="btn btn-sm text-black" @click="addProduct()">
+        <button class="btn btn-primary mx-auto" @click="addProduct">
           Add Product
         </button>
         <addFormComponent
           v-if="addShowForm"
           class="form-popup"
-          @close="addShowForm = false"
+          @close="fetchProducts"
         />
       </div>
     </div>
@@ -42,7 +42,7 @@
               :product_id="product_id"
               v-if="showForm"
               class="form-popup"
-              @close="showForm = false"
+              @close="fetchProducts"
             />
           </td>
         </tr>
@@ -61,28 +61,24 @@
 </template>
 
 <script>
-import axios from "axios";
-import formComponent from "./FormComponent.vue";
-import addFormComponent from "./AddFormComponent.vue";
+import editForm from "./EditProductForm.vue";
+import addForm from "./AddProductForm.vue";
+import {Network} from "../../helpers/network";
+import {SweetAlert} from "../../helpers/sweetAlert";
 export default {
   components: {
-    formComponent,
-    addFormComponent,
+    formComponent: editForm,
+    addFormComponent: addForm,
   },
   data() {
     return {
       product_id: 0,
       products: [],
-      Pbrand: "",
-      Pname: "",
-      Pdescription: "",
-      Pprice: "",
-      Pweight: "",
       brands: Object,
       showForm: false,
       addShowForm: false,
-      tableSize: 3,
-      expandBy: 3,
+      tableSize: 6,
+      expandBy: 6,
       isButtonVisible: true,
     };
   },
@@ -98,46 +94,42 @@ export default {
     expandTable() {
       if (this.products.length + this.expandBy <= this.tableSize) {
         this.tableSize = this.products.length;
-        // this.showButton = false;
       } else {
         this.tableSize += this.expandBy;
-        // this.showButton = true;
       }
     },
+
     fetchProducts() {
-      axios
-        .get("http://localhost:3000/products", {
-          headers: {
-            Authorization: "Bearer " + this.token,
-          },
-        })
-        .then((res) => {
-          if (res.status === 200) {
-            this.products = res.data;
-            this.products.sort(function (a, b) {
-              return -(b.id - a.id || a.name.localeCompare(b.name));
-            });
-            // console.log(this.products);
-          }
-        })
-        .catch((err) => console.log(err.response.data.message));
+      this.showForm = false;
+      this.addShowForm = false;
+      Network.getProducts().then(result => {
+        this.products = result;
+        this.products.sort(function (a, b) {
+          return -(b.id - a.id || a.name.localeCompare(b.name));
+        });
+      }).catch((err) => {
+        console.log(err.response.data.message);
+        SweetAlert.error(this.$swal, err.response.data.message)
+      });
     },
+
     async edit(id) {
       this.product_id = id;
       this.showForm = true;
     },
+
     addProduct() {
       this.addShowForm = true;
     },
   },
+
   created() {
-    // #CCDDE2
     document.body.style.backgroundColor = "#e9f1f7";
   },
+
   mounted() {
     this.token = localStorage.getItem("token");
     this.brands = JSON.parse(localStorage.getItem("brands"));
-    // console.log(this.brands);
     this.fetchProducts();
   },
 };

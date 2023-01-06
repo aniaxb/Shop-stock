@@ -33,7 +33,7 @@
         >Sign out
       </a>
 
-      <RouterLink class="text-light px-3 py-2 border rounded" to="/cart">
+      <RouterLink class="text-light px-3 py-2 border rounded" to="/cart" v-if="token">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="16"
@@ -55,7 +55,6 @@
 </template>
 
 <script>
-import {toRaw} from "vue";
 
 export default {
   name: "NavbarCom",
@@ -65,12 +64,13 @@ export default {
       countCarted: 0,
     };
   },
+
   methods: {
     signOut() {
       console.log("signed out");
       localStorage.removeItem("token");
       this.token = null;
-      window.location.reload();
+      this.$router.push(this.$route.query.redirect || '/')
     },
     interval() {
       setInterval(function() {
@@ -79,18 +79,12 @@ export default {
       }.bind(this), 500);
     }
   },
+
   mounted() {
     this.token = localStorage.getItem("token");
     this.countCarted = localStorage.getItem("countCarted");
-    // console.log(this.countCarted);
-    // window.location.reload();
     this.interval();
   },
-  watch: {
-    localStorageVariable(newValue, oldValue) {
-      console.log(`localStorageVariable changed from ${oldValue} to ${newValue}`)
-    }
-  }
 };
 </script>
 

@@ -53,9 +53,10 @@
             </button>
             <OrderStatus
               :order_id="order_id"
+              :statusList="statusList"
               v-if="orderStatusForm"
               class="form-popup-status"
-              @close="orderStatusForm = false"
+              @close="fetchOrders"
             />
           </td>
         </tr>
@@ -74,20 +75,22 @@
 </template>
 
 <script>
-import axios from "axios";
-import OrderDetails from "./OrderDetails.vue";
-import OrderStatus from "./OrderStatus.vue";
+import OrderDetails from "./OrderDetailsForm.vue";
+import OrderStatus from "./EditOrderStatusForm.vue";
+import {Network} from "../../helpers/network";
+import {SweetAlert} from "../../helpers/sweetAlert";
 
 export default {
   components: {
     OrderDetails,
     OrderStatus,
   },
+
   data() {
     return {
       orders: [],
-      tableSize: 3,
-      expandBy: 3,
+      tableSize: 6,
+      expandBy: 6,
       orderDetailsForm: false,
       orderStatusForm: false,
       order_id: 0,
@@ -96,6 +99,7 @@ export default {
       isButtonVisible: true,
     };
   },
+
   methods: {
     getOrders() {
       if (this.tableSize >= this.orders.length) {
@@ -103,81 +107,68 @@ export default {
       } else this.isButtonVisible = true;
       return this.orders.slice(0, this.tableSize);
     },
+
     filterOrder() {
-      axios
-        .get("http://localhost:3000/orders/selectBy/status", {
-          params: { status: this.selectedStatus.name },
-          headers: {
-            Authorization: "Bearer " + this.token,
-          },
-        })
-        .then((res) => {
-          if (res.status === 200) {
-            this.orders = res.data;
-            this.orders.sort(function (a, b) {
-              return -(b.id - a.id || a.name.localeCompare(b.name));
-            });
-          }
-        })
-        .catch((err) => console.log("err", err.response.data));
+      Network.getOrderByStatus(localStorage.getItem("token"), this.selectedStatus.name).then(result => {
+        this.orders = result;
+        this.orders.sort(function (a, b) {
+          return -(b.id - a.id || a.name.localeCompare(b.name));
+        });
+      }).catch((err) => {
+        console.log("err", err.response.data);
+        SweetAlert.error(this.$swal, err.response.data.message);
+      });
     },
+
     expandTable() {
       if (this.orders.length + this.expandBy <= this.tableSize) {
         this.tableSize = this.orders.length;
-        // this.showButton = false;
       } else {
         this.tableSize += this.expandBy;
-        // this.showButton = true;
       }
     },
-    fetchorders() {
-      axios
-        .get("http://localhost:3000/orders", {
-          headers: {
-            Authorization: "Bearer " + this.token,
-          },
-        })
-        .then((res) => {
-          if (res.status === 200) {
-            this.orders = res.data;
-            this.orders.sort(function (a, b) {
-              return -(b.id - a.id || a.name.localeCompare(b.name));
-            });
-          }
-        })
-        .catch((err) => console.log("err", err.response.data));
+
+    fetchOrders() {
+      this.orderDetailsForm = false;
+      this.orderStatusForm = false;
+      Network.getOrders(localStorage.getItem("token")).then(result => {
+        this.orders = result;
+        this.orders.sort(function (a, b) {
+          return -(b.id - a.id || a.name.localeCompare(b.name));
+        });
+      }).catch((err) => {
+        console.log("err", err.response.data);
+        SweetAlert.error(this.$swal, err.response.data.message);
+      });
     },
-    fetchstatus() {
-      axios
-        .get("http://localhost:3000/status", {
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("token"),
-          },
-        })
-        .then((res) => {
-          if (res.status === 200) {
-            this.statusList = res.data;
-          }
-        })
-        .catch((err) => console.log("err", err.response.data));
+
+    fetchStatus() {
+      Network.getStatus(localStorage.getItem("token")).then(result => {
+        this.statusList = result;
+      }).catch((err) => {
+        console.log("err", err.response.data)
+        SweetAlert.error(this.$swal, err.response.data.message);
+      });
     },
+
     async orderDetails(id) {
       this.order_id = id;
       this.orderDetailsForm = true;
     },
+
     async editOrder(id) {
       this.order_id = id;
       this.orderStatusForm = true;
     },
   },
   created() {
-    // #CCDDE2
     document.body.style.backgroundColor = "#e9f1f7";
   },
+
   mounted() {
     this.token = localStorage.getItem("token");
-    this.fetchorders();
-    this.fetchstatus();
+    this.fetchOrders();
+    this.fetchStatus();
   },
 };
 </script>

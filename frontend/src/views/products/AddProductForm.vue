@@ -6,7 +6,7 @@
         <div class="col-4">
           <label class="form-label" for="exampleUsername">Product brand</label>
 
-          <select v-model="Pbrand" class="form-select col-5">
+          <select v-model="brand" class="form-select col-5">
             <option :value="i" v-for="i in this.brands">
               {{ i }}
             </option>
@@ -17,7 +17,7 @@
           <input
             type="text"
             class="form-control"
-            v-model="Pname"
+            v-model="name"
             placeholder="Jordan 1 Dark Mocha"
           />
         </div>
@@ -30,7 +30,7 @@
         <input
           type="text"
           class="form-control"
-          v-model="Pdescription"
+          v-model="description"
           placeholder="This is a great shoe, released in 2019 ..."
         />
       </div>
@@ -42,7 +42,7 @@
           <input
             type="text"
             class="form-control"
-            v-model="Pprice"
+            v-model="price"
             placeholder="100.00"
           />
         </div>
@@ -53,7 +53,7 @@
           <input
             type="text"
             class="form-control"
-            v-model="Pweight"
+            v-model="weight"
             placeholder="0.7"
           />
         </div>
@@ -62,7 +62,7 @@
           <input
             type="text"
             class="form-control"
-            v-model="Pimg"
+            v-model="img"
             placeholder="https://images.stockx.com/images/Air-Jordan-1"
           />
         </div>
@@ -73,7 +73,7 @@
           >
 
           <select
-            v-model="Pcategory"
+            v-model="productCategory"
             class="form-select col-5"
             @click="addCategory"
           >
@@ -100,81 +100,59 @@
 </template>
 
 <script>
-import axios from "axios";
 import { toRaw } from "vue";
+import {Network} from "../../helpers/network";
+import {SweetAlert} from "../../helpers/sweetAlert";
 
 export default {
   data() {
     return {
-      Pbrand: "",
-      Pname: "",
-      Pdescription: "",
-      Pprice: "",
-      Pweight: "",
-      Pimg: "",
+      brand: "",
+      name: "",
+      description: "",
+      price: "",
+      weight: "",
+      img: "",
       categories: [],
-      Pcategory: "",
+      productCategory: "",
       selectedCategories: [],
       brands: Object,
     };
   },
   methods: {
     async handleSubmit() {
-      await axios
-        .post(
-          `http://localhost:3000/products`,
-          {
-            name: this.Pname,
-            brand: this.Pbrand,
-            img: this.Pimg,
-            description: this.Pdescription,
-            price: parseFloat(this.Pprice),
-            weight: parseFloat(this.Pweight),
-            categories: this.selectedCategories,
-          },
-          {
-            headers: {
-              Authorization: "Bearer " + localStorage.getItem("token"),
-            },
-          }
-        )
-        .then((res) => {
-          if (res.status === 200) {
-            console.log("Product has been added");
-            window.location.reload();
-          }
-        })
-        .catch((err) => {
-          this.$swal({
-            title: "Error",
-            text: err.response.data.message,
-            icon: "error",
-          });
-          console.log(err.response.data.message);
-        });
+      Network.addProduct(localStorage.getItem("token"),
+          this.brand,
+          this.name,
+          this.description,
+          this.price,
+          this.weight,
+          this.img,
+          this.selectedCategories).then(result => {
+        console.log("products has been added");
+        SweetAlert.accepted(this.$swal, "Products has been added")
+        this.$emit('close')
+      }).catch((err) => {
+        SweetAlert.error(this.$swal, err.response.data.message)
+        console.log(err.response.data.message);
+      });
     },
+
     addCategory() {
-      if (this.Pcategory !== "") {
+      if (this.productCategory !== "") {
         const set = new Set(toRaw(this.selectedCategories));
-        set.add(toRaw(this.Pcategory));
+        set.add(toRaw(this.productCategory));
         this.selectedCategories = Array.from(toRaw(set));
       }
     },
+
     fetchCategories() {
-      axios
-        .get("http://localhost:3000/categories", {
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("token"),
-          },
-        })
-        .then((res) => {
-          if (res.status === 200) {
-            this.categories = res.data;
-          }
-        })
-        .catch((err) => console.log("err", err.response.data));
+      Network.getCategories().then(result => {
+        this.categories = result;
+      }).catch((err) => console.log("err", err.response.data));
     },
   },
+
   mounted() {
     this.brands = JSON.parse(localStorage.getItem("brands"));
     this.fetchCategories();

@@ -6,7 +6,7 @@
         <div class="col-4">
           <label class="form-label" for="exampleUsername">Product brand</label>
 
-          <select v-model="Pbrand" class="form-select col-5">
+          <select v-model="product.brand" class="form-select col-5">
             <option :value="i" v-for="i in this.brands">
               {{ i }}
             </option>
@@ -17,7 +17,7 @@
           <input
             type="text"
             class="form-control"
-            v-model="Pname"
+            v-model="product.name"
             placeholder="Jordan 1 Dark Mocha"
           />
         </div>
@@ -30,7 +30,7 @@
         <input
           type="text"
           class="form-control"
-          v-model="Pdescription"
+          v-model="product.description"
           placeholder="This is a great shoe, released in 2019 ..."
         />
       </div>
@@ -42,7 +42,7 @@
           <input
             type="text"
             class="form-control"
-            v-model="Pprice"
+            v-model="product.price"
             placeholder="100.00"
           />
         </div>
@@ -53,7 +53,7 @@
           <input
             type="text"
             class="form-control"
-            v-model="Pweight"
+            v-model="product.weight"
             placeholder="0.7"
           />
         </div>
@@ -75,86 +75,39 @@
 </template>
 
 <script>
-import axios from "axios";
+import {Network} from "../../helpers/network";
+import {SweetAlert} from "../../helpers/sweetAlert";
 
 export default {
   props: ["product_id"],
   data() {
     return {
-      Pbrand: "",
-      Pname: "",
-      Pdescription: "",
-      Pprice: "",
-      Pweight: "",
+      product: Object,
       brands: Object,
     };
   },
   methods: {
     async loadProduct() {
-      axios
-        .get(`http://localhost:3000/products/${this.product_id}`, {
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("token"),
-          },
-        })
-        .then((res) => {
-          if (res.status === 200) {
-            this.Pname = res.data.name;
-            this.Pdescription = res.data.description;
-            this.Pprice = res.data.price;
-            this.Pweight = res.data.weight;
-            this.Pbrand = res.data.brand;
-          }
-        })
-        .catch((err) => {
-          console.log("err", err.response.data);
-          this.$swal({
-            title: "Error",
-            text: err.response.data.message,
-            icon: "error",
-          });
-        });
+      Network.getProduct(localStorage.getItem("token"), this.product_id).then(result => {
+        this.product = result;
+      }).catch((err) => {
+        console.log("err", err.response.data);
+        SweetAlert.error(this.$swal, err.response.data.message)
+      });
     },
     async handleSubmit() {
-      await axios
-        .put(
-          `http://localhost:3000/products/${this.product_id}`,
-          {
-            name: this.Pname,
-            brand: this.Pbrand,
-            description: this.Pdescription,
-            price: parseFloat(this.Pprice),
-            weight: parseFloat(this.Pweight),
-          },
-          {
-            headers: {
-              Authorization: "Bearer " + localStorage.getItem("token"),
-            },
-          }
-        )
-        .then((res) => {
-          if (res.status === 200) {
-            console.log("Product has been updated");
 
-            // this.$swal({
-            //   toast: true,
-            //   title: "Good job!",
-            //   text: "Product has been updated",
-            //   icon: "success",
-            // });
-            window.location.reload();
-          }
-        })
-        .catch((err) => {
-          console.log(err.response.data.message);
-          this.$swal({
-            title: "Error",
-            text: err.response.data.message,
-            icon: "error",
-          });
-        });
+      Network.editProduct(localStorage.getItem("token"), this.product_id, this.product).then(result => {
+        console.log("products has been updated");
+        SweetAlert.accepted(this.$swal, "products has been updated!")
+        this.$emit('close')
+      }).catch((err) => {
+        console.log(err.response.data.message);
+        SweetAlert.error(this.$swal, err.response.data.message)
+      });
     },
   },
+
   mounted() {
     this.brands = JSON.parse(localStorage.getItem("brands"));
     this.loadProduct();
