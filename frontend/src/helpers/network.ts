@@ -195,7 +195,6 @@ export class Network {
     }
 
     static editProduct(token: string, id: number, product: Product): Promise<Product> {
-        console.log(product)
         return axios({
             method: 'PUT',
             url: Global.BASE_URL + "/" + Global.PRODUCTS + "/" + id,
