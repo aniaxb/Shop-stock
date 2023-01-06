@@ -150,4 +150,69 @@ export class Network {
         })
     }
 
+    static addProduct(token: string,
+                      brand: string,
+                      name: string,
+                      description: string,
+                      price: string,
+                      weight: string,
+                      img: string,
+                      categories: []): Promise<Product> {
+        return axios({
+            method: 'POST',
+            url: Global.BASE_URL + "/" + Global.PRODUCTS,
+            data: {
+                name: name,
+                brand: brand,
+                img: img,
+                description: description,
+                price: parseFloat(price),
+                weight: parseFloat(weight),
+                categories: categories,
+            },
+            headers: {
+                Authorization: "Bearer " + token,
+            },
+        }).then(function (res) {
+            return res.data
+        }).catch(function (error) {
+            throw error
+        })
+    }
+
+    static getProduct(token: string, id: number): Promise<Product> {
+        return axios({
+            method: 'GET',
+            url: Global.BASE_URL + "/" + Global.PRODUCTS + "/" + id,
+            headers: {
+                Authorization: "Bearer " + token,
+            },
+        }).then(function (res) {
+            return res.data
+        }).catch(function (error) {
+            throw error
+        })
+    }
+
+    static editProduct(token: string, id: number, product: Product): Promise<Product> {
+        console.log(product)
+        return axios({
+            method: 'PUT',
+            url: Global.BASE_URL + "/" + Global.PRODUCTS + "/" + id,
+            data: {
+                name: product.name,
+                brand: product.brand,
+                description: product.description,
+                price: parseFloat(String(product.price)),
+                weight: parseFloat(String(product.weight)),
+            },
+            headers: {
+                Authorization: "Bearer " + token,
+            },
+        }).then(function (res) {
+            return res.data
+        }).catch(function (error) {
+            throw error
+        })
+    }
 }

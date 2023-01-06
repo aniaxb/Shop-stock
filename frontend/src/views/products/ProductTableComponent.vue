@@ -2,13 +2,13 @@
   <div class="container">
     <div class="row">
       <div class="col text-center">
-        <button class="btn btn-sm text-black" @click="addProduct()">
+        <button class="btn btn-primary mx-auto" @click="addProduct">
           Add Product
         </button>
         <addFormComponent
           v-if="addShowForm"
           class="form-popup"
-          @close="addShowForm = false"
+          @close="fetchProducts"
         />
       </div>
     </div>
@@ -61,9 +61,10 @@
 </template>
 
 <script>
-import axios from "axios";
 import editForm from "./EditProductForm.vue";
 import addForm from "./AddProductForm.vue";
+import {Network} from "../../helpers/network";
+import {SweetAlert} from "../../helpers/sweetAlert";
 export default {
   components: {
     formComponent: editForm,
@@ -73,16 +74,11 @@ export default {
     return {
       product_id: 0,
       products: [],
-      Pbrand: "",
-      Pname: "",
-      Pdescription: "",
-      Pprice: "",
-      Pweight: "",
       brands: Object,
       showForm: false,
       addShowForm: false,
-      tableSize: 3,
-      expandBy: 3,
+      tableSize: 6,
+      expandBy: 6,
       isButtonVisible: true,
     };
   },
@@ -98,43 +94,39 @@ export default {
     expandTable() {
       if (this.products.length + this.expandBy <= this.tableSize) {
         this.tableSize = this.products.length;
-        // this.showButton = false;
       } else {
         this.tableSize += this.expandBy;
-        // this.showButton = true;
       }
     },
+
     fetchProducts() {
       this.showForm = false;
       this.addShowForm = false;
-      axios
-        .get("http://localhost:3000/products", {
-          headers: {
-            Authorization: "Bearer " + this.token,
-          },
-        })
-        .then((res) => {
-          if (res.status === 200) {
-            this.products = res.data;
-            this.products.sort(function (a, b) {
-              return -(b.id - a.id || a.name.localeCompare(b.name));
-            });
-          }
-        })
-        .catch((err) => console.log(err.response.data.message));
+      Network.getProducts().then(result => {
+        this.products = result;
+        this.products.sort(function (a, b) {
+          return -(b.id - a.id || a.name.localeCompare(b.name));
+        });
+      }).catch((err) => {
+        console.log(err.response.data.message);
+        SweetAlert.error(this.$swal, err.response.data.message)
+      });
     },
+
     async edit(id) {
       this.product_id = id;
       this.showForm = true;
     },
+
     addProduct() {
       this.addShowForm = true;
     },
   },
+
   created() {
-    // #CCDDE2
     document.body.style.backgroundColor = "#e9f1f7";
   },
+
   mounted() {
     this.token = localStorage.getItem("token");
     this.brands = JSON.parse(localStorage.getItem("brands"));
