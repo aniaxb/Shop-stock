@@ -38,8 +38,9 @@
 </template>
 
 <script>
-import axios from "axios";
 import {toRaw} from "vue";
+import {SweetAlert} from "../../helpers/sweetAlert";
+import {Network} from "../../helpers/network";
 
 export default {
   props: ["order_id", "statusList"],
@@ -49,55 +50,29 @@ export default {
       selected: "",
     };
   },
+
   methods: {
     async loadOrder() {
-      axios
-          .get(`http://localhost:3000/orders/${this.order_id}`, {
-            headers: {
-              Authorization: "Bearer " + localStorage.getItem("token"),
-            },
-          })
-          .then((res) => {
-            if (res.status === 200) {
-              this.status = res.data.status.name;
-            }
-          })
-          .catch((err) => {
-            console.log("err", err.response.data);
-            this.$swal({
-              title: "Error",
-              text: err.response.data.message,
-              icon: "error",
-            });
-          });
+      Network.getOrder(localStorage.getItem("token"), this.order_id).then(result => {
+        this.status = result.status.name;
+      }).catch((err) => {
+        console.log("err", err.response.data);
+        SweetAlert.error(this.$swal, err.response.data.message)
+      });
     },
+
     async handleSubmit() {
-      await axios
-          .put(
-              `http://localhost:3000/orders/${this.order_id}`,
-              { name: toRaw(this.selected.name) },
-              {
-                headers: {
-                  Authorization: "Bearer " + localStorage.getItem("token"),
-                },
-              }
-          )
-          .then((res) => {
-            if (res.status === 200) {
-              console.log("products has been updated");
-              window.location.reload();
-            }
-          })
-          .catch((err) => {
-            console.log(err.response.data.message);
-            this.$swal({
-              title: "Error",
-              text: err.response.data.message,
-              icon: "error",
-            });
-          });
+      Network.editOrder(localStorage.getItem("token"), this.order_id, toRaw(this.selected.name)).then(res => {
+        console.log("Order has been updated");
+        SweetAlert.accepted(this.$swal, "Order has been updated")
+        this.$emit('close')
+      }).catch((err) => {
+        console.log(err.response.data.message);
+        SweetAlert.error(this.$swal, err.response.data.message)
+      });
     },
   },
+
   mounted() {
     this.loadOrder();
   },

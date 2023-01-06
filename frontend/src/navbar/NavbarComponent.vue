@@ -64,6 +64,7 @@ export default {
       countCarted: 0,
     };
   },
+
   methods: {
     signOut() {
       console.log("signed out");
@@ -78,6 +79,7 @@ export default {
       }.bind(this), 500);
     }
   },
+
   mounted() {
     this.token = localStorage.getItem("token");
     this.countCarted = localStorage.getItem("countCarted");

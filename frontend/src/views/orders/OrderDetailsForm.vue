@@ -3,27 +3,27 @@
     <div class="fw-bold fs-3">Order Details</div>
     <div>
       <b>UserName:</b>
-      <div v-html="userName"></div>
+      <div v-html="order.userName"></div>
     </div>
 
     <div>
       <b>Email:</b>
-      <div v-html="email"></div>
+      <div v-html="order.email"></div>
     </div>
 
     <div>
       <b>PhoneNumber:</b>
-      <div v-html="phoneNumber"></div>
+      <div v-html="order.phoneNumber"></div>
     </div>
 
     <div>
       <b>Price:</b>
-      <div v-html="totalPrice"></div>
+      <div v-html="order.totalPrice"></div>
     </div>
 
     <div>
       <b>Status:</b>
-      <div v-html="status"></div>
+      <div v-html="status.name"></div>
     </div>
 
     <div class="" id="divTable">
@@ -36,7 +36,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr v-for="prod in productQuantities" :key="prod">
+        <tr v-for="prod in order.productQuantities" :key="prod">
           <td>{{ prod.product.name }}</td>
           <td>{{ prod.quantity }}</td>
           <td>{{ prod.product.price }}</td>
@@ -55,48 +55,27 @@
 </template>
 
 <script>
-import axios from "axios";
+import {Network} from "../../helpers/network";
+import {SweetAlert} from "../../helpers/sweetAlert";
+import {toRaw} from "vue";
 
 export default {
   props: ["order_id"],
   data() {
     return {
-      date: "",
-      userName: "",
-      email: "",
-      phoneNumber: "",
-      totalPrice: "",
-      productQuantities: [],
-      status: ""
+      order: Object,
+      status: Object,
     };
   },
   methods: {
     async loadOrder() {
-      axios
-          .get(`http://localhost:3000/orders/${this.order_id}`, {
-            headers: {
-              Authorization: "Bearer " + localStorage.getItem("token"),
-            },
-          })
-          .then((res) => {
-            if (res.status === 200) {
-              this.date = res.data.date;
-              this.userName = res.data.userName;
-              this.email = res.data.email;
-              this.phoneNumber = res.data.phoneNumber;
-              this.totalPrice = res.data.totalPrice;
-              this.productQuantities = res.data.productQuantities;
-              this.status = res.data.status.name;
-            }
-          })
-          .catch((err) => {
-            console.log("err", err.response.data);
-            this.$swal({
-              title: "Error",
-              text: err.response.data.message,
-              icon: "error",
-            });
-          });
+      Network.getOrder(localStorage.getItem("token"), this.order_id).then(result => {
+        this.order = toRaw(result);
+        this.status = toRaw(this.order.status)
+      }).catch((err) => {
+        console.log("err", err.response.data);
+        SweetAlert.error(this.$swal, err.response.data.message)
+      });
     },
   },
   mounted() {

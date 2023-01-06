@@ -131,8 +131,7 @@ export default {
               Authorization: "Bearer " + localStorage.getItem("token"),
             },
           }
-        )
-        .then((res) => {
+        ).then((res) => {
           if (res.status === 200) {
             console.log("products has been updated");
             this.$swal({
@@ -142,10 +141,8 @@ export default {
               icon: "success",
             });
             this.$emit('close')
-            //window.location.reload();
           }
-        })
-        .catch((err) => {
+        }).catch((err) => {
           console.log(err.response.data.message);
           this.$swal({
             title: "Error",

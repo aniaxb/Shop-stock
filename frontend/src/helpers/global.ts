@@ -4,4 +4,6 @@ export enum Global {
     PRODUCTS = "products",
     ORDERS = "orders",
     LOGIN = "login",
+    BY_STATUS = "selectBy/status",
+    STATUS = "status",
 }

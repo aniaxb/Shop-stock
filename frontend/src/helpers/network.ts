@@ -3,22 +3,10 @@ import axios from "axios";
 import {Global} from "./global";
 import {Product} from "../model/product";
 import {ProductQuantity} from "../model/productQuantity";
+import {Order} from "../model/order";
+import {Status} from "../model/status";
 
 export class Network {
-
-    // static getCategories(token: string): Promise<Category[]> {
-    //     return axios({
-    //         method: 'GET',
-    //         url: Global.BASE_URL + "/" + Global.CATEGORIES,
-    //         // headers: {
-    //         //     Authorization: "Bearer " + token,
-    //         // },
-    //     }).then(function (res) {
-    //         return res.data
-    //     }).catch(function (error) {
-    //         throw error
-    //     })
-    // }
 
     static getCategories(): Promise<Category[]> {
         return axios({
@@ -86,5 +74,80 @@ export class Network {
         })
     }
 
+    static getOrder(token: string, id: number): Promise<Order> {
+        return axios({
+            method: 'GET',
+            url: Global.BASE_URL + "/" + Global.ORDERS + "/" + id,
+            headers: {
+                Authorization: "Bearer " + token,
+            },
+        }).then(function (res) {
+            return res.data
+        }).catch(function (error) {
+            throw error
+        })
+    }
+
+    static getOrders(token: string): Promise<Order[]> {
+        return axios({
+            method: 'GET',
+            url: Global.BASE_URL + "/" + Global.ORDERS,
+            headers: {
+                Authorization: "Bearer " + token,
+            },
+        }).then(function (res) {
+            return res.data
+        }).catch(function (error) {
+            throw error
+        })
+    }
+
+    static getStatus(token: string): Promise<Status> {
+        return axios({
+            method: 'GET',
+            url: Global.BASE_URL + "/" + Global.STATUS,
+            headers: {
+                Authorization: "Bearer " + token,
+            },
+        }).then(function (res) {
+            return res.data
+        }).catch(function (error) {
+            throw error
+        })
+    }
+
+    static getOrderByStatus(token: string, status: string): Promise<Order> {
+        return axios({
+            method: 'GET',
+            url: Global.BASE_URL + "/" + Global.ORDERS + "/" + Global.BY_STATUS,
+            params: {
+                status: status
+            },
+            headers: {
+                Authorization: "Bearer " + token,
+            },
+        }).then(function (res) {
+            return res.data
+        }).catch(function (error) {
+            throw error
+        })
+    }
+
+    static editOrder(token: string, id: number, name: string): Promise<Order> {
+        return axios({
+            method: 'PUT',
+            url: Global.BASE_URL + "/" + Global.ORDERS + "/" + id,
+            data: {
+                name: name
+            },
+            headers: {
+                Authorization: "Bearer " + token,
+            },
+        }).then(function (res) {
+            return res.data
+        }).catch(function (error) {
+            throw error
+        })
+    }
 
 }
