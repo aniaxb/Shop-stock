@@ -95,8 +95,8 @@ export default {
         SweetAlert.error(this.$swal, err.response.data.message)
       });
     },
-    async handleSubmit() {
 
+    async handleSubmit() {
       Network.editProduct(localStorage.getItem("token"), this.product_id, this.product).then(result => {
         console.log("products has been updated");
         SweetAlert.accepted(this.$swal, "products has been updated!")
