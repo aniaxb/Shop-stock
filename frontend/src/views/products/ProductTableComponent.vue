@@ -7,7 +7,7 @@
         </button>
         <addFormComponent
           v-if="addShowForm"
-          class="form-popup"
+          class="form-popup-add"
           @close="fetchProducts"
         />
       </div>
@@ -171,6 +171,19 @@ form label {
 .container .products {
   display: flex;
   flex-direction: row;
+}
+
+.form-popup-add {
+  position: fixed;
+  top: 25%;
+  right: 37%;
+  width: 30%;
+  height: 65%;
+  background: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  margin-left: 1em;
+  z-index: 1;
+  overflow-y: auto;
 }
 
 .form-popup {

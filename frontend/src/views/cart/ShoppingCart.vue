@@ -144,7 +144,8 @@ export default {
           this.emailForm,
           this.totalCost,
           4,
-          jsonArray).then(result => {
+          jsonArray,
+          new Date().toLocaleDateString()).then(result => {
           console.log("Submitted an order");
           SweetAlert.accepted(this.$swal, "Submitted an order!")
       }).catch((err) => {

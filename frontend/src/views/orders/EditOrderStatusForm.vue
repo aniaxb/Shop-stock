@@ -62,7 +62,10 @@ export default {
     },
 
     async handleSubmit() {
-      Network.editOrder(localStorage.getItem("token"), this.order_id, toRaw(this.selected.name)).then(res => {
+      Network.editOrder(localStorage.getItem("token"),
+          this.order_id,
+          toRaw(this.selected.name),
+          new Date().toLocaleDateString()).then(res => {
         console.log("Order has been updated");
         SweetAlert.accepted(this.$swal, "Order has been updated")
         this.$emit('close')

@@ -104,6 +104,7 @@ export class OrderController extends Controller {
                         throw new Error('The specified state does not exist')
                     }
                     order.status = status;
+                    order.lastChangeDate = request.body.lastChangeDate;
                     this.repository.save(order).then(order => {
                         return response.status(200).json(order);
                     });

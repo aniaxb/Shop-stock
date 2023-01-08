@@ -19,7 +19,7 @@
           <th>Phone Number</th>
           <th>Status name</th>
           <th>Total price</th>
-
+          <th>Submission date</th>
           <th></th>
         </tr>
       </thead>
@@ -30,7 +30,7 @@
           <td>{{ order.phoneNumber }}</td>
           <td>{{ order.status.name }}</td>
           <td>{{ order.totalPrice }}$</td>
-
+          <td>{{ order.placeDate }}</td>
           <td>
             <button
               v-on:click="orderDetails(order.id)"

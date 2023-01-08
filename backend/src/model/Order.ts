@@ -13,7 +13,12 @@ export class Order {
     @Column({
         nullable: true
     })
-    date: string;
+    placeDate: string;
+
+    @Column({
+        nullable: true
+    })
+    lastChangeDate: string;
 
     @MinLength(3, {
         message: 'userName is too short',
