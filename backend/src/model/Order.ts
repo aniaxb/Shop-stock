@@ -2,7 +2,7 @@ import {Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToOne, JoinTable}
 import {Status} from "./status";
 import {ArrayMinSize, Matches, Min, MinLength} from "class-validator";
 import {ProductQuantity} from "./productQuantity";
-import {ColumnNumericTransformer} from "../utils/ColumnNumericTransformer";
+import {ColumnNumericTransformer} from "../utils/columnNumericTransformer";
 
 @Entity()
 export class Order {

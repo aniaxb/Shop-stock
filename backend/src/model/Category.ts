@@ -5,7 +5,7 @@ import {MinLength} from "class-validator";
 export class Category {
 
     @PrimaryGeneratedColumn()
-    private id: number;
+    id: number;
 
     @MinLength(3, {
         message: 'product name is too short',

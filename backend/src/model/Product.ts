@@ -2,7 +2,7 @@ import {Entity, PrimaryGeneratedColumn, Column, ManyToMany, OneToMany} from "typ
 import {Category} from "./category";
 import {JoinTable} from 'typeorm';
 import {ArrayMinSize, Min, MinLength} from "class-validator";
-import {ColumnNumericTransformer} from "../utils/ColumnNumericTransformer";
+import {ColumnNumericTransformer} from "../utils/columnNumericTransformer";
 import {ProductQuantity} from "./productQuantity";
 
 @Entity()
