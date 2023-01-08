@@ -26,6 +26,18 @@
       <div v-html="status.name"></div>
     </div>
 
+    <div>
+      <b>Submission date:</b>
+      <div v-html="order.placeDate"></div>
+    </div>
+
+    <template v-if="order.lastChangeDate">
+      <div>
+        <b>Date of approval/cancellation:</b>
+        <div v-html="order.lastChangeDate"></div>
+      </div>
+    </template>
+
     <div class="" id="divTable">
       <table class="table table-light table-striped mt-5 text-center">
         <thead class="">
@@ -33,6 +45,7 @@
           <th>Product</th>
           <th>quantity</th>
           <th>Price</th>
+          <th></th>
         </tr>
         </thead>
         <tbody>
@@ -63,13 +76,14 @@ export default {
   props: ["order_id"],
   data() {
     return {
-      order: Object,
+      order: "",
       status: Object,
     };
   },
   methods: {
     async loadOrder() {
       Network.getOrder(localStorage.getItem("token"), this.order_id).then(result => {
+        console.log(toRaw(result))
         this.order = toRaw(result);
         this.status = toRaw(this.order.status)
       }).catch((err) => {

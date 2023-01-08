@@ -1,7 +1,7 @@
 <template>
   <div class="">
     <div class="fw-bold fs-3 mt-2">Add Product</div>
-    <form class="mx-3">
+    <form class="mx-3" v-on:submit.prevent="() => {}">
       <div class="row mt-2">
         <div class="col-4">
           <label class="form-label" for="exampleUsername">Product brand</label>
@@ -83,6 +83,30 @@
           </select>
         </div>
       </div>
+
+      <div class="" id="divTable">
+        <table class="table table-light table-striped mt-5 text-center">
+          <thead class="">
+          <tr>
+            <th>Category</th>
+            <th></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr v-for="cat in selectedCategories" :key="cat">
+            <td>{{ cat.name }}</td>
+            <td>
+              <button
+                  v-on:click="removeSelectedCategory(cat.id)"
+                  class="btn btn-primary mx-auto"
+              >-
+              </button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+
     </form>
     <button
       @click="handleSubmit()"
@@ -143,6 +167,7 @@ export default {
         const set = new Set(toRaw(this.selectedCategories));
         set.add(toRaw(this.productCategory));
         this.selectedCategories = Array.from(toRaw(set));
+        this.productCategory = ""
       }
     },
 
@@ -151,6 +176,10 @@ export default {
         this.categories = result;
       }).catch((err) => console.log("err", err.response.data));
     },
+
+    removeSelectedCategory(id) {
+      this.selectedCategories = this.selectedCategories.filter(category => category.id !== id);
+    }
   },
 
   mounted() {

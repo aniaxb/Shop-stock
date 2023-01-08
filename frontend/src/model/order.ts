@@ -10,4 +10,6 @@ export interface Order extends IdentityProperties {
     totalPrice: number;
     productQuantities: ProductQuantity[];
     status: Status;
+    placeDate: string,
+    lastChangeDate: string
 }

@@ -35,7 +35,8 @@ export class Network {
                     email: string,
                     totalPrice: number,
                     statusId: number,
-                    productQuantities: []): Promise<ProductQuantity> {
+                    productQuantities: [],
+                    date: string): Promise<ProductQuantity> {
         return axios({
             method: 'POST',
             url: Global.BASE_URL + "/" + Global.ORDERS,
@@ -47,7 +48,8 @@ export class Network {
                 status: {
                     id: statusId
                 },
-                productQuantities: productQuantities
+                productQuantities: productQuantities,
+                placeDate: date
             },
             headers: {
                 Authorization: "Bearer " + token,
@@ -133,12 +135,13 @@ export class Network {
         })
     }
 
-    static editOrder(token: string, id: number, name: string): Promise<Order> {
+    static editOrder(token: string, id: number, name: string, date: string): Promise<Order> {
         return axios({
             method: 'PUT',
             url: Global.BASE_URL + "/" + Global.ORDERS + "/" + id,
             data: {
-                name: name
+                name: name,
+                lastChangeDate: date
             },
             headers: {
                 Authorization: "Bearer " + token,
