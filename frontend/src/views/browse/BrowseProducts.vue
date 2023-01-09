@@ -1,5 +1,5 @@
 <template>
-  <form class="form col-12 ml-auto mr-auto">
+  <form class="form col-12 ml-auto mr-auto" v-on:submit.prevent="() => {}">
     <div class="row">
       <div class="col-4">
         <label for="" class="form-label">Enter product name:</label>
@@ -93,6 +93,7 @@
 <script>
 import {Network} from "../../helpers/network";
 import {SweetAlert} from "../../helpers/sweetAlert";
+import {toRaw} from "vue";
 
 export default {
   name: "BrowseProducts",
@@ -104,8 +105,8 @@ export default {
       cartedProducts: [],
       query: "",
       shoe: {},
-      selected: "None",
-      selectedCategory: "None",
+      selected: "",
+      selectedCategory: "",
       categories: [],
       brands: [],
       tableSize: 3,
@@ -193,7 +194,7 @@ export default {
       if (this.query) {
         filter.name = this.query;
       }
-      if (this.selected !== "None") {
+      if (this.selected !== "") {
         filter.brand = this.selected;
       }
 
@@ -210,23 +211,20 @@ export default {
         return true;
       });
 
-      if (this.selectedCategory !== "None") {
-        for (let i = 0; i < filterProd.length; i++) {
-          if (
-            !filterProd[i].categories.some(
-              (e) => e.name === this.selectedCategory.name
-            )
-          ) {
-            filterProd.splice(i, 1);
+      if (this.selectedCategory !== "") {
+        let copy = filterProd;
+        for (const prod of filterProd) {
+          if (!toRaw(prod).categories.some((e) => e.name === this.selectedCategory.name)) {
+            filterProd = filterProd.filter(element => element.id !== prod.id);
           }
         }
-      }
 
+      }
       if (filterProd.length === 0) {
         SweetAlert.error(this.$swal, "No product meets the given categories")
         this.query = "";
-        this.selected = "None";
-        this.selectedCategory = "None";
+        this.selected = "";
+        this.selectedCategory = "";
         this.displayed = this.allProducts;
       } else {
         this.displayed = filterProd;
