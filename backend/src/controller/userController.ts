@@ -1,49 +1,37 @@
 import { NextFunction, Request, Response } from "express"
-import {User} from "../model/user";
-import {Controller} from "./controller";
-import {validate} from "class-validator";
-import {Category} from "../model/category";
+import {UserService} from "../service/userService";
 
-export class UserController extends Controller {
+export class UserController {
 
-    constructor() {
-        super(User);
-    }
+    private userService: UserService = new UserService();
 
     async getAllUsers(request: Request, response: Response, next: NextFunction) {
-        this.repository.find().then(y => {
-            response.status(200).json(y);
+        this.userService.getAllUsers().then(result => {
+            return response.status(200).json(result);
         }).catch(e => {
             return response.status(422).json({'message': e.message});
         })
     }
 
     async getUser(request: Request, response: Response, next: NextFunction) {
-        this.repository.findOneBy({ id: request.params.id }).then(y => {
-            response.status(200).json(y);
+        this.userService.getUser(request.params.id).then(result => {
+            return response.status(200).json(result);
         }).catch(e => {
             return response.status(422).json({'message': e.message});
         })
     }
 
     async addUser(request: Request, response: Response, next: NextFunction) {
-        validate(Object.assign(new Category() , request.body)).then(async error => {
-            if (error.length > 0) {
-                throw new Error(JSON.stringify(error.pop().constraints))
-            } else {
-                await this.repository.save(request.body).then(y => {
-                    response.status(200).json(y);
-                })
-            }
+        this.userService.addUser(request.body).then(result => {
+            return response.status(200).json(result);
         }).catch(e => {
             return response.status(422).json({'message': e.message});
         })
     }
 
     async removeUser(request: Request, response: Response, next: NextFunction) {
-        this.repository.findOneBy({ id: request.params.id }).then(async y => {
-            await this.repository.remove(y)
-            response.status(200).json(y);
+        this.userService.removeUser(request.params.id).then(result => {
+            return response.status(200).json(result);
         }).catch(e => {
             return response.status(422).json({'message': e.message});
         })

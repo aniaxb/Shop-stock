@@ -1,16 +1,13 @@
 import { NextFunction, Request, Response } from "express"
-import {Controller} from "./controller";
-import {Status} from "../model/status";
+import {StatusService} from "../service/statusService";
 
-export class StatusController extends Controller {
+export class StatusController {
 
-    constructor() {
-        super(Status);
-    }
+    private statusService: StatusService = new StatusService();
 
     async getAllStatuses(request: Request, response: Response, next: NextFunction) {
-        this.repository.find().then(y => {
-            response.status(200).json(y);
+        this.statusService.getAllStatuses().then(result => {
+            return response.status(200).json(result);
         }).catch(e => {
             return response.status(422).json({'message': e.message});
         })

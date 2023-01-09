@@ -1,66 +1,47 @@
 import { NextFunction, Request, Response } from "express"
-import {Category} from "../model/category";
-import {Controller} from "./controller";
-import {validate} from "class-validator";
+import {CategoryService} from "../service/categoryService";
 
-export class CategoryController extends Controller {
+export class CategoryController {
 
-    constructor() {
-        super(Category);
-    }
+    private categoryService: CategoryService = new CategoryService();
 
     async getAllCategories(request: Request, response: Response, next: NextFunction) {
-        this.repository.find().then(y => {
-            response.status(200).json(y);
+        this.categoryService.getAllCategories().then(result => {
+            return response.status(200).json(result);
+        }).catch(e => {
+            return response.status(422).json({'message': e.message});
         })
     }
 
     async getCategory(request: Request, response: Response, next: NextFunction) {
-        this.repository.findOneBy({ id: request.params.id }).then(y => {
-            response.status(200).json(y);
+        this.categoryService.getCategory(request.params.id).then(result => {
+            return response.status(200).json(result);
+        }).catch(e => {
+            return response.status(422).json({'message': e.message});
         })
     }
 
     async addCategory(request: Request, response: Response, next: NextFunction) {
-        validate(Object.assign(new Category() , request.body)).then(async error => {
-            if (error.length > 0) {
-                throw new Error(JSON.stringify(error.pop().constraints))
-            } else {
-                await this.repository.save(request.body).then(y => {
-                    response.status(200).json(y);
-                })
-            }
+        this.categoryService.addCategory(request.body).then(result => {
+            return response.status(200).json(result);
         }).catch(e => {
             return response.status(422).json({'message': e.message});
         })
     }
 
     async editCategory(request: Request, response: Response, next: NextFunction) {
-        this.repository.find({
-            where: {
-                id: request.params.id,
-            },
-            take: 1
-        }).then(async result => {
-            const merge = {...result.pop(), ...request.body};
-            validate(Object.assign(new Category() , merge)).then(async error => {
-                if (error.length > 0) {
-                    throw new Error(JSON.stringify(error.pop().constraints))
-                } else {
-                    await this.repository.save(merge).then(() => {
-                        return response.status(200).json(merge);
-                    })
-                }
-            }).catch(e => {
-                return response.status(422).json({'message': e.message});
-            })
+        this.categoryService.editCategory(request.params.id, request.body).then(result => {
+            return response.status(200).json(result);
+        }).catch(e => {
+            return response.status(422).json({'message': e.message});
         })
     }
 
     async removeCategory(request: Request, response: Response, next: NextFunction) {
-        this.repository.findOneBy({ id: request.params.id }).then(async y => {
-            await this.repository.remove(y)
-            response.status(200).json(y);
+        this.categoryService.removeCategory(request.params.id).then(result => {
+            return response.status(200).json(result);
+        }).catch(e => {
+            return response.status(422).json({'message': e.message});
         })
     }
     

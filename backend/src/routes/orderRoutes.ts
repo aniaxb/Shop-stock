@@ -22,14 +22,9 @@ export const OrderRoutes = [{
     action: "editOrder"
 }, {
     method: "put",
-    route: "/ordersAddProduct/:id",
+    route: "/ordersProduct/:id",
     controller: OrderController,
-    action: "addProductToOrder"
-}, {
-    method: "delete",
-    route: "/ordersRemoveProduct/:id",
-    controller: OrderController,
-    action: "removeProductFromOrder"
+    action: "editProductInOrder"
 }, {
     method: "get",
     route: "/orders/selectBy/status",

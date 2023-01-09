@@ -1,8 +1,8 @@
 import {Entity, PrimaryGeneratedColumn, Column, ManyToMany, OneToMany} from "typeorm"
 import {Category} from "./category";
 import {JoinTable} from 'typeorm';
-import {ArrayMinSize, Min, MinLength} from "class-validator";
-import {ColumnNumericTransformer} from "../utils/ColumnNumericTransformer";
+import {ArrayMinSize, MaxLength, Min, MinLength} from "class-validator";
+import {ColumnNumericTransformer} from "../utils/columnNumericTransformer";
 import {ProductQuantity} from "./productQuantity";
 
 @Entity()
@@ -17,6 +17,9 @@ export class Product {
     @Column()
     name: string;
 
+    @MaxLength(320, {
+        message: 'description is too long',
+    })
     @MinLength(3, {
         message: 'description is too short',
     })
