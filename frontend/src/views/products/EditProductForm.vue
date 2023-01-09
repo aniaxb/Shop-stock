@@ -3,7 +3,7 @@
     <div class="fw-bold fs-3">Edit Product</div>
     <form class="mx-3">
       <div class="row mt-2">
-        <div class="col-4">
+        <div class="col-5 mb-2">
           <label class="form-label" for="exampleUsername">Product brand</label>
 
           <select v-model="product.brand" class="form-select col-5">
@@ -12,7 +12,7 @@
             </option>
           </select>
         </div>
-        <div class="col-7">
+        <div class="col-7 mb-2">
           <label for="exampleInputEmail" class="form-label">Product name</label>
           <input
             type="text"
@@ -23,7 +23,7 @@
         </div>
       </div>
 
-      <div class="col-10">
+      <div class="col-12 mb-2">
         <label for="exampleInputEmail" class="form-label"
           >Product description</label
         >
@@ -35,8 +35,8 @@
           placeholder="This is a great shoe, released in 2019 ..."
         />
       </div>
-      <div class="row">
-        <div class="col-5">
+      <div class="row mb-2">
+        <div class="col-6">
           <label for="exampleInputEmail" class="form-label"
             >Product price</label
           >
@@ -47,7 +47,7 @@
             placeholder="100.00"
           />
         </div>
-        <div class="col-5">
+        <div class="col-6">
           <label for="exampleInputEmail" class="form-label"
             >Product weight</label
           >

@@ -199,7 +199,7 @@ form {
   top: 25%;
   right: 37%;
   width: 30%;
-  height: 65%;
+  height: 55%;
   background: white;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   margin-left: 1em;
@@ -212,7 +212,7 @@ form {
   top: 25%;
   right: 37%;
   width: 30%;
-  height: 35%;
+  height: 40%;
   background: white;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   margin-left: 1em;

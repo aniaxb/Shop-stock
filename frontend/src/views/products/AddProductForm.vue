@@ -1,9 +1,9 @@
 <template>
   <div class="">
-    <div class="fw-bold fs-3 mt-2">Add Product</div>
+    <div class="fw-bold fs-3 mt-2 ">Add Product</div>
     <form class="mx-3" v-on:submit.prevent="() => {}">
       <div class="row mt-2">
-        <div class="col-4">
+        <div class="col-5 mb-2">
           <label class="form-label" for="exampleUsername">Product brand</label>
           <select v-model="brand" class="form-select col-5">
             <option :value="i" v-for="i in this.brands">
@@ -22,7 +22,7 @@
         </div>
       </div>
 
-      <div class="col-10">
+      <div class="col-12 mb-2">
         <label for="exampleInputEmail" class="form-label"
           >Product description</label
         >
@@ -34,7 +34,7 @@
         />
       </div>
       <div class="row">
-        <div class="col-5">
+        <div class="col-6 mb-2">
           <label for="exampleInputEmail" class="form-label"
             >Product price</label
           >
@@ -45,7 +45,7 @@
             placeholder="100.00"
           />
         </div>
-        <div class="col-5">
+        <div class="col-6 mb-2">
           <label for="exampleInputEmail" class="form-label"
             >Product weight</label
           >
@@ -56,7 +56,7 @@
             placeholder="0.7"
           />
         </div>
-        <div class="col-5">
+        <div class="col-6">
           <label for="exampleInputEmail" class="form-label">Product img</label>
           <input
             type="text"
@@ -66,7 +66,7 @@
           />
         </div>
 
-        <div class="col-5">
+        <div class="col-6">
           <label class="form-label" for="exampleUsername"
             >Product Category</label
           >
@@ -83,8 +83,8 @@
         </div>
       </div>
 
-      <div class="" id="divTable">
-        <table class="table table-light table-striped mt-5 text-center">
+      <div class="col-12" id="divTable">
+        <table class="table table-light table-striped mt-4 text-center">
           <thead class="">
           <tr>
             <th>Category</th>
