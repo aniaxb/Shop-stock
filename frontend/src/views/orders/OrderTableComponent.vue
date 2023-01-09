@@ -1,9 +1,9 @@
 <template>
-  <div class="col-2" id="selectStatus">
-    <label class="form-label fs-5 fw-bolder"
+  <div class="col-2 mx-auto text-center" id="selectStatus">
+    <label class="form-label fs-5 fw-bolder "
       >Select Status: {{ selectedStatus.name }}</label
     >
-    <select class="form-select" v-model="selectedStatus" @click="filterOrder">
+    <select class="form-select " v-model="selectedStatus" @click="filterOrder">
       <option :value="stat" v-for="stat in statusList">
         {{ stat.name }}
       </option>
@@ -11,7 +11,7 @@
   </div>
 
   <div class="" id="divTable">
-    <table class="table table-light table-striped mt-5 text-center">
+    <table class="table table-light table-striped text-center">
       <thead class="">
         <tr>
           <th>Order id</th>
@@ -223,5 +223,6 @@ form {
 #divTable {
   margin-left: 10%;
   margin-right: 10%;
+  margin-top: 7em;
 }
 </style>
