@@ -1,7 +1,7 @@
 import {Entity, PrimaryGeneratedColumn, Column, ManyToMany, OneToMany} from "typeorm"
 import {Category} from "./category";
 import {JoinTable} from 'typeorm';
-import {ArrayMinSize, MaxLength, Min, MinLength} from "class-validator";
+import {ArrayMaxSize, ArrayMinSize, MaxLength, Min, MinLength} from "class-validator";
 import {ColumnNumericTransformer} from "../utils/columnNumericTransformer";
 import {ProductQuantity} from "./productQuantity";
 
@@ -58,6 +58,10 @@ export class Product {
     })
     weight: number;
 
+
+    @ArrayMaxSize(4, {
+        message: 'product can have up to 4 categories',
+    })
     @ArrayMinSize(1, {
         message: 'product must have at least one category',
     })
