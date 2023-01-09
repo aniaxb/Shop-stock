@@ -60,6 +60,12 @@
           </div>
           <div>{{ shoe.description }}</div>
           <div class="my-2 fw-bold">{{ shoe.price }}$</div>
+          <div class="categories row col-11 mx-auto">
+            <span class="col-5 justify-content-around mx-auto border border-dark rounded-circle p-2 mx-2 mb-2 text-light" v-for="category in shoe.categories">
+            {{ category.name }} 
+            </span>
+          </div>
+          
           <div>
             <button
               v-on:click="addToCart(shoe.id)"
@@ -169,7 +175,6 @@ export default {
 
     addToCart(index) {
       if (!this.token) {
-        console.log("please login to add item to cart");
         SweetAlert.error(this.$swal, "please login to add item to cart")
         return;
       }
@@ -179,7 +184,6 @@ export default {
       this.cartedProducts.push(this.allProducts[productIndex]);
       cartedTest = JSON.parse(JSON.stringify(this.cartedProducts));
       localStorage.setItem("cartedProducts", JSON.stringify(cartedTest));
-      console.log("Added to cart", cartedTest);
       SweetAlert.accepted(this.$swal, "Added product to cart!")
     },
 
@@ -243,13 +247,14 @@ export default {
 .item {
   border: 2px solid #48acf0;
   width: 416px;
-  height: 618px;
+  height: 658px;
+  /* width: 100%;
+  height: 100%; */
 }
 
 form {
   max-width: 64em;
   margin: auto;
-  /* text-align: center; */
 }
 form label {
   margin-top: 1em;
@@ -259,25 +264,33 @@ div .item {
   position: relative;
 }
 
-#ATCbutton {
-  background: #48acf0;
-  position: absolute;
-  bottom: 6px;
-}
-#searchButton {
-  background: #48acf0;
+.border {
+  /* border: 1px solid #48acf0 !important; */
+  background-color: #292b2c;
 }
 
-.link {
-  text-decoration: none;
-  color: #f5f5f5;
+#ATCbutton {
+  background: #48acf0;
+  color: #f7f7f7;
+  position: absolute;
+  bottom: 1%;
 }
+
+#searchButton:hover, #ATCbutton:hover {
+  background: #3294d6;
+  color: #f7f7f7;
+}
+
+#searchButton {
+  background: #48acf0;
+  color: #f7f7f7;
+}
+
 .products img {
   object-fit: contain;
   max-width: 100%;
   max-height: 100%;
   mix-blend-mode: multiply;
-  /* mix-blend-mode: color-burn; */
 }
 
 .container .products {

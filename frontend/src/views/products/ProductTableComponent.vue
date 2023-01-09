@@ -1,9 +1,9 @@
 <template>
   <div class="container">
-    <div class="row">
-      <div class="col text-center">
-        <button class="btn btn-primary mx-auto" @click="addProduct">
-          Add Product
+    <div class="row mx-auto">
+      <div class="col mt-3 text-center ">
+        <button class="btn" id="addProductButton" @click="addProduct">
+          Add new product
         </button>
         <addFormComponent
           v-if="addShowForm"
@@ -14,7 +14,7 @@
     </div>
   </div>
   <div class="" id="divTable">
-    <table class="table table-light table-striped mt-5 text-center">
+    <table class="table table-light table-striped mt-4 text-center">
       <thead class="">
         <tr>
           <th>#</th>
@@ -35,7 +35,7 @@
           <td>{{ shoe.price }}$</td>
           <td>{{ shoe.weight }}kg</td>
           <td>
-            <button class="btn btn-sm text-black edit" @click="edit(shoe.id)">
+            <button class="btn btn-sm edit" @click="edit(shoe.id)">
               Edit
             </button>
             <formComponent
@@ -144,23 +144,20 @@ form {
 form label {
   margin-top: 1em;
 }
-.item {
-  border: 2px solid #48acf0;
-}
 
 .edit {
   background: #48acf0;
+  color: #f7f7f7;
 }
 
-.link {
-  text-decoration: none;
-  color: #f5f5f5;
+#addProductButton {
+  color: #f7f7f7;
+  background: #48acf0;
 }
-.products img {
-  object-fit: contain;
-  max-width: 100%;
-  max-height: 100%;
-  mix-blend-mode: multiply;
+
+#addProductButton:hover, .edit:hover{
+  background: #3294d6;
+  color: #f7f7f7;
 }
 
 #divTable {
@@ -168,7 +165,7 @@ form label {
   margin-right: 10%;
 }
 
-.container .products {
+.container  {
   display: flex;
   flex-direction: row;
 }

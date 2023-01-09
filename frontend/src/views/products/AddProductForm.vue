@@ -5,7 +5,6 @@
       <div class="row mt-2">
         <div class="col-4">
           <label class="form-label" for="exampleUsername">Product brand</label>
-
           <select v-model="brand" class="form-select col-5">
             <option :value="i" v-for="i in this.brands">
               {{ i }}
@@ -98,7 +97,7 @@
             <td>
               <button
                   v-on:click="removeSelectedCategory(cat.id)"
-                  class="btn btn-primary mx-auto"
+                  class="btn addFormButton mx-auto"
               >-
               </button>
             </td>
@@ -110,13 +109,13 @@
     </form>
     <button
       @click="handleSubmit()"
-      class="btn btn-sm btn-primary text-light mx-3 mt-2"
+      class="btn btn-sm addFormButton text-light mx-3 mt-2"
     >
       Submit
     </button>
     <button
       @click="$emit('close')"
-      class="btn btn-sm btn-primary text-light mt-2"
+      class="btn btn-sm addFormButton text-light mt-2"
     >
       Close
     </button>
@@ -153,7 +152,6 @@ export default {
           this.weight,
           this.img,
           this.selectedCategories).then(result => {
-        console.log("products has been added");
         SweetAlert.accepted(this.$swal, "Products has been added")
         this.$emit('close')
       }).catch((err) => {
@@ -189,4 +187,14 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.addFormButton {
+  color: #f7f7f7;
+  background: #48acf0;
+}
+
+.addFormButton:hover {
+  background: #3294d6;
+  color: #f7f7f7;
+}
+</style>
