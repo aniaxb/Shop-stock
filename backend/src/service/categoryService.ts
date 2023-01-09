@@ -1,6 +1,5 @@
-import {EntityService} from "./EntityService";
+import {EntityService} from "./entityService";
 import {Category} from "../model/category";
-import {validate} from "class-validator";
 
 export class CategoryService extends EntityService {
 
@@ -17,8 +16,7 @@ export class CategoryService extends EntityService {
     }
 
     public addCategory(category: Category): Promise<Category> {
-        return this.validateCategory(category).then(() => {
-            console.log(category)
+        return this.validateEntity(category).then(() => {
             return this.repository.save(category);
         });
     }
@@ -32,17 +30,9 @@ export class CategoryService extends EntityService {
     public editCategory(id: number, category: Category): Promise<Category> {
         return this.getCategory(id).then(result => {
             const merge = {...result, ...category};
-            return this.validateCategory(merge).then(() => {
+            return this.validateEntity(merge).then(() => {
                 return this.repository.save(merge);
             })
-        })
-    }
-    
-    private validateCategory(category: Category): Promise<void> {
-        return validate(Object.assign(new Category() , category)).then(async error => {
-            if (error.length > 0) {
-                throw new Error(JSON.stringify(error.pop().constraints))
-            }
         })
     }
 }

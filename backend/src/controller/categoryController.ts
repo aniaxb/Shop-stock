@@ -1,15 +1,9 @@
 import { NextFunction, Request, Response } from "express"
-import {Category} from "../model/category";
-import {Controller} from "./controller";
-import {validate} from "class-validator";
-import {CategoryService} from "../service/CategoryService";
+import {CategoryService} from "../service/categoryService";
 
 export class CategoryController {
 
-    private categoryService: CategoryService = new CategoryService()
-
-    constructor() {
-    }
+    private categoryService: CategoryService = new CategoryService();
 
     async getAllCategories(request: Request, response: Response, next: NextFunction) {
         this.categoryService.getAllCategories().then(result => {
