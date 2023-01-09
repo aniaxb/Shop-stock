@@ -31,6 +31,7 @@
           type="text"
           class="form-control"
           v-model="product.description"
+          maxlength="320"
           placeholder="This is a great shoe, released in 2019 ..."
         />
       </div>
@@ -61,13 +62,13 @@
     </form>
     <button
       @click="handleSubmit()"
-      class="btn btn-sm btn-primary text-light mx-3 mt-2"
+      class="btn btn-sm editFormButton text-light mx-3 mt-2"
     >
       Submit
     </button>
     <button
       @click="$emit('close')"
-      class="btn btn-sm btn-primary text-light mt-2"
+      class="btn btn-sm editFormButton text-light mt-2"
     >
       Close
     </button>
@@ -98,7 +99,6 @@ export default {
 
     async handleSubmit() {
       Network.editProduct(localStorage.getItem("token"), this.product_id, this.product).then(result => {
-        console.log("products has been updated");
         SweetAlert.accepted(this.$swal, "products has been updated!")
         this.$emit('close')
       }).catch((err) => {
@@ -115,4 +115,13 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.editFormButton {
+  background: #48acf0;
+  color: #f7f7f7;
+}
+.editFormButton:hover {
+  background: #3294d6;
+  color: #f7f7f7;
+}
+</style>

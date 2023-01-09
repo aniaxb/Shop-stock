@@ -23,14 +23,14 @@
 
     <button
         @click="handleSubmit()"
-        class="btn btn-sm btn-primary text-light mt-2 mx-2"
+        class="btn btn-sm editFormButton text-light mt-2 mx-2"
     >
       Submit
     </button>
 
     <button
         @click="$emit('close')"
-        class="btn btn-sm btn-primary text-light mt-2 mx-2"
+        class="btn btn-sm editFormButton text-light mt-2 mx-2"
     >
       Close
     </button>
@@ -66,7 +66,6 @@ export default {
           this.order_id,
           toRaw(this.selected.name),
           new Date().toLocaleDateString()).then(res => {
-        console.log("Order has been updated");
         SweetAlert.accepted(this.$swal, "Order has been updated")
         this.$emit('close')
       }).catch((err) => {
@@ -82,4 +81,14 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.editFormButton {
+  background: #48acf0;
+  color: #f7f7f7;
+}
+
+.editFormButton:hover {
+  background: #3294d6;
+  color: #f7f7f7;
+}
+</style>

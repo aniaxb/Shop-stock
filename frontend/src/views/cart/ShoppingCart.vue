@@ -1,5 +1,7 @@
 <template>
-  <div><h1 class="text-center mb-5">Shopping Cart</h1></div>
+  <div>
+    <h1 class="text-center mb-5">Shopping Cart</h1>
+  </div>
   <div>
     <div
       v-for="cartItem in cartItems"
@@ -89,7 +91,7 @@
         <button
           type="submit"
           @click.prevent="submitOrder"
-          class="btn col-8"
+          class="btn col-8 text-light"
           id="submitButton"
         >
           Send Order
@@ -104,8 +106,6 @@
 </template>
 
 <script>
-
-import axios from "axios";
 import { toRaw } from "vue";
 import {SweetAlert} from "../../helpers/sweetAlert";
 import {Network} from "../../helpers/network";
@@ -146,7 +146,6 @@ export default {
           4,
           jsonArray,
           new Date().toLocaleDateString()).then(result => {
-          console.log("Submitted an order");
           SweetAlert.accepted(this.$swal, "Submitted an order!")
       }).catch((err) => {
         console.log("err", err.response.data);
@@ -166,8 +165,7 @@ export default {
       this.cartItems.push(newArr[0]);
       localStorage.setItem("cartedProducts", JSON.stringify(this.cartItems));
       this.quantities[id] += 1;
-      this.totalCost += price;
-      console.log("Added this item again");
+      this.totalCost += parseFloat(price);
     },
 
     deleteItem(id) {
@@ -180,9 +178,8 @@ export default {
         }
       }
       localStorage.setItem("cartedProducts", JSON.stringify(this.cartItems));
-      this.totalCost -= price;
+      this.totalCost -= parseFloat(price);
       this.quantities[id] -= 1;
-      console.log("Deleted this item");
     },
   },
 
@@ -224,11 +221,9 @@ img {
 
 #addButton {
   background: #48acf0;
-  border: 1px solid #306d96;
 }
 
 #deleteButton {
   background: #48acf0;
-  border: 1px solid #306d96;
 }
 </style>

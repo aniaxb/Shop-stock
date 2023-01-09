@@ -45,7 +45,7 @@
           <th>Product</th>
           <th>quantity</th>
           <th>Price</th>
-          <th></th>
+         
         </tr>
         </thead>
         <tbody>
@@ -60,7 +60,7 @@
 
     <button
         @click="$emit('close')"
-        class="btn btn-sm btn-primary text-light mt-2"
+        class="btn btn-sm detailsFormButton text-light mt-2"
     >
       Close
     </button>
@@ -83,7 +83,6 @@ export default {
   methods: {
     async loadOrder() {
       Network.getOrder(localStorage.getItem("token"), this.order_id).then(result => {
-        console.log(toRaw(result))
         this.order = toRaw(result);
         this.status = toRaw(this.order.status)
       }).catch((err) => {
@@ -98,4 +97,14 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.detailsFormButton {
+  background: #48acf0;
+  color: #f7f7f7;
+}
+
+.detailsFormButton:hover {
+  background: #3294d6;
+  color: #f7f7f7;
+}
+</style>

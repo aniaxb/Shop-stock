@@ -1,5 +1,5 @@
 <template>
-  <div class="col-4" id="selectStatus">
+  <div class="col-2" id="selectStatus">
     <label class="form-label fs-5 fw-bolder"
       >Select Status: {{ selectedStatus.name }}</label
     >
@@ -34,7 +34,7 @@
           <td>
             <button
               v-on:click="orderDetails(order.id)"
-              class="btn btn-sm edit text-black"
+              class="btn btn-sm"
             >
               Details
             </button>
@@ -47,7 +47,7 @@
 
             <button
               v-on:click="editOrder(order.id)"
-              class="btn btn-sm edit text-black mx-2"
+              class="btn btn-sm mx-2"
             >
               Edit Status
             </button>
@@ -182,7 +182,16 @@ export default {
 form {
   max-width: 64em;
   margin: auto;
-  /* text-align: center; */
+}
+
+.btn {
+  color: #f7f7f7;
+  background: #48acf0;
+}
+
+.btn:hover {
+  background: #3294d6;
+  color: #f7f7f7;
 }
 
 .form-popup {
@@ -214,8 +223,5 @@ form {
 #divTable {
   margin-left: 10%;
   margin-right: 10%;
-}
-.edit {
-  background: #48acf0;
 }
 </style>

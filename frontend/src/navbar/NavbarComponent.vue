@@ -67,7 +67,6 @@ export default {
 
   methods: {
     signOut() {
-      console.log("signed out");
       localStorage.removeItem("token");
       this.token = null;
       this.$router.push(this.$route.query.redirect || '/')
