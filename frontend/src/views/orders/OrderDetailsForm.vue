@@ -1,34 +1,24 @@
 <template>
   <div class="">
-    <div class="fw-bold fs-3">Order Details</div>
+    <div class="fw-bold fs-3 mb-4">Order Details</div>
     <div>
-      <b>UserName:</b>
-      <div v-html="order.userName"></div>
+      <b>UserName: </b><span class="mx-2">{{order.userName}}</span>
     </div>
-
     <div>
-      <b>Email:</b>
-      <div v-html="order.email"></div>
+      <b>Email: </b><span class="mx-2">{{order.email}}</span>
     </div>
-
     <div>
-      <b>PhoneNumber:</b>
-      <div v-html="order.phoneNumber"></div>
+      <b>PhoneNumber: </b><span class="mx-2">{{order.phoneNumber}}</span>
     </div>
-
     <div>
-      <b>Price:</b>
-      <div v-html="order.totalPrice"></div>
+      <b>Price: </b><span class="mx-2">{{order.totalPrice}} $</span>
     </div>
-
     <div>
-      <b>Status:</b>
-      <div v-html="status.name"></div>
+      <b>Status: </b><span class="mx-2">{{status.name}}</span>
     </div>
-
     <div>
-      <b>Submission date:</b>
-      <div v-html="order.placeDate"></div>
+      <b v-if="!order.placeDate">Subbmission Date: </b><span class="mx-2">Unknown</span>
+      <b v-if="order.placeDate">Subbmission Date: </b><span class="mx-2">{{order.placeDate}}</span>
     </div>
 
     <template v-if="order.lastChangeDate">
@@ -60,7 +50,7 @@
 
     <button
         @click="$emit('close')"
-        class="btn btn-sm detailsFormButton text-light mt-2"
+        class="btn btn-sm detailsFormButton text-light mt-3"
     >
       Close
     </button>

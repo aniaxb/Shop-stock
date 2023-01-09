@@ -1,18 +1,14 @@
 <template>
   <div class="">
-    <div class="fw-bold fs-3">Order Status</div>
-
+    <div class="fw-bold fs-3 mb-3">Order Status</div>
+    <div class="mb-2">
+      <b>ID: </b><span class="mx-2">{{order_id}}</span>
+    </div>
     <div>
-      <b>ID:</b>
-      <div v-html="order_id"></div>
+      <b>Status: </b><span class="mx-2">{{status}}</span>
     </div>
 
-    <div>
-      <b>Status:</b>
-      <div v-html="status"></div>
-    </div>
-
-    <form class="col-8 mt-2 mx-auto">
+    <form class="col-8 mt-4 mb-5 mx-auto">
       <div class="col-6 mx-auto mb-2">
         <label for="exampleInputEmail" class="col-12 form-label">Status name</label>
         <select v-model="selected" class="form-select col-5">
