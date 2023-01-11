@@ -1,7 +1,7 @@
 <template>
   <div class="">
     <div class="fw-bold fs-3">Edit Product</div>
-    <form class="mx-3">
+    <form class="mx-3" v-on:submit.prevent="() => {}">
       <div class="row mt-2">
         <div class="col-4">
           <label class="form-label" for="exampleUsername">Product brand</label>
@@ -59,6 +59,43 @@
           />
         </div>
       </div>
+      <div class="col-5">
+        <label class="form-label" for="exampleUsername"
+        >Product Category</label
+        >
+
+        <select
+            v-model="productCategory"
+            class="form-select col-5"
+            @click="addCategory"
+        >
+          <option :value="category" v-for="category in categories">
+            {{ category.name }}
+          </option>
+        </select>
+      </div>
+      <div class="" id="divTable">
+        <table class="table table-light table-striped mt-5 text-center">
+          <thead class="">
+          <tr>
+            <th>Category</th>
+            <th></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr v-for="cat in product.categories" :key="cat">
+            <td>{{ cat.name }}</td>
+            <td>
+              <button
+                  v-on:click="removeSelectedCategory(cat.id)"
+                  class="btn addFormButton mx-auto"
+              >-
+              </button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
     </form>
     <button
       @click="handleSubmit()"
@@ -78,6 +115,7 @@
 <script>
 import {Network} from "../../helpers/network";
 import {SweetAlert} from "../../helpers/sweetAlert";
+import {toRaw} from "vue";
 
 export default {
   props: ["product_id"],
@@ -85,6 +123,8 @@ export default {
     return {
       product: Object,
       brands: Object,
+      categories: [],
+      productCategory: "",
     };
   },
   methods: {
@@ -98,7 +138,7 @@ export default {
     },
 
     async handleSubmit() {
-      Network.editProduct(localStorage.getItem("token"), this.product_id, this.product).then(result => {
+      Network.editProduct(localStorage.getItem("token"), this.product_id, this.product).then(() => {
         SweetAlert.accepted(this.$swal, "products has been updated!")
         this.$emit('close')
       }).catch((err) => {
@@ -106,11 +146,31 @@ export default {
         SweetAlert.error(this.$swal, err.response.data.message)
       });
     },
+
+    fetchCategories() {
+      Network.getCategories().then(result => {
+        this.categories = result;
+      }).catch((err) => console.log("err", err.response.data));
+    },
+
+    addCategory() {
+      if (this.productCategory !== "") {
+        const set = new Set(toRaw(this.product.categories));
+        set.add(toRaw(this.productCategory));
+        this.product.categories = Array.from(toRaw(set));
+        this.productCategory = ""
+      }
+    },
+
+    removeSelectedCategory(id) {
+      this.product.categories = this.product.categories.filter(category => category.id !== id);
+    }
   },
 
   mounted() {
     this.brands = JSON.parse(localStorage.getItem("brands"));
     this.loadProduct();
+    this.fetchCategories();
   },
 };
 </script>
