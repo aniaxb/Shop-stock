@@ -207,6 +207,7 @@ export class Network {
                 description: product.description,
                 price: parseFloat(String(product.price)),
                 weight: parseFloat(String(product.weight)),
+                categories: product.categories
             },
             headers: {
                 Authorization: "Bearer " + token,
