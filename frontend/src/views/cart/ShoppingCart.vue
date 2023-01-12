@@ -146,7 +146,12 @@ export default {
           4,
           jsonArray,
           new Date().toLocaleDateString()).then(result => {
-          SweetAlert.accepted(this.$swal, "Submitted an order!")
+          SweetAlert.accepted(this.$swal, "Submitted an order!");
+         this.cartItems = [];
+         this.cartedProducts = null;
+         this.countCarted = 0;
+         localStorage.setItem("countCarted", 0);
+         localStorage.setItem("cartedProducts", this.cartedProducts);
       }).catch((err) => {
         console.log("err", err.response.data);
         SweetAlert.error(this.$swal, err.response.data.message)

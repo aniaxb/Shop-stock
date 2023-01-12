@@ -74,6 +74,10 @@ export default {
     interval() {
       setInterval(function() {
         let cartedProducts = JSON.parse(localStorage.getItem("cartedProducts"));
+        if(cartedProducts == null) {
+          this.countCarted = 0;
+        }
+        else 
         this.countCarted = cartedProducts.length;
       }.bind(this), 500);
     }
