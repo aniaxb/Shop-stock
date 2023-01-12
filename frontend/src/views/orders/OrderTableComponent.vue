@@ -34,7 +34,7 @@
           <td>
             <button
               v-on:click="orderDetails(order.id)"
-              class="btn btn-sm"
+              class="btn detailsButton btn-sm"
             >
               Details
             </button>
@@ -47,7 +47,7 @@
 
             <button
               v-on:click="editOrder(order.id)"
-              class="btn btn-sm mx-2"
+              class="btn editButton btn-sm mx-2"
             >
               Edit Status
             </button>
@@ -184,12 +184,12 @@ form {
   margin: auto;
 }
 
-.btn {
+.detailsButton, .editButton {
   color: #f7f7f7;
   background: #48acf0;
 }
 
-.btn:hover {
+.detailsButton:hover, .editButton:hover {
   background: #3294d6;
   color: #f7f7f7;
 }

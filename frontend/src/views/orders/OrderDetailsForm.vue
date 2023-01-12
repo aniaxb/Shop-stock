@@ -17,7 +17,7 @@
       <b>Status: </b><span class="mx-2">{{status.name}}</span>
     </div>
     <div>
-      <b v-if="!order.placeDate">Subbmission Date: </b><span class="mx-2">Unknown</span>
+      <!-- <b v-if="!order.placeDate">Subbmission Date: </b><span class="mx-2">Unknown</span> -->
       <b v-if="order.placeDate">Subbmission Date: </b><span class="mx-2">{{order.placeDate}}</span>
     </div>
 
