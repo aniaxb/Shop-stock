@@ -1,21 +1,21 @@
 # Shop-Stock
-Web application(FE + BE) for placing orders and viewing available products.
+Web application(FE + BE) for placing orders and viewing available products.<br />
 
-Backend build with TypeScript:
--TypeORM
--JWT Authentication
--Express
--class-validator
--cors
--bcrypt
-
-FrontEnd build with Vue.js(vite)
--axios
--bootstrap
--lodash
--vue-router
--vue-sweetalert2
-
+Backend build with TypeScript:<br />
+-TypeORM<br />
+-JWT Authentication<br />
+-Express<br />
+-class-validator<br />
+-cors<br />
+-bcrypt<br />
+<br />
+FrontEnd build with Vue.js(vite)<br />
+-axios<br />
+-bootstrap<br />
+-lodash<br />
+-vue-router<br />
+-vue-sweetalert2<br />
+<br />
 
 |    Authors              |
 | ----------------------- |
