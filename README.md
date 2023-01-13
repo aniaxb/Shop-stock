@@ -1,4 +1,4 @@
-# shopStock
+# Shop-Stock
 Web application(FE + BE) for placing orders and viewing available products.
 
 Backend build with TypeScript:
@@ -17,9 +17,7 @@ FrontEnd build with Vue.js(vite)
 -vue-sweetalert2
 
 
-## Authors
-
-| Name                    |
+| ## Authors              |
 | ----------------------- |
 | Damian Biskupski        |
 | Ania Banachowicz        |
