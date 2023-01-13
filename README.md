@@ -17,7 +17,7 @@ FrontEnd build with Vue.js(vite)
 -vue-sweetalert2
 
 
-| ## Authors              |
+|    Authors              |
 | ----------------------- |
 | Damian Biskupski        |
 | Ania Banachowicz        |
